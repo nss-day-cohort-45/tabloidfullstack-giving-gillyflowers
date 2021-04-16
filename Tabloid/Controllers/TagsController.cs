@@ -11,11 +11,11 @@ namespace Tabloid.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TagController : ControllerBase
+    public class TagsController : ControllerBase
     {
         private readonly ITagRepository _tagRepository;
 
-        public TagController(ITagRepository tagRepository)
+        public TagsController(ITagRepository tagRepository)
         {
             _tagRepository = tagRepository;
         }
@@ -46,7 +46,6 @@ namespace Tabloid.Controllers
             return NoContent();
         }
 
-        // Need to implement cascade DELETE to PostTag
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
