@@ -20,8 +20,10 @@ export function UserProfileProvider(props) {
     }, []);
 
     useEffect(() => {
-        setCurrentUserId(JSON.parse(userProfile).id);
-    }, []);
+        if (isLoggedIn) {
+            setCurrentUserId(JSON.parse(userProfile).id);
+        }
+    }, [userProfile]);
 
     const login = (email, pw) => {
         return firebase
