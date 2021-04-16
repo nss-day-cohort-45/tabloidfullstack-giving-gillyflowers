@@ -9,7 +9,7 @@ using Tabloid.Utils;
 
 namespace Tabloid.Repositories
 {
-    public class PostRepository : BaseRepository
+    public class PostRepository : BaseRepository, IPostRepository
     {
         public PostRepository(IConfiguration configuration) : base(configuration) { }
 
@@ -104,6 +104,9 @@ namespace Tabloid.Repositories
             }
         }
 
+
+
+
         private Post NewPostFromDb(SqlDataReader reader)
         {
             return new Post()
@@ -127,5 +130,7 @@ namespace Tabloid.Repositories
                 }
             };
         }
+
+
     }
 }
