@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { NavLink as RRNavLink } from "react-router-dom";
+import { NavLink as RRNavLink, Route } from "react-router-dom";
 import {
   Collapse,
   Navbar,
@@ -23,11 +23,17 @@ export default function Header() {
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
-            { /* When isLoggedIn === true, we will render the Home link */ }
+            { /* When isLoggedIn === true, we will render the Home link */}
             {isLoggedIn &&
-              <NavItem>
-                <NavLink tag={RRNavLink} to="/">Home</NavLink>
-              </NavItem>
+              <>
+                <NavItem>
+                  <NavLink tag={RRNavLink} to="/">Home</NavLink>
+                </NavItem>
+
+                <NavItem>
+                  <NavLink tag={RRNavLink} to="/posts">Posts</NavLink>
+                </NavItem>
+              </>
             }
           </Nav>
           <Nav navbar>
