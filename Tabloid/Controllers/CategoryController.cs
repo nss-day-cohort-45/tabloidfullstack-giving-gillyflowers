@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Tabloid.Models;
 using Tabloid.Repositories;
 
 namespace Tabloid.Controllers
@@ -22,9 +23,14 @@ namespace Tabloid.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-           
             return Ok(_categoryRepository.GetAllCategories());
-          
+        }
 
+        [HttpPost]
+        public IActionResult AddCategory(Category category)
+        {
+                _categoryRepository.AddCategory(category);
+                return CreatedAtAction("Get", new { id = category.Id }, category);
+        }
     }
 }

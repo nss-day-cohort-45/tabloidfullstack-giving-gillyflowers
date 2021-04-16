@@ -38,12 +38,33 @@ namespace Tabloid.Repositories
                 }
             }
         }
+
+        public void AddCategory(Category category)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using(var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        INSERT INTO Category ([Name])
+                        OUTPUT INSERTED.ID
+                        VALUES (@Name)
+                    ";
+                    DbUtils.AddParameter(cmd, "@Name", category.Name);
+
+                    category.Id = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
+
+
         private Category NewCatFromDb(SqlDataReader reader)
         {
             return new Category()
             {
                 Id = DbUtils.GetInt(reader, "Id"),
-                Name = DbUtils.GetString(reader, "Title"),
+                Name = DbUtils.GetString(reader, "Name"),
 
             };
         }
