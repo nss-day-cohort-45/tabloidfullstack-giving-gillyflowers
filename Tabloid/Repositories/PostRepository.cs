@@ -68,7 +68,6 @@ namespace Tabloid.Repositories
                     WHERE p.Id = @Id";
 
                     DbUtils.AddParameter(cmd, "@Id", id);
-
                     var reader = cmd.ExecuteReader();
 
                     Post post = null;

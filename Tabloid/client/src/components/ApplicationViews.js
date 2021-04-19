@@ -4,11 +4,14 @@ import { UserProfileContext } from '../providers/UserProfileProvider';
 import PostList from './posts/PostList';
 import { PostDetails } from './posts/PostDetails';
 import { PostForm } from './posts/PostForm';
+import { UserProfileList } from './userProfiles/UserProfileList';
+import { UserProfileDetails } from './userProfiles/UserProfileDetails';
 import Login from './Login';
 import Register from './Register';
 import Hello from './Hello';
 import TagList from './tags/TagList';
 import TagForm from './tags/TagForm';
+import CategoryList from './categories/CategoryList';
 
 export default function ApplicationViews() {
     const { isLoggedIn } = useContext(UserProfileContext);
@@ -43,6 +46,26 @@ export default function ApplicationViews() {
                 <Route path="/tags" >
                     {isLoggedIn ? <TagForm /> : <Redirect to="/login" />}
                     {isLoggedIn ? <TagList /> : <Redirect to="/login" />}
+                </Route>
+
+                <Route path="/userprofile" exact>
+                    {isLoggedIn ? (
+                        <UserProfileList />
+                    ) : (
+                        <Redirect to="/login" />
+                    )}
+                </Route>
+
+                <Route path="/userprofile/:id" exact>
+                    {isLoggedIn ? (
+                        <UserProfileDetails />
+                    ) : (
+                        <Redirect to="/login" />
+                    )}{' '}
+                </Route>
+
+                <Route path="/categories" exact>
+                    {isLoggedIn ? <CategoryList /> : <Redirect to="/login" />}
                 </Route>
 
                 <Route path="/login">
