@@ -81,6 +81,17 @@ export function UserProfileProvider(props) {
         );
     };
 
+    const getUserProfileById = (id) => {
+        return getToken().then((token) =>
+            fetch(`${apiUrl}/getbyid/${id}`, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }).then((res) => res.json())
+        );
+    };
+
     const getUserProfile = (firebaseUserId) => {
         return getToken().then((token) =>
             fetch(`${apiUrl}/${firebaseUserId}`, {
@@ -115,6 +126,7 @@ export function UserProfileProvider(props) {
                 getToken,
                 currentUserId,
                 getAllUserProfiles,
+                getUserProfileById,
             }}
         >
             {isFirebaseReady ? (

@@ -49,6 +49,20 @@ namespace Tabloid.Repositories
                           FROM UserProfile up
                                LEFT JOIN UserType ut on up.UserTypeId = ut.Id
                          WHERE up.Id = @Id";
+
+                    DbUtils.AddParameter(cmd, "@Id", id);
+
+                    UserProfile userProfile = null;
+
+                    var reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        userProfile = NewUserProfileFromDb(reader);
+                    }
+                    reader.Close();
+
+                    return userProfile;
                 }
             }
         }

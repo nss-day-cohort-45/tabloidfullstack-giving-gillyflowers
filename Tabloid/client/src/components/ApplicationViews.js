@@ -5,6 +5,7 @@ import PostList from './posts/PostList';
 import { PostDetails } from './posts/PostDetails';
 import { PostForm } from './posts/PostForm';
 import { UserProfileList } from './userProfiles/UserProfileList';
+import { UserProfileDetails } from './userProfiles/UserProfileDetails';
 import Login from './Login';
 import Register from './Register';
 import Hello from './Hello';
@@ -50,7 +51,7 @@ export default function ApplicationViews() {
 
                 <Route path="/userprofile/:id" exact>
                     {isLoggedIn ? (
-                        <UserProfileDetail />
+                        <UserProfileDetails />
                     ) : (
                         <Redirect to="/login" />
                     )}{' '}
