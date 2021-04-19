@@ -73,7 +73,7 @@ export default function Header() {
                                         </DropdownItem>
                                         <DropdownItem
                                             onClick={() => {
-                                                history.push('/category');
+                                                history.push('/Categories');
                                             }}
                                         >
                                             Category Management
