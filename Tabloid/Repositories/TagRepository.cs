@@ -81,7 +81,7 @@ namespace Tabloid.Repositories
             }
         }
 
-        // NEED TO ADD CASCADE DELETE TO POST TAG
+      
         public void DeleteTag(int id)
         {
             using (var conn = Connection)

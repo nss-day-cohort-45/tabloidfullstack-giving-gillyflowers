@@ -41,7 +41,7 @@ export const TagProvider = (props) => {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(tag),
+                body: JSON.stringify(tagId),
             }));
     };
 
@@ -56,10 +56,10 @@ export const TagProvider = (props) => {
     };
 
     return (
-        <PostContext.Provider
+        <TagContext.Provider
             value={{ tags, getAllTags, addTag, updateTag, deleteTag }}
         >
             {props.children}
-        </PostContext.Provider>
+        </TagContext.Provider>
     );
 };
