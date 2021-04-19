@@ -29,7 +29,13 @@ const Post = ({ post }) => {
                 </p>
 
                 <p>Category: {post.category.name}</p>
-                <Link to="/">Edit</Link>
+                <i
+                    className="far fa-edit fa-2x"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => {
+                        history.push(`/posts/edit/${post.id}`);
+                    }}
+                ></i>
                 <i
                     className="fas fa-trash-alt fa-2x"
                     onClick={handleDelete}
