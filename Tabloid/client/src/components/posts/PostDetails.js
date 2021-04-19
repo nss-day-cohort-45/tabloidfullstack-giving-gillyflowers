@@ -58,11 +58,20 @@ export const PostDetails = () => {
                             <strong>Category:</strong> {post.category.name}
                         </p>
                         {currentUserId === post.userProfileId ? (
-                            <i
-                                className="fas fa-trash-alt fa-2x"
-                                onClick={handleDelete}
-                                style={{ cursor: 'pointer' }}
-                            ></i>
+                            <>
+                                <i
+                                    className="fas fa-trash-alt fa-2x"
+                                    onClick={handleDelete}
+                                    style={{ cursor: 'pointer' }}
+                                ></i>
+                                <i
+                                    className="far fa-edit fa-2x"
+                                    style={{ cursor: 'pointer' }}
+                                    onClick={() => {
+                                        history.push(`/posts/edit/${post.id}`);
+                                    }}
+                                ></i>
+                            </>
                         ) : null}
                     </div>
 
