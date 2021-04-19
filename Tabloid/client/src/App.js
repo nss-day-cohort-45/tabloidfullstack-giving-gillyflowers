@@ -4,14 +4,17 @@ import { UserProfileProvider } from "./providers/UserProfileProvider";
 import { PostProvider } from "./providers/PostProvider";
 import Header from "./components/Header";
 import ApplicationViews from "./components/ApplicationViews";
+import { CategoryProvider } from "./providers/CategoryProvider";
 
 function App() {
   return (
     <Router>
       <UserProfileProvider>
         <PostProvider>
-          <Header />
-          <ApplicationViews />
+          <CategoryProvider>
+            <Header />
+            <ApplicationViews />
+          </CategoryProvider>
         </PostProvider>
       </UserProfileProvider>
     </Router>
