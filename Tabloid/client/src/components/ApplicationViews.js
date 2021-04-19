@@ -4,6 +4,8 @@ import { UserProfileContext } from '../providers/UserProfileProvider';
 import PostList from './posts/PostList';
 import { PostDetails } from './posts/PostDetails';
 import { PostForm } from './posts/PostForm';
+import { UserProfileList } from './userProfiles/UserProfileList';
+import { UserProfileDetails } from './userProfiles/UserProfileDetails';
 import Login from './Login';
 import Register from './Register';
 import Hello from './Hello';
@@ -37,6 +39,22 @@ export default function ApplicationViews() {
 
                 <Route path="/posts/:id" exact>
                     {isLoggedIn ? <PostDetails /> : <Redirect to="/login" />}
+                </Route>
+
+                <Route path="/userprofile" exact>
+                    {isLoggedIn ? (
+                        <UserProfileList />
+                    ) : (
+                        <Redirect to="/login" />
+                    )}
+                </Route>
+
+                <Route path="/userprofile/:id" exact>
+                    {isLoggedIn ? (
+                        <UserProfileDetails />
+                    ) : (
+                        <Redirect to="/login" />
+                    )}{' '}
                 </Route>
 
                 <Route path="/categories" exact>

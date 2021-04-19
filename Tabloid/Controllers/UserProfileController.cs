@@ -15,6 +15,18 @@ namespace Tabloid.Controllers
             _userProfileRepository = userProfileRepository;
         }
 
+        [HttpGet]
+        public IActionResult GetAllUserProfiles()
+        {
+            return Ok(_userProfileRepository.GetAll());
+        }
+
+        [HttpGet("getbyid/{id}")]
+        public IActionResult GetUserProfileById(int id)
+        {
+            return Ok(_userProfileRepository.GetByUserProfileId(id));
+        }
+
         [HttpGet("{firebaseUserId}")]
         public IActionResult GetUserProfile(string firebaseUserId)
         {
