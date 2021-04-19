@@ -29,10 +29,87 @@ namespace Tabloid.Repositories
                                         WHERE c.PostId = @id
                                         ORDER BY CreateDateTime ASC";
                     cmd.Parameters.AddWithValue("@id", id);
+
+                    var reader = cmd.ExecuteReader();
+                    var comments = new List<Comment>();
+                    while (reader.Read())
+                    {
+                        comments.Add(NewCommentFromDb(reader));
+                    }
+
+                    reader.Close();
+
+                    return comments;
                 }
             }
         }
 
+        //add a new comment
+        public void AddComment(Comment comment)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"INSERT INTO Comment (PostId, UserProfileId, Subject, Content, CreateDateTime)
+                                        OUTPUT INSERTED.Id
+                                        VALUES (@PostId, @UserProfileId, @Subject, @Content, @CreateDateTime )";
+
+                    DbUtils.AddParameter(cmd, "@PostId", comment.PostId);
+                    DbUtils.AddParameter(cmd, "@userProfileId", comment.UserProfileId);
+                    DbUtils.AddParameter(cmd, "@subject", comment.Subject);
+                    DbUtils.AddParameter(cmd, "@content", comment.Content);
+                    DbUtils.AddParameter(cmd, "@createDateTime", comment.CreateDateTime);
+
+
+                    comment.Id = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
+
+        //edit comment
+        public void UpdateComment(Comment comment)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"UPDATE Comment                                                                          
+                                        SET PostId = @postId,
+                                            UserProfileId = @userProfileId,
+                                            Subject = @subject,
+                                            Content = @content,
+                                            CreateDateTime = @createDateTime
+                                        WHERE Id = @id";
+
+                    DbUtils.AddParameter(cmd, "@postId", comment.PostId);
+                    DbUtils.AddParameter(cmd, "@userProfileId", comment.UserProfileId);
+                    DbUtils.AddParameter(cmd, "@subject", comment.Subject);
+                    DbUtils.AddParameter(cmd, "@content", comment.Content);
+                    DbUtils.AddParameter(cmd, "@createDateTime", comment.CreateDateTime);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        //delete comment
+        public void DeleteComment(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"";
+                }
+            }
+        }
+        //??getComment by id ??
+
+        //helper method
         private Comment NewCommentFromDb(SqlDataReader reader)
         {
             return new Comment()
