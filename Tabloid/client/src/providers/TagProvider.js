@@ -21,6 +21,19 @@ export const TagProvider = (props) => {
             .then(setTags);
     };
 
+    const getTagById = (id) => {
+        return getToken()
+            .then((token) =>
+                fetch(`/api/tags/${id}`, {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+            )
+            .then((res) => res.json());
+    };
+
     const addTag = (tag) => {
         return getToken().then((token) =>
             fetch(`/api/tags`, {
@@ -57,7 +70,7 @@ export const TagProvider = (props) => {
 
     return (
         <TagContext.Provider
-            value={{ tags, getAllTags, addTag, updateTag, deleteTag }}
+            value={{ tags, getAllTags, getTagById, addTag, updateTag, deleteTag }}
         >
             {props.children}
         </TagContext.Provider>

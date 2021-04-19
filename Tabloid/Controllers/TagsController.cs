@@ -20,6 +20,17 @@ namespace Tabloid.Controllers
             _tagRepository = tagRepository;
         }
 
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            var tag = _tagRepository.GetTagById(id);
+            if (tag == null)
+            {
+                return NotFound();
+            }
+            return Ok(tag);
+        }
+
         [HttpGet]
         public IActionResult Get()
         {

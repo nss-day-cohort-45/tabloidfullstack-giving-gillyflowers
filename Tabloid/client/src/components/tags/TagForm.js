@@ -1,15 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Form, FormGroup, Card, CardBody, Label, Input, Button } from "reactstrap";
 import { TagContext } from '../../providers/TagProvider';
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 
 const TagForm = () => {
-    const { addTag, getAllTags } = useContext(TagContext)
-
-    // wait for data before button is active. Look at the button to see how it's setting itself to disabled or not based on this state
-    // const [isLoading, setIsLoading] = useState(true);
+    const { addTag, updateTag, getAllTags, getTagById } = useContext(TagContext)
 
     // Use this hook to allow us to programatically redirect users
+    const { tagId } = useParams();
     const history = useHistory();
 
     const [tag, setTag] = useState({
@@ -30,44 +28,63 @@ const TagForm = () => {
     }
 
     const handleSavePost = () => {
-        addTag({
-            name: tag.name
-        })
-            // Calling two functions inside the anonymous .then function
-            .then(() => {
-                // Navigate the user back to the tags route
-                history.push("/tags");
-                getAllTags();
-                setTag({
-                    name: ""
-                });
+        if (tagId) {
+            updateTag({
+                name: tag.name
             })
+                .then(() => {
+                    // Navigate the user back to the tags route
+                    history.push("/tags");
+                    getAllTags();
+                    setTag({
+                        name: ""
+                    });
+                })
+        } else {
+            addTag({
+                name: tag.name
+            })
+                .then(() => {
+                    history.push("/tags");
+                    getAllTags();
+                    setTag({
+                        name: ""
+                    });
+                })
+        }
     }
 
+    useEffect(() => {
+        debugger
+        if (tagId) {
+            getTagById(tagId)
+                .then(tag => {
+                    setTag(tag)
+                })
+        }
+    }, [])
+
     return (
-        <div className="container">
-            <div className="row justify-content-center">
-                <Form className="postForm">
-                    <h2 className="postForm__title">Add A Tag</h2>
-                    <FormGroup>
-                        <div className="form-group">
-                            <Label htmlFor="postTitle">Name: </Label>
-                            <Input type="text" id="name" required autoFocus className="form-control"
-                                placeholder="Your future starts now... with the name of this tag."
-                                onChange={handleControlledInputChange}
-                                value={tag.name} />
-                        </div>
-                    </FormGroup>
-                    <Button className="btn btn-primary"
-                        // disabled={isLoading}
-                        onClick={
-                            event => {
-                                event.preventDefault() // Prevent browser from submitting the form and refreshing the page
-                                handleSavePost()
-                            }}>Save</Button>
-                </Form>
-            </div>
-        </div>
+        <Form className="container col-md-6">
+            <h2>{tagId ? 'Edit Tag' : 'New Tag'}</h2>
+            <FormGroup>
+                <Label for="title">Name: </Label>
+                <Input
+                    type="text"
+                    name="title"
+                    id="name"
+                    placeholder="Your future starts now... with the name of this tag."
+                    autoComplete="off"
+                    onChange={handleControlledInputChange}
+                    value={tag.name} />
+            </FormGroup>
+            <Button
+                onClick={
+                    event => {
+                        event.preventDefault() // Prevent browser from submitting the form and refreshing the page
+                        handleSavePost()
+                    }}>Submit</Button>
+        </Form>
     )
 }
 

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Tabloid.Models;
+using Tabloid.Utils;
 
 namespace Tabloid.Repositories
 {
@@ -26,8 +27,8 @@ namespace Tabloid.Repositories
                     {
                         tags.Add(new Tag()
                         {
-                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                            Name = reader.GetString(reader.GetOrdinal("Name")),
+                            Id = DbUtils.GetInt(reader, "Id"),
+                            Name = DbUtils.GetString(reader,"Name"),
                         });
                     }
 
@@ -38,6 +39,38 @@ namespace Tabloid.Repositories
             }
         }
 
+        public Tag GetTagById(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                    SELECT Id, [Name]      
+                    FROM Tag
+                    WHERE Id = @Id";
+
+                    DbUtils.AddParameter(cmd, "@Id", id);
+
+                    var reader = cmd.ExecuteReader();
+
+                    Tag tag = null;
+                    if (reader.Read())
+                    {
+                        tag = new Tag()
+                        {
+                            Id = id,
+                            Name = DbUtils.GetString(reader, "Name")
+                        };
+                    }
+                    reader.Close();
+
+                    return tag;
+                }
+
+            }
+        }
 
         public void AddTag(Tag tag)
         {
@@ -52,7 +85,7 @@ namespace Tabloid.Repositories
                         OUTPUT INSERTED.ID
                         VALUES (
                             @Name )";
-                    cmd.Parameters.AddWithValue("@Name", tag.Name);
+                    DbUtils.AddParameter(cmd, "@Name", tag.Name);
 
                     tag.Id = (int)cmd.ExecuteScalar();
                 }
@@ -71,10 +104,10 @@ namespace Tabloid.Repositories
                             UPDATE Tag
                             SET 
                                 [Name] = @name
-                            WHERE Id = @id";
+                            WHERE Id = @Id";
 
-                    cmd.Parameters.AddWithValue("@name", tag.Name);
-                    cmd.Parameters.AddWithValue("@id", tag.Id);
+                    DbUtils.AddParameter(cmd, "@Name", tag.Name);
+                    DbUtils.AddParameter(cmd, "@Id", tag.Id);
 
                     cmd.ExecuteNonQuery();
                 }
@@ -91,11 +124,11 @@ namespace Tabloid.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                            DELETE FROM PostTag Where TagId = @id;
-                            DELETE FROM Tag WHERE Id = @id
+                            DELETE FROM PostTag Where TagId = @Id;
+                            DELETE FROM Tag WHERE Id = @Id
                         ";
 
-                    cmd.Parameters.AddWithValue("@id", id);
+                    DbUtils.AddParameter(cmd, "@Id", id);
 
                     cmd.ExecuteNonQuery();
                 }
