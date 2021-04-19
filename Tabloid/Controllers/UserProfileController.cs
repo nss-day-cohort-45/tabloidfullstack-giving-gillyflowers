@@ -20,6 +20,12 @@ namespace Tabloid.Controllers
         {
             return Ok(_userProfileRepository.GetAll());
         }
+        
+        [HttpGet("deactivated")]
+        public IActionResult GetDeactivatedProfiles()
+        {
+            return Ok(_userProfileRepository.GetAllDeactivated());
+        }
 
         [HttpGet("getbyid/{id}")]
         public IActionResult GetUserProfileById(int id)

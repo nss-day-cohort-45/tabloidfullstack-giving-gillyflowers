@@ -9,5 +9,6 @@ namespace Tabloid.Repositories
         UserProfile GetByFirebaseUserId(string firebaseUserId);
         List<UserProfile> GetAll();
         UserProfile GetByUserProfileId(int id);
+        List<UserProfile> GetAllDeactivated();
     }
 }

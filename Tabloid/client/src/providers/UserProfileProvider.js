@@ -81,6 +81,17 @@ export function UserProfileProvider(props) {
         );
     };
 
+    const getDeactivatedUserProfiles = () => {
+        return getToken().then((token) =>
+            fetch(`${apiUrl}/deactivated`, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }).then((res) => res.json())
+        );
+    };
+
     const getUserProfileById = (id) => {
         return getToken().then((token) =>
             fetch(`${apiUrl}/getbyid/${id}`, {
@@ -127,6 +138,7 @@ export function UserProfileProvider(props) {
                 currentUserId,
                 getAllUserProfiles,
                 getUserProfileById,
+                getDeactivatedUserProfiles,
             }}
         >
             {isFirebaseReady ? (

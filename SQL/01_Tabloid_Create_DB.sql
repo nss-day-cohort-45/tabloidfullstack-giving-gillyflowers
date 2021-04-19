@@ -21,12 +21,14 @@ DROP TABLE IF EXISTS [UserType];
 GO
 
 
-CREATE TABLE [UserType] (
+CREATE TABLE [UserType]
+(
   [Id] integer PRIMARY KEY IDENTITY,
   [Name] nvarchar(20) NOT NULL
 )
 
-CREATE TABLE [UserProfile] (
+CREATE TABLE [UserProfile]
+(
   [Id] integer PRIMARY KEY IDENTITY,
   [FirebaseUserId] NVARCHAR(28) NOT NULL,
   [DisplayName] nvarchar(50) NOT NULL,
@@ -36,12 +38,14 @@ CREATE TABLE [UserProfile] (
   [CreateDateTime] datetime NOT NULL,
   [ImageLocation] nvarchar(255),
   [UserTypeId] integer NOT NULL,
+  [IsDeactivated] bit NOT NULL DEFAULT(0)
 
-  CONSTRAINT [FK_User_UserType] FOREIGN KEY ([UserTypeId]) REFERENCES [UserType] ([Id]),
+    CONSTRAINT [FK_User_UserType] FOREIGN KEY ([UserTypeId]) REFERENCES [UserType] ([Id]),
   CONSTRAINT UQ_FirebaseUserId UNIQUE(FirebaseUserId)
 )
 
-CREATE TABLE [Subscription] (
+CREATE TABLE [Subscription]
+(
   [Id] integer PRIMARY KEY IDENTITY,
   [SubscriberUserProfileId] integer NOT NULL,
   [ProviderUserProfileId] integer NOT NULL,
@@ -55,12 +59,14 @@ CREATE TABLE [Subscription] (
 	REFERENCES [UserProfile] ([Id])
 )
 
-CREATE TABLE [Category] (
+CREATE TABLE [Category]
+(
   [Id] integer PRIMARY KEY IDENTITY,
   [Name] nvarchar(50) NOT NULL
 )
 
-CREATE TABLE [Post] (
+CREATE TABLE [Post]
+(
   [Id] integer PRIMARY KEY IDENTITY,
   [Title] nvarchar(255) NOT NULL,
   [Content] text NOT NULL,
@@ -75,7 +81,8 @@ CREATE TABLE [Post] (
   CONSTRAINT [FK_Post_UserProfile] FOREIGN KEY ([UserProfileId]) REFERENCES [UserProfile] ([Id])
 )
 
-CREATE TABLE [Comment] (
+CREATE TABLE [Comment]
+(
   [Id] integer PRIMARY KEY IDENTITY,
   [PostId] integer NOT NULL,
   [UserProfileId] integer NOT NULL,
@@ -87,27 +94,31 @@ CREATE TABLE [Comment] (
   CONSTRAINT [FK_Comment_UserProfile] FOREIGN KEY ([UserProfileId]) REFERENCES [UserProfile] ([Id])
 )
 
-CREATE TABLE [Tag] (
+CREATE TABLE [Tag]
+(
   [Id] integer PRIMARY KEY IDENTITY,
   [Name] nvarchar(50) NOT NULL
 )
 
-CREATE TABLE [PostTag] (
+CREATE TABLE [PostTag]
+(
   [id] integer PRIMARY KEY IDENTITY,
   [PostId] integer NOT NULL,
   [TagId] integer NOT NULL,
-  
+
   CONSTRAINT [FK_PostTag_Post] FOREIGN KEY ([PostId]) REFERENCES [Post] ([Id]),
   CONSTRAINT [FK_PostTag_Tag] FOREIGN KEY ([TagId]) REFERENCES [Tag] ([Id])
 )
 
-CREATE TABLE [Reaction] (
+CREATE TABLE [Reaction]
+(
   [Id] integer PRIMARY KEY IDENTITY,
   [Name] nvarchar(50) NOT NULL,
   [ImageLocation] nvarchar(255) NOT NULL
 )
 
-CREATE TABLE [PostReaction] (
+CREATE TABLE [PostReaction]
+(
   [Id] integer PRIMARY KEY IDENTITY,
   [PostId] integer NOT NULL,
   [ReactionId] integer NOT NULL,
