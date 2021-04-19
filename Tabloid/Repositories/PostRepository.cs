@@ -24,7 +24,7 @@ namespace Tabloid.Repositories
                         SELECT p.Id, p.Title, p.Content, p.ImageLocation, p.CreateDateTime, p.PublishDateTime,
                                 p.IsApproved, p.CategoryId, p.UserProfileId,
                                 c.Name as CategoryName,
-                                up.DisplayName
+                                up.DisplayName, up.FirstName, up.LastName, up.Email
                         FROM Post p
                         LEFT JOIN Category c on c.Id = p.CategoryId
                         LEFT JOIN UserProfile up on up.Id = p.UserProfileId
@@ -56,7 +56,7 @@ namespace Tabloid.Repositories
                     SELECT p.Id, p.Title, p.Content, p.ImageLocation, p.CreateDateTime, p.PublishDateTime,
                            p.IsApproved, p.CategoryId, p.UserProfileId,
                            c.Name AS CategoryName,
-                           up.DisplayName, com.Id AS CommentId,
+                           up.DisplayName, up.FirstName, up.LastName, up.Email, com.Id AS CommentId,
                            com.PostId AS CommentPostId, com.UserProfileId AS CommentUserProfileId, 
                            com.Subject, com.Content AS CommentContent, com.CreateDateTime AS CommentCreateDateTime,
                            usp.DisplayName AS CommentUserProfileDisplayName        
@@ -116,7 +116,7 @@ namespace Tabloid.Repositories
                     SELECT p.Id, p.Title, p.Content, p.ImageLocation, p.CreateDateTime, p.PublishDateTime,
                            p.IsApproved, p.CategoryId, p.UserProfileId,
                            c.Name AS CategoryName,
-                           up.DisplayName       
+                           up.DisplayName, up.FirstName, up.LastName, up.Email       
                     FROM Post p
                     LEFT JOIN Category c on c.Id = p.CategoryId
                     LEFT JOIN UserProfile up on up.Id = p.UserProfileId
@@ -180,16 +180,14 @@ namespace Tabloid.Repositories
                                Content = @Content,
                                ImageLocation = @ImageLocation,
                                PublishDateTime = @PublishDateTime,
-                               CategoryId = @CategoryId,
-                               UserProfileId = @UserProfileId
+                               CategoryId = @CategoryId
                          WHERE Id = @Id";
 
                     DbUtils.AddParameter(cmd, "@Title", post.Title);
                     DbUtils.AddParameter(cmd, "@Content", post.Content);
                     DbUtils.AddParameter(cmd, "@ImageLocation", post.ImageLocation);
                     DbUtils.AddParameter(cmd, "@PublishDateTime", post.PublishDateTime);
-                    DbUtils.AddParameter(cmd, "@CategoryId", post.CategoryId);
-                    DbUtils.AddParameter(cmd, "@UserProfileId", post.UserProfileId);
+                    DbUtils.AddParameter(cmd, "@CategoryId", post.CategoryId);         
                     DbUtils.AddParameter(cmd, "@Id", post.Id);
 
                     cmd.ExecuteNonQuery();
@@ -231,7 +229,10 @@ namespace Tabloid.Repositories
                 UserProfileId = DbUtils.GetInt(reader, "UserProfileId"),
                 UserProfile = new UserProfile()
                 {
-                    DisplayName = DbUtils.GetString(reader, "DisplayName")
+                    DisplayName = DbUtils.GetString(reader, "DisplayName"),
+                    FirstName = DbUtils.GetString(reader, "FirstName"),
+                    LastName = DbUtils.GetString(reader, "LastName"),
+                    Email = DbUtils.GetString(reader, "Email")
                 },
                 Category = new Category()
                 {
