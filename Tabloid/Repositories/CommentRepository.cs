@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Tabloid.Repositories
 {
-    public class CommentRepository : BaseRepository
+    public class CommentRepository : BaseRepository, ICommentRepository
     {
         public CommentRepository(IConfiguration configuration) : base(configuration) { }
 
@@ -19,7 +19,7 @@ namespace Tabloid.Repositories
             using (var conn = Connection)
             {
                 conn.Open();
-                using( var cmd = conn.CreateCommand())
+                using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"SELECT c.Id, c.PostId, c.UserProfileId, c.Subject, c.Content, c.CreateDateTime, 
                                                 up.DisplayName, p.Content
@@ -103,11 +103,40 @@ namespace Tabloid.Repositories
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"";
+                    cmd.CommandText = @"DELETE FROM Comment WHERE Id = @id";
+
+                    DbUtils.AddParameter(cmd, "@id", id);
+                    cmd.ExecuteNonQuery();
                 }
             }
         }
-        //??getComment by id ??
+
+        //getComment by id 
+        public Comment GetCommentById(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT Id, PostId, UserProfileId, Subject, Content, CreateDateTime 
+                                        FROM Comment WHERE Id = @id";
+
+                    DbUtils.AddParameter(cmd, "@Id", id);
+
+                    var reader = cmd.ExecuteReader();
+                    Comment comment = null;
+
+                    if (reader.Read())
+                    {
+                        comment = NewCommentFromDb(reader);
+                    }
+
+                    reader.Close();
+                    return comment;
+                }
+            }
+        }
 
         //helper method
         private Comment NewCommentFromDb(SqlDataReader reader)
