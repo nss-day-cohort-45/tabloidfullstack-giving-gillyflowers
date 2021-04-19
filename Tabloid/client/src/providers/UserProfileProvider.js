@@ -11,6 +11,8 @@ export function UserProfileProvider(props) {
     const userProfile = sessionStorage.getItem('userProfile');
     const [isLoggedIn, setIsLoggedIn] = useState(userProfile != null);
     const [currentUserId, setCurrentUserId] = useState(0);
+    const [userProfiles, setUserProfiles] = useState([]);
+    const [viewingDeactivated, setViewingDeactivated] = useState(false);
 
     const [isFirebaseReady, setIsFirebaseReady] = useState(false);
     useEffect(() => {
@@ -77,7 +79,9 @@ export function UserProfileProvider(props) {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
-            }).then((res) => res.json())
+            })
+                .then((res) => res.json())
+                .then(setUserProfiles)
         );
     };
 
@@ -88,7 +92,9 @@ export function UserProfileProvider(props) {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
-            }).then((res) => res.json())
+            })
+                .then((res) => res.json())
+                .then(setUserProfiles)
         );
     };
 
@@ -127,6 +133,30 @@ export function UserProfileProvider(props) {
         );
     };
 
+    const deactivateUserProfile = (userProfileId) => {
+        return getToken().then((token) =>
+            fetch(`${apiUrl}/${userProfileId}`, {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }).then(getAllUserProfiles)
+        );
+    };
+
+    const reactivateUserProfile = (userProfile) => {
+        return getToken().then((token) =>
+            fetch(`${apiUrl}/reactivate/${userProfile.id}`, {
+                method: 'PUT',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userProfile),
+            }).then(getAllUserProfiles)
+        );
+    };
+
     return (
         <UserProfileContext.Provider
             value={{
@@ -139,6 +169,12 @@ export function UserProfileProvider(props) {
                 getAllUserProfiles,
                 getUserProfileById,
                 getDeactivatedUserProfiles,
+                deactivateUserProfile,
+                reactivateUserProfile,
+                userProfiles,
+                setUserProfiles,
+                viewingDeactivated,
+                setViewingDeactivated,
             }}
         >
             {isFirebaseReady ? (

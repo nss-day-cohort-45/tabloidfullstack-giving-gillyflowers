@@ -101,13 +101,14 @@ namespace Tabloid.Repositories
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
+                    // only get active users - deactivated users can't log in
                     cmd.CommandText = @"
                         SELECT up.Id, Up.FirebaseUserId, up.FirstName, up.LastName, up.DisplayName, 
                                up.Email, up.CreateDateTime, up.ImageLocation, up.UserTypeId, up.IsDeactivated,
                                ut.Name AS UserTypeName
                           FROM UserProfile up
                                LEFT JOIN UserType ut on up.UserTypeId = ut.Id
-                         WHERE FirebaseUserId = @FirebaseuserId";
+                         WHERE FirebaseUserId = @FirebaseuserId AND up.IsDeactivated = 0";
 
                     DbUtils.AddParameter(cmd, "@FirebaseUserId", firebaseUserId);
 
@@ -147,6 +148,40 @@ namespace Tabloid.Repositories
                     DbUtils.AddParameter(cmd, "@UserTypeId", userProfile.UserTypeId);
 
                     userProfile.Id = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
+
+        public void Deactivate(int userProfileId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"UPDATE UserProfile
+                                            SET IsDeactivated = 1
+                                        WHERE Id = @UserProfileId";
+                    DbUtils.AddParameter(cmd, "@UserProfileId", userProfileId);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void Reactivate(UserProfile user)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"UPDATE UserProfile
+                                            SET IsDeactivated = 0
+                                        WHERE Id = @UserProfileId";
+                    DbUtils.AddParameter(cmd, "@UserProfileId", user.Id);
+
+                    cmd.ExecuteNonQuery();
                 }
             }
         }

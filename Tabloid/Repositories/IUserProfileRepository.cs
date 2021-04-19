@@ -10,5 +10,7 @@ namespace Tabloid.Repositories
         List<UserProfile> GetAll();
         UserProfile GetByUserProfileId(int id);
         List<UserProfile> GetAllDeactivated();
+        void Deactivate(int userProfileId);
+        void Reactivate(UserProfile user);
     }
 }

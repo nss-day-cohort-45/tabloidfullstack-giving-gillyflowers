@@ -4,21 +4,23 @@ import { UserProfileContext } from '../../providers/UserProfileProvider';
 import { UserProfileCard } from './UserProfileCard';
 
 export const UserProfileList = () => {
-    const { getAllUserProfiles, getDeactivatedUserProfiles } = useContext(
-        UserProfileContext
-    );
-    const [allProfiles, setAllProfiles] = useState([]);
-    const [viewingDeactivated, setViewingDeactivated] = useState(false);
+    const {
+        getAllUserProfiles,
+        getDeactivatedUserProfiles,
+        userProfiles,
+        viewingDeactivated,
+        setViewingDeactivated,
+    } = useContext(UserProfileContext);
 
     useEffect(() => {
-        getAllUserProfiles().then(setAllProfiles);
+        getAllUserProfiles();
     }, []);
 
     useEffect(() => {
         if (viewingDeactivated) {
-            getDeactivatedUserProfiles().then(setAllProfiles);
+            getDeactivatedUserProfiles();
         } else {
-            getAllUserProfiles().then(setAllProfiles);
+            getAllUserProfiles();
         }
     }, [viewingDeactivated]);
 
@@ -51,7 +53,7 @@ export const UserProfileList = () => {
                             </Button>
                         )}
                     </div>
-                    {allProfiles
+                    {userProfiles
                         .sort((a, b) =>
                             a.displayName.localeCompare(b.displayName)
                         )
