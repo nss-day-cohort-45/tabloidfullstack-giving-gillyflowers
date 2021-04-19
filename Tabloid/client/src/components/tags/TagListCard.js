@@ -26,7 +26,7 @@ const Tag = ({ tag }) => {
                     className="far fa-edit fa-2x"
                     style={{ cursor: 'pointer' }}
                     onClick={() => {
-                        history.push(`/tags/${tag.id}`);
+                        history.push(`/tags/${tag.id}`)
                     }}
                 ></i>
                 <i

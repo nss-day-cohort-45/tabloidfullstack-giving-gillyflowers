@@ -30,6 +30,7 @@ const TagForm = () => {
     const handleSavePost = () => {
         if (tagId) {
             updateTag({
+                id: parseInt(tagId),
                 name: tag.name
             })
                 .then(() => {
@@ -55,14 +56,14 @@ const TagForm = () => {
     }
 
     useEffect(() => {
-        debugger
         if (tagId) {
             getTagById(tagId)
                 .then(tag => {
                     setTag(tag)
                 })
+                .then(window.scrollTo(0, 0));
         }
-    }, [])
+    }, [tagId])
 
     return (
         <Form className="container col-md-6">

@@ -46,15 +46,15 @@ export const TagProvider = (props) => {
             }));
     };
 
-    const updateTag = (tagId) => {
+    const updateTag = (tag) => {
         return getToken().then((token) =>
-            fetch(`/api/tags/${tagId}`, {
+            fetch(`/api/tags/${tag.id}`, {
                 method: 'PUT',
                 headers: {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(tagId),
+                body: JSON.stringify(tag),
             }));
     };
 
