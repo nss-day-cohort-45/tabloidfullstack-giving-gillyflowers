@@ -47,9 +47,26 @@ export const PostProvider = (props) => {
         );
     };
 
+    const deletePost = (id) => {
+        return getToken().then((token) =>
+            fetch(`/api/posts/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+        );
+    };
+
     return (
         <PostContext.Provider
-            value={{ posts, getAllPosts, getPostById, getPostsByUserProfileId }}
+            value={{
+                posts,
+                getAllPosts,
+                getPostById,
+                getPostsByUserProfileId,
+                deletePost,
+            }}
         >
             {props.children}
         </PostContext.Provider>
