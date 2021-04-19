@@ -62,6 +62,10 @@ const TagForm = () => {
                     setTag(tag)
                 })
                 .then(window.scrollTo(0, 0));
+        } else {
+            setTag({
+                name: ""
+            })
         }
     }, [tagId])
 
