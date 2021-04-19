@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { NavLink as RRNavLink, Route } from 'react-router-dom';
+import { NavLink as RRNavLink, Route, useHistory } from 'react-router-dom';
 import {
     Collapse,
     Navbar,
@@ -8,6 +8,10 @@ import {
     Nav,
     NavItem,
     NavLink,
+    UncontrolledDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem,
 } from 'reactstrap';
 import { UserProfileContext } from '../providers/UserProfileProvider';
 
@@ -17,6 +21,7 @@ export default function Header() {
     );
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
+    const history = useHistory();
 
     return (
         <div>
@@ -54,6 +59,34 @@ export default function Header() {
                                         My Posts
                                     </NavLink>
                                 </NavItem>
+                                <UncontrolledDropdown nav inNavbar>
+                                    <DropdownToggle nav caret>
+                                        Admin Menu
+                                    </DropdownToggle>
+                                    <DropdownMenu right>
+                                        <DropdownItem
+                                            onClick={() => {
+                                                history.push('/userprofile');
+                                            }}
+                                        >
+                                            User Profile Management
+                                        </DropdownItem>
+                                        <DropdownItem
+                                            onClick={() => {
+                                                history.push('/category');
+                                            }}
+                                        >
+                                            Category Management
+                                        </DropdownItem>
+                                        <DropdownItem
+                                            onClick={() => {
+                                                history.push('/tag');
+                                            }}
+                                        >
+                                            Tag Management
+                                        </DropdownItem>
+                                    </DropdownMenu>
+                                </UncontrolledDropdown>
                             </>
                         )}
                     </Nav>
