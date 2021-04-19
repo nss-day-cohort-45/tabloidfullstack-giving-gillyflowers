@@ -8,6 +8,7 @@ import { UserProfileList } from './userProfiles/UserProfileList';
 import Login from './Login';
 import Register from './Register';
 import Hello from './Hello';
+import CategoryList from './categories/CategoryList';
 
 export default function ApplicationViews() {
     const { isLoggedIn } = useContext(UserProfileContext);
@@ -52,7 +53,11 @@ export default function ApplicationViews() {
                         <UserProfileDetail />
                     ) : (
                         <Redirect to="/login" />
-                    )}
+                    )}{' '}
+                </Route>
+
+                <Route path="/categories" exact>
+                    {isLoggedIn ? <CategoryList /> : <Redirect to="/login" />}
                 </Route>
 
                 <Route path="/login">
