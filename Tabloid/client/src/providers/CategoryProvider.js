@@ -23,6 +23,11 @@ export const CategoryProvider = (props) => {
             .then(setCategories);
     };
 
+    const updateCategory = () => {
+        return getToken()
+            .then((token) => 
+                )
+    }
 
     return (
         <CategoryContext.Provider

@@ -29,9 +29,15 @@ const Category = ({category}) => {
                
                 <i
                     className="fas fa-trash-alt fa text-right"
-                  
                     style={{ cursor: 'pointer' }}
                 ></i>
+                 <i
+                    className="far fa-edit fa"
+                    style={{ cursor: 'pointer' }}
+                            onClick={() => {
+                                history.push(`/Category/edit/${category.id}`);
+                            }}
+                    ></i>
             </CardBody>
         </Card>
     )
