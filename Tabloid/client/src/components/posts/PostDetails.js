@@ -11,7 +11,13 @@ export const PostDetails = () => {
     const history = useHistory();
 
     useEffect(() => {
-        getPostById(id).then(setPost);
+        getPostById(id).then((parsed) => {
+            if (parsed.id) {
+                setPost(parsed);
+            } else {
+                history.push('/posts');
+            }
+        });
     }, []);
 
     const handleDelete = () => {
@@ -27,13 +33,7 @@ export const PostDetails = () => {
         return date;
     };
 
-    //think about async
-    if (!post) {
-        history.push('/posts');
-        return null;
-    }
-
-    return (
+    return post ? (
         <div className="container">
             <div className="row justify-content-center">
                 <div className="col-sm-12 col-lg-6">
@@ -71,5 +71,5 @@ export const PostDetails = () => {
                 </div>
             </div>
         </div>
-    );
+    ) : null;
 };
