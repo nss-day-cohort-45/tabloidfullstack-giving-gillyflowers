@@ -79,6 +79,7 @@ namespace Tabloid.Repositories
             }
         }
 
+        /* <----------------ADD DeleteCategory() HERE-------------->*/
 
         private Category NewCatFromDb(SqlDataReader reader)
         {
