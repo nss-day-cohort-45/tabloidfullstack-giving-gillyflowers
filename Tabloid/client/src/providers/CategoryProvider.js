@@ -23,9 +23,16 @@ export const CategoryProvider = (props) => {
             .then(setCategories);
     };
 
-    const updateCategory = () => {
+    const updateCategory = (category) => {
         return getToken()
             .then((token) => 
+                fetch(`/api/Category/${category.id}`,{
+                    method: `PUT`, 
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    }
+                })
                 )
     }
 
