@@ -4,7 +4,7 @@ import { Card, CardBody } from 'reactstrap';
 import { CategoryContext } from '../../providers/CategoryProvider'
 
 
-const Category = ({category}) => {
+const Category = ({category, callEdit}) => {
 
     const {/* deleteCategory,*/ getAllCategories} = useContext(CategoryContext);
     const history = useHistory();
@@ -29,9 +29,13 @@ const Category = ({category}) => {
                
                 <i
                     className="fas fa-trash-alt fa text-right"
-                  
                     style={{ cursor: 'pointer' }}
                 ></i>
+                 <i
+                    className="far fa-edit fa"
+                    style={{ cursor: 'pointer' }}
+                        onClick={() =>{callEdit(category.id)}}
+                    ></i>
             </CardBody>
         </Card>
     )

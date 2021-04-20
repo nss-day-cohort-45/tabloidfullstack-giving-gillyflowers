@@ -9,6 +9,8 @@ import { UserProfileDetails } from './userProfiles/UserProfileDetails';
 import Login from './Login';
 import Register from './Register';
 import Hello from './Hello';
+import TagList from './tags/TagList';
+import TagForm from './tags/TagForm';
 import CategoryList from './categories/CategoryList';
 
 export default function ApplicationViews() {
@@ -39,6 +41,16 @@ export default function ApplicationViews() {
 
                 <Route path="/posts/:id" exact>
                     {isLoggedIn ? <PostDetails /> : <Redirect to="/login" />}
+                </Route>
+
+                <Route path="/tags" exact>
+                    {isLoggedIn ? <TagForm /> : <Redirect to="/login" />}
+                    {isLoggedIn ? <TagList /> : <Redirect to="/login" />}
+                </Route>
+
+                <Route path="/tags/:tagId" exact>
+                    {isLoggedIn ? <TagForm /> : <Redirect to="/login" />}
+                    {isLoggedIn ? <TagList /> : <Redirect to="/login" />}
                 </Route>
 
                 <Route path="/userprofile" exact>
