@@ -1,18 +1,32 @@
-import React, {useContext, useEffect} from "react"
-import { useParams } from "react-router-dom"
+import React, {useContext, useEffect, useState} from "react"
 import { CategoryContext } from "../../providers/CategoryProvider"
 import Category from './CategoryCard'
+import CategoryForm from './CategoryForm'
 
 const CategoryList = () => {
-    const { categories, getAllCategories} = useContext(CategoryContext);
-
+    const { categories, getAllCategories, updateCategory} = useContext(CategoryContext);
+    const [ catInEdit, setCatInEdit] = useState(0);
     useEffect(() => {
 
-        getAllCategories();
+     getAllCategories();
 
-    }, []);
+    }, [categories]);
 
+    
+    //function passes id from category card in order to set state and render inline edit form
+    const setEditId = (id) => {
+        return setCatInEdit(id);
+    };
+    const setStateZero = () => {
+        return setCatInEdit(0);
+    }
 
+    //function passes category object form category form in order to update and re-render
+    const saveEdit = (categoryUpdate) => {
+       return updateCategory(categoryUpdate)
+                .then(setCatInEdit(0))
+                .then(getAllCategories());
+    }
 
     return (
         <div className="container">
@@ -22,7 +36,11 @@ const CategoryList = () => {
                     <h1 style={{ textAlign: 'center' }}>Categories</h1>
                    
                     {categories.map((category) => {
-                        return <Category key={category.id} category={category} />;
+                        
+                           return  catInEdit == category.id?
+                                <CategoryForm key={category.id} category={category} callSaveCat={saveEdit} resetState={setStateZero}/>
+                                : <Category key={category.id}  callEdit={setEditId} category={category}/>
+                           
                     })}
                 </div>
             </div>
