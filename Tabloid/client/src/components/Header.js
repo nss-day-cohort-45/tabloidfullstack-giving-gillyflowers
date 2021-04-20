@@ -80,7 +80,7 @@ export default function Header() {
                                         </DropdownItem>
                                         <DropdownItem
                                             onClick={() => {
-                                                history.push('/tag');
+                                                history.push('/tags');
                                             }}
                                         >
                                             Tag Management
