@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { PostContext } from '../../providers/PostProvider';
+import CommentList from '../comments/CommentList'
 import { UserProfileContext } from '../../providers/UserProfileProvider';
 
 export const PostDetails = () => {
@@ -77,6 +78,14 @@ export const PostDetails = () => {
 
                     <p>{post.content}</p>
                     {/* tags go here */}
+                    <div>
+                        < CommentList />
+                    </div>
+                    {/* //create a btn turnery for the label on button
+                    //with a div that calls comment list
+                    //set state
+                    //the btn trigger state that it applied to div (ishidden or display)
+                    sort the list by id used in params */}
                 </div>
             </div>
         </div>
