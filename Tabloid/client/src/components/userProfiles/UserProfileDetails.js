@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useHistory, Link } from 'react-router-dom';
 import { UserProfileContext } from '../../providers/UserProfileProvider';
 
 export const UserProfileDetails = (params) => {
@@ -35,6 +35,7 @@ export const UserProfileDetails = (params) => {
                     </p>
                     <p>Email: {userProfile.email}</p>
                     <p>User type: {userProfile.userType.name}</p>
+                    <Link to="/userprofile">Back To User Profiles List</Link>
                 </div>
             </div>
         </div>
