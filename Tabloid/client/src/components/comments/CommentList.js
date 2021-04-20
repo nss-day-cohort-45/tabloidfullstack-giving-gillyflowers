@@ -22,9 +22,13 @@ const CommentList = () => {
         <div className="container">
             <div className="row justify-content-center">
                 <div className="cards-column">
-                    {comments.map((comment) => {
-                        return <CommentCard key={comment.id} comment={comment} />;
-                    })}
+                    {comments !== null ?
+                        (comments.map((comment) => {
+                            return <CommentCard key={comment.id} comment={comment} />
+                        })
+                        ) : (
+                            <span>No comments on this post.</span>
+                        )}
                 </div>
             </div>
         </div>

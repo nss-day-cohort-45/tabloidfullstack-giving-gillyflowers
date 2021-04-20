@@ -100,7 +100,7 @@ export const PostDetails = () => {
                      XXXX create a btn turnery for the label on button
                      XXXX with a div that calls comment list  
                      XXXX set state
-                          the btn trigger state that it applied to div (ishidden or display)
+                     XXXX the btn trigger state that it applied to div (ishidden or display)
                      XXXX sort the list by id used in params */}
                 </div>
             </div>
