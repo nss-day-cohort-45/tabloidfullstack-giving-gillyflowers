@@ -11,7 +11,7 @@ const CommentList = () => {
 
 
     useEffect(() => {
-        if (!id) { //this if statement must be updated
+        if (!id) { //this if statement must be updated to include the route
             getCommentById(id);
         } else {
             getCommentsByPostId(id)
