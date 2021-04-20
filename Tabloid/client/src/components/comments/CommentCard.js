@@ -9,7 +9,8 @@ const CommentCard = ({ comment }) => {
     const history = useHistory();
     const dateFormatter = (date) => {
         const [yyyymmdd, time] = date.split('T');
-        return yyyymmdd;
+        let format = new Date(date).toLocaleDateString('en-US');
+        return format;
     };
 
     return (
