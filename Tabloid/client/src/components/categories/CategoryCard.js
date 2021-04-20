@@ -4,7 +4,7 @@ import { Card, CardBody } from 'reactstrap';
 import { CategoryContext } from '../../providers/CategoryProvider'
 
 
-const Category = ({category}) => {
+const Category = ({category, callEdit}) => {
 
     const {/* deleteCategory,*/ getAllCategories} = useContext(CategoryContext);
     const history = useHistory();
@@ -34,9 +34,7 @@ const Category = ({category}) => {
                  <i
                     className="far fa-edit fa"
                     style={{ cursor: 'pointer' }}
-                            onClick={() => {
-                                history.push(`/Category/edit/${category.id}`);
-                            }}
+                        onClick={() =>{callEdit(category.id)}}
                     ></i>
             </CardBody>
         </Card>

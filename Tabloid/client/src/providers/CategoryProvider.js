@@ -31,14 +31,15 @@ export const CategoryProvider = (props) => {
                     headers: {
                         Authorization: `Bearer ${token}`,
                         'Content-Type': 'application/json',
-                    }
+                    },
+                    body: JSON.stringify(category),
                 })
-                )
-    }
+            );
+    };
 
     return (
         <CategoryContext.Provider
-            value={{ categories, getAllCategories }}>
+            value={{ categories, getAllCategories, updateCategory }}>
                 {props.children}
             </CategoryContext.Provider>
     )
