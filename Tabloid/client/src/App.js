@@ -4,6 +4,7 @@ import { UserProfileProvider } from "./providers/UserProfileProvider";
 import { PostProvider } from "./providers/PostProvider";
 import Header from "./components/Header";
 import ApplicationViews from "./components/ApplicationViews";
+import { TagProvider } from './providers/TagProvider';
 import { CategoryProvider } from "./providers/CategoryProvider";
 import { CommentProvider } from './providers/CommentProvider';
 
@@ -12,12 +13,14 @@ function App() {
     <Router>
       <UserProfileProvider>
         <PostProvider>
-          <CategoryProvider>
-            <CommentProvider>
-              <Header />
-              <ApplicationViews />
-            </CommentProvider>
-          </CategoryProvider>
+          <TagProvider>
+            <CategoryProvider>
+              <CommentProvider>
+                <Header />
+                <ApplicationViews />
+              </CommentProvider>
+            </CategoryProvider>
+          </TagProvider>
         </PostProvider>
       </UserProfileProvider>
     </Router>
