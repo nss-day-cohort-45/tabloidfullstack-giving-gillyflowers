@@ -7,23 +7,13 @@ import CommentCard from './CommentCard';
 //this method could be in post details
 //locations for selects
 const CommentList = () => {
-    const { comment, getCommentsByPostId, getCommentById } = useContext(CommentContext);
+    const { comments, getAllCommentsByPostId, getCommentById } = useContext(CommentContext);
     const { currentUserId } = useContext(UserProfileContext);
-    const [comments, setComments] = useState("");
     const { id } = useParams();
-
-
-    // useEffect(() => {
-    //     if (!id) { //this if statement must be updated to include the route
-    //         getCommentById(id);
-    //     } else {
-    //         getCommentsByPostId(id)
-    //     }
-    // }, [id]);
 
     useEffect(() => {
         if (id) {
-            comments = getCommentsByPostId(id);
+            getAllCommentsByPostId(id);
         }
     }, [id])
 

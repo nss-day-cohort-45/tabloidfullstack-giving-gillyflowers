@@ -10,7 +10,7 @@ export const CommentProvider = (props) => {
     const getAllCommentsByPostId = (id) => {
         return getToken()
             .then((token) =>
-                fetch(`/api/comments/byPost/${id}`, {
+                fetch(`/api/comment/byPost/${id}`, {
                     method: 'GET',
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -19,13 +19,14 @@ export const CommentProvider = (props) => {
             )
             .then((res) => res.json())
             .then(setComments);
+
     };
 
 
     const getCommentById = (id) => {
         return getToken()
             .then((token) =>
-                fetch(`api/comments/${id}`, {
+                fetch(`/api/comment/${id}`, {
                     method: 'GET',
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -38,7 +39,7 @@ export const CommentProvider = (props) => {
 
     const addComment = (comment) => {
         return getToken().then((token) =>
-            fetch('/api/comments', {
+            fetch('/api/comment', {
                 method: 'POST',
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -52,7 +53,7 @@ export const CommentProvider = (props) => {
 
     const updateComment = (comment) => {
         return getToken().then((token) =>
-            fetch(`/api/comments/${comment.id}`, {
+            fetch(`/api/comment/${comment.id}`, {
                 method: 'PUT',
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -66,7 +67,7 @@ export const CommentProvider = (props) => {
 
     const deleteComment = (id) => {
         return getToken().then((token) =>
-            fetch(`/api/comments/${id}`, {
+            fetch(`/api/comment/${id}`, {
                 method: 'DELETE',
                 headers: {
                     Authorization: `Bearer ${token}`,

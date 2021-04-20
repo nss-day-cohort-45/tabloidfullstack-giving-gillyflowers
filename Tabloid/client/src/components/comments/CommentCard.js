@@ -7,21 +7,23 @@ import { CommentContext } from '../../providers/CommentProvider';
 const CommentCard = ({ comment }) => {
     const { getAllCommentsByPostId } = useContext(CommentContext);
     const history = useHistory();
+    const dateFormatter = (date) => {
+        const [yyyymmdd, time] = date.split('T');
+        return yyyymmdd;
+    };
 
     return (
         <Card className="m-4">
             <CardBody>
                 <p>
-                    <strong>{comment.subject}</strong>
-                    {comment.creationDate}
-                    {comment.userProfile.displayName}
+                    <strong>{comment.subject}</strong> | {dateFormatter(comment.createDateTime)} | {comment.userProfile.displayName}
                 </p>
                 <p>
-                    {comment.Content}
+                    {comment.content}
                 </p>
             </CardBody>
         </Card>
     );
 };
 
-export default Comment;
+export default CommentCard;

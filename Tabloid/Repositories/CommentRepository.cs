@@ -22,7 +22,7 @@ namespace Tabloid.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"SELECT c.Id, c.PostId, c.UserProfileId, c.Subject, c.Content, c.CreateDateTime, 
-                                                up.DisplayName, p.Content
+                                                up.DisplayName, up.FirstName, up.LastName, up.Email, p.Content
                                         FROM Comment c
                                         LEFT JOIN Post p on p.id = c.PostId
                                         LEFT JOIN UserProfile up ON up.id = c.UserProfileId
