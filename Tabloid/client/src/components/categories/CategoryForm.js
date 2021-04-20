@@ -1,5 +1,5 @@
 import React, {  useState } from "react";
-import { Button, Form, FormGroup, Input, Card, CardBody} from 'reactstrap';
+import { Button, Form, FormGroup, Input, Card, CardBody } from 'reactstrap';
 
 
 export const CategoryForm = ({category, callSaveCat, resetState}) => {
@@ -17,7 +17,7 @@ export const CategoryForm = ({category, callSaveCat, resetState}) => {
       };
 
     return (
-        <Card>
+        <Card className="m-4">
         <CardBody>
            <Form>
                <FormGroup>

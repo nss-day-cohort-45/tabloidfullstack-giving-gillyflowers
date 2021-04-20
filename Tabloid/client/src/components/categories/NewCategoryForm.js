@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, {  useEffect, useState } from "react";
 import { Button, Form, FormGroup, Input, Card, CardBody } from 'reactstrap';
 
 
@@ -16,28 +16,36 @@ export const NewCategoryForm = ({addNew}) => {
         setCategoryToUpdate(newCategory);
       };
 
+    const reset = () => {
+        debugger
+        setCategoryToUpdate({
+            name:""
+        })
+    }
+
     return (
         <Card>
         <CardBody>
             <h3>Add Category</h3>
-           <Form>
-               <FormGroup>
+           <div >
+               <fieldset>
                 <Input type="text"
                         name="name"
                         id="name"
+                        value={categoryToUpdate.name}
                         placeholder = "Name of New Category"
                         autoComplete="off"
                         onChange = {handleControlledInputChange}
                         />
-               </FormGroup>
+               </fieldset>
                <Button style={{ cursor: 'pointer' }} 
-                    onClick={() =>{addNew(categoryToUpdate)
-                        .then(setCategoryToUpdate({
-                            name:""
-                        }))}}>
+                    onClick={() =>{
+                        addNew(categoryToUpdate)
+                            .then(reset)
+                            }}>
                     Save
                     </Button>
-           </Form>
+           </div>
         </CardBody>
     </Card>
     )
