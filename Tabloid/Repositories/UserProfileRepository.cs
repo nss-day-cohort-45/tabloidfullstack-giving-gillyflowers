@@ -19,10 +19,37 @@ namespace Tabloid.Repositories
                 {
                     cmd.CommandText = @"
                         SELECT up.Id, up.FirebaseUserId, up.FirstName, up.LastName, up.DisplayName,
-                        up.Email, up.CreateDateTime, up.ImageLocation, up.UserTypeId,
+                        up.Email, up.CreateDateTime, up.ImageLocation, up.UserTypeId, up.IsDeactivated,
                         ut.Name AS UserTypeName
                         FROM UserProfile up
-                        LEFT JOIN UserType ut ON up.UserTypeId = ut.Id";
+                        LEFT JOIN UserType ut ON up.UserTypeId = ut.Id
+                        WHERE up.IsDeactivated = 0";
+                    var reader = cmd.ExecuteReader();
+                    var userProfiles = new List<UserProfile>();
+                    while (reader.Read())
+                    {
+                        userProfiles.Add(NewUserProfileFromDb(reader));
+                    }
+                    reader.Close();
+                    return userProfiles;
+                }
+            }
+        }
+
+        public List<UserProfile> GetAllDeactivated()
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT up.Id, up.FirebaseUserId, up.FirstName, up.LastName, up.DisplayName,
+                        up.Email, up.CreateDateTime, up.ImageLocation, up.UserTypeId, up.IsDeactivated,
+                        ut.Name AS UserTypeName
+                        FROM UserProfile up
+                        LEFT JOIN UserType ut ON up.UserTypeId = ut.Id
+                        WHERE up.IsDeactivated = 1";
                     var reader = cmd.ExecuteReader();
                     var userProfiles = new List<UserProfile>();
                     while (reader.Read())
@@ -44,7 +71,7 @@ namespace Tabloid.Repositories
                 {
                     cmd.CommandText = @"
                         SELECT up.Id, Up.FirebaseUserId, up.FirstName, up.LastName, up.DisplayName, 
-                               up.Email, up.CreateDateTime, up.ImageLocation, up.UserTypeId,
+                               up.Email, up.CreateDateTime, up.ImageLocation, up.UserTypeId, up.IsDeactivated,
                                ut.Name AS UserTypeName
                           FROM UserProfile up
                                LEFT JOIN UserType ut on up.UserTypeId = ut.Id
@@ -74,13 +101,14 @@ namespace Tabloid.Repositories
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
+                    // only get active users - deactivated users can't log in
                     cmd.CommandText = @"
                         SELECT up.Id, Up.FirebaseUserId, up.FirstName, up.LastName, up.DisplayName, 
-                               up.Email, up.CreateDateTime, up.ImageLocation, up.UserTypeId,
+                               up.Email, up.CreateDateTime, up.ImageLocation, up.UserTypeId, up.IsDeactivated,
                                ut.Name AS UserTypeName
                           FROM UserProfile up
                                LEFT JOIN UserType ut on up.UserTypeId = ut.Id
-                         WHERE FirebaseUserId = @FirebaseuserId";
+                         WHERE FirebaseUserId = @FirebaseuserId AND up.IsDeactivated = 0";
 
                     DbUtils.AddParameter(cmd, "@FirebaseUserId", firebaseUserId);
 
@@ -124,6 +152,40 @@ namespace Tabloid.Repositories
             }
         }
 
+        public void Deactivate(int userProfileId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"UPDATE UserProfile
+                                            SET IsDeactivated = 1
+                                        WHERE Id = @UserProfileId";
+                    DbUtils.AddParameter(cmd, "@UserProfileId", userProfileId);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void Reactivate(UserProfile user)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"UPDATE UserProfile
+                                            SET IsDeactivated = 0
+                                        WHERE Id = @UserProfileId";
+                    DbUtils.AddParameter(cmd, "@UserProfileId", user.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
         private UserProfile NewUserProfileFromDb(SqlDataReader reader)
         {
             return new UserProfile()
@@ -137,6 +199,7 @@ namespace Tabloid.Repositories
                 CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
                 ImageLocation = DbUtils.GetString(reader, "ImageLocation"),
                 UserTypeId = DbUtils.GetInt(reader, "UserTypeId"),
+                IsDeactivated= reader.GetBoolean(reader.GetOrdinal("IsDeactivated")),
                 UserType = new UserType()
                 {
                     Id = DbUtils.GetInt(reader, "UserTypeId"),
