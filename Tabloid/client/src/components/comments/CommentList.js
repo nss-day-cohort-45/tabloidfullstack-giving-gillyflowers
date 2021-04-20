@@ -28,7 +28,8 @@ const CommentList = () => {
                         })
                         ) : (
                             <span>No comments on this post.</span>
-                        )}
+                        )
+                    }
                 </div>
             </div>
         </div>
