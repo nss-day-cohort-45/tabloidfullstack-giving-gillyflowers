@@ -88,7 +88,16 @@ const TagForm = () => {
                     event => {
                         event.preventDefault() // Prevent browser from submitting the form and refreshing the page
                         handleSavePost()
-                    }}>Submit</Button>
+                    }}>Save</Button>
+            <Button
+                onClick={
+                    event => {
+                        event.preventDefault() // Prevent browser from submitting the form and refreshing the page
+                        setTag({
+                            name: ""
+                        })
+                        history.push("/tags");
+                    }}>Cancel</Button>
         </Form>
     )
 }
