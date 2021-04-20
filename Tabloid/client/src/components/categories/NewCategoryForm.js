@@ -1,12 +1,12 @@
 import React, {  useState } from "react";
-import { Button, Form, FormGroup, Input, Card, CardBody} from 'reactstrap';
+import { Button, Form, FormGroup, Input, Card, CardBody } from 'reactstrap';
 
 
-export const CategoryForm = ({category, callSaveCat, resetState}) => {
+export const NewCategoryForm = ({addNew}) => {
 
 
     const [ categoryToUpdate, setCategoryToUpdate] = useState({
-        id: category.id,
+      
         name: ""
     });
    
@@ -19,23 +19,23 @@ export const CategoryForm = ({category, callSaveCat, resetState}) => {
     return (
         <Card>
         <CardBody>
+            <h3>Add Category</h3>
            <Form>
                <FormGroup>
                 <Input type="text"
                         name="name"
                         id="name"
-                        placeholder = {category.name}
+                        placeholder = "Name of New Category"
                         autoComplete="off"
                         onChange = {handleControlledInputChange}
                         />
                </FormGroup>
                <Button style={{ cursor: 'pointer' }} 
-                    onClick={() =>{callSaveCat(categoryToUpdate)}}>
+                    onClick={() =>{addNew(categoryToUpdate)
+                        .then(setCategoryToUpdate({
+                            name:""
+                        }))}}>
                     Save
-                    </Button>
-               <Button style={{ cursor: 'pointer' }} 
-                    onClick={() =>{resetState(0)}}>
-                    Cancel
                     </Button>
            </Form>
         </CardBody>
@@ -43,4 +43,4 @@ export const CategoryForm = ({category, callSaveCat, resetState}) => {
     )
 }
 
-export default CategoryForm;
+export default NewCategoryForm;
