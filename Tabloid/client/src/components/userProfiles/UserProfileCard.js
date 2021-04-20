@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { Card, CardBody } from 'reactstrap';
+import { Card, CardBody, Button } from 'reactstrap';
 import { UserProfileContext } from '../../providers/UserProfileProvider';
 
 export const UserProfileCard = ({ userProfile }) => {
@@ -34,15 +34,17 @@ export const UserProfileCard = ({ userProfile }) => {
             <CardBody>
                 <p>Full Name: {userProfile.fullName}</p>
                 <p>User Role: {userProfile.userType.name}</p>
-                {userProfile.isDeactivated ? (
-                    <p onClick={handleReactivate} style={{ cursor: 'pointer' }}>
-                        Reactivate User
-                    </p>
-                ) : (
-                    <p onClick={handleDeactivate} style={{ cursor: 'pointer' }}>
-                        Deactivate User
-                    </p>
-                )}
+                <div className="text-center">
+                    {userProfile.isDeactivated ? (
+                        <Button onClick={handleReactivate} color="success">
+                            Reactivate User
+                        </Button>
+                    ) : (
+                        <Button onClick={handleDeactivate} color="danger">
+                            Deactivate User
+                        </Button>
+                    )}
+                </div>
             </CardBody>
         </Card>
     );
