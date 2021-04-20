@@ -7,6 +7,7 @@ import { UserProfileContext } from '../../providers/UserProfileProvider';
 export const PostDetails = () => {
     const { id } = useParams();
     const [post, setPost] = useState();
+    const [isHidden, setIsHidden] = useState(true);
     const { getPostById, deletePost } = useContext(PostContext);
     const { currentUserId } = useContext(UserProfileContext);
     const history = useHistory();
@@ -32,6 +33,16 @@ export const PostDetails = () => {
     const handleDate = () => {
         let date = new Date(post.publishDateTime).toLocaleDateString('en-US');
         return date;
+    };
+
+    //on click show the comments 
+    const HandleCommentOnClick = () => {
+        if (isHidden) {
+            setIsHidden(false);
+        } else {
+            setIsHidden(true);
+        }
+
     };
 
     return post ? (
@@ -75,19 +86,25 @@ export const PostDetails = () => {
                             </>
                         ) : null}
                     </div>
-
                     <p>{post.content}</p>
                     {/* tags go here */}
+                    <button className="btn btn-primary"
+                        onClick={HandleCommentOnClick} >
+                        {isHidden ? "Show Comments" : "Hide Comments"}
+                    </button>
+                    {/* is is hidden is true show list */}
                     <div>
-                        < CommentList />
+                        {!isHidden ? (< CommentList />) : null}
                     </div>
-                    {/* //create a btn turnery for the label on button
-                    //with a div that calls comment list
-                    //set state
-                    //the btn trigger state that it applied to div (ishidden or display)
-                    sort the list by id used in params */}
+                    {/* 
+                     XXXX create a btn turnery for the label on button
+                     XXXX with a div that calls comment list  
+                     XXXX set state
+                          the btn trigger state that it applied to div (ishidden or display)
+                     XXXX sort the list by id used in params */}
                 </div>
             </div>
         </div>
     ) : null;
 };
+

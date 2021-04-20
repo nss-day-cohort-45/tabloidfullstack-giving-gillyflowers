@@ -7,8 +7,8 @@ import { CommentContext } from '../../providers/CommentProvider';
 const CommentCard = ({ comment }) => {
     const { getAllCommentsByPostId } = useContext(CommentContext);
     const history = useHistory();
+
     const dateFormatter = (date) => {
-        const [yyyymmdd, time] = date.split('T');
         let format = new Date(date).toLocaleDateString('en-US');
         return format;
     };
