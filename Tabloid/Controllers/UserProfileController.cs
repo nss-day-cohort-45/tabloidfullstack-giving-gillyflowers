@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using Tabloid.Models;
 using Tabloid.Repositories;
 
@@ -20,7 +21,7 @@ namespace Tabloid.Controllers
         {
             return Ok(_userProfileRepository.GetAll());
         }
-        
+
         [HttpGet("deactivated")]
         public IActionResult GetDeactivatedProfiles()
         {
@@ -42,8 +43,15 @@ namespace Tabloid.Controllers
         [HttpDelete("{id}")]
         public IActionResult Deactivate(int id)
         {
-            _userProfileRepository.Deactivate(id);
-            return NoContent();
+            int adminCount = _userProfileRepository.GetAll().Where(up => up.UserTypeId == 1).ToList().Count;
+            if (adminCount > 1)
+            {
+                _userProfileRepository.Deactivate(id);
+                return NoContent();
+            } else
+            {
+                return BadRequest("Cannot delete the sole admin. Please elevate another user and try again.");
+            }
         }
 
         [HttpPut("reactivate/{id}")]
