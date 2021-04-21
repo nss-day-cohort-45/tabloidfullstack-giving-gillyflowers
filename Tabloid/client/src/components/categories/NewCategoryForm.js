@@ -17,7 +17,6 @@ export const NewCategoryForm = ({addNew}) => {
       };
 
     const reset = () => {
-        debugger
         setCategoryToUpdate({
             name:""
         })
