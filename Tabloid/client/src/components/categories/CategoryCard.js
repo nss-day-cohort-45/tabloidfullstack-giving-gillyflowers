@@ -1,22 +1,20 @@
 import React, {useContext} from 'react'
-import {useHistory} from 'react-router-dom'
 import { Card, CardBody } from 'reactstrap';
 import { CategoryContext } from '../../providers/CategoryProvider'
 
 
 const Category = ({category, callEdit}) => {
 
-    const {/* deleteCategory,*/ getAllCategories} = useContext(CategoryContext);
-    const history = useHistory();
+    const { deleteCategory, getAllCategories} = useContext(CategoryContext);
 
-/*
+
+
     const handleDelete = () => {
-        if (window.confirm('Are you sure?')) {
-            deletePost(category.id).then(getAllCategories);
-            history.push('/categories');
+       if ( category.id !== 1 && window.confirm('Are you sure?')) {
+            deleteCategory(category.id).then(getAllCategories);
         }
     };
-*/
+
     const titleMargin = {
         margin: `10px`,
     };
@@ -30,6 +28,7 @@ const Category = ({category, callEdit}) => {
                 <i
                     className="fas fa-trash-alt fa text-right"
                     style={{ cursor: 'pointer' }}
+                        onClick={handleDelete}
                 ></i>
                  <i
                     className="far fa-edit fa"
