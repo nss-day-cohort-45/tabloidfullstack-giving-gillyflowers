@@ -88,20 +88,17 @@ export const PostDetails = () => {
                     </div>
                     <p>{post.content}</p>
                     {/* tags go here */}
-                    <button className="btn btn-primary"
-                        onClick={HandleCommentOnClick} >
-                        {isHidden ? "Show Comments" : "Hide Comments"}
-                    </button>
-                    {/* is is hidden is true show list */}
+                    <div>
+                        <button className="btn btn-primary"
+                            onClick={HandleCommentOnClick} >
+                            {isHidden ? "Show Comments" : "Hide Comments"}
+                        </button>
+                        <button className="btn btn-secondary m-5"
+                            onClick={ }>Add Comment</button>
+                    </div>
                     <div>
                         {!isHidden ? (< CommentList />) : null}
                     </div>
-                    {/* 
-                     XXXX create a btn turnery for the label on button
-                     XXXX with a div that calls comment list  
-                     XXXX set state
-                     XXXX the btn trigger state that it applied to div (ishidden or display)
-                     XXXX sort the list by id used in params */}
                 </div>
             </div>
         </div>

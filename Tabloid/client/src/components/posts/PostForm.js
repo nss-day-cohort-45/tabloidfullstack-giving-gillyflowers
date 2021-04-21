@@ -49,7 +49,7 @@ export const PostForm = () => {
 
     useEffect(() => {
         getAllCategories();
-    });
+    }, []);
 
     const handleClickSaveButton = (evt) => {
         if (!id) {
