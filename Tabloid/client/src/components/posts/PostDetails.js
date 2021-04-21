@@ -3,6 +3,7 @@ import { useParams, useHistory } from 'react-router-dom';
 import { PostContext } from '../../providers/PostProvider';
 import CommentList from '../comments/CommentList'
 import { UserProfileContext } from '../../providers/UserProfileProvider';
+import { PostTagContext } from '../../providers/PostTagProvider';
 
 export const PostDetails = () => {
     const { id } = useParams();
@@ -10,12 +11,18 @@ export const PostDetails = () => {
     const [isHidden, setIsHidden] = useState(true);
     const { getPostById, deletePost } = useContext(PostContext);
     const { currentUserId } = useContext(UserProfileContext);
+    const { postTags, getAllPostTagsByPostId } = useContext(PostTagContext);
     const history = useHistory();
+
+    let tags = postTags.map(pt => pt.tag.name);
+    let currentTags = tags.sort();
+    console.log(currentTags);
 
     useEffect(() => {
         getPostById(id).then((parsed) => {
             if (parsed.id) {
-                setPost(parsed);
+                setPost(parsed)
+                getAllPostTagsByPostId(parseInt(parsed.id))
             } else {
                 history.push('/posts');
             }
@@ -87,7 +94,18 @@ export const PostDetails = () => {
                         ) : null}
                     </div>
                     <p>{post.content}</p>
-                    {/* tags go here */}
+                    {/*TAGS STUFF*/}
+                    <div>
+                        <h4>Tags</h4>
+                        {
+                            currentTags.length ? currentTags.map(t => t).join(", ") : "No tags at the moment. Use the button to add a few."
+                        }
+                        <button className="btn btn-primary"
+                            onClick={() => {
+                                history.push(`/posts/tags/${post.id}`);
+                            }}>Manage Tags</button>
+                    </div>
+
                     <button className="btn btn-primary"
                         onClick={HandleCommentOnClick} >
                         {isHidden ? "Show Comments" : "Hide Comments"}

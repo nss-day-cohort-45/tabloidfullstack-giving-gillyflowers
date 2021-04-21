@@ -28,30 +28,34 @@ const TagForm = () => {
     }
 
     const handleSavePost = () => {
-        if (tagId) {
-            updateTag({
-                id: parseInt(tagId),
-                name: tag.name
-            })
-                .then(() => {
-                    // Navigate the user back to the tags route
-                    history.push("/tags");
-                    getAllTags();
-                    setTag({
-                        name: ""
-                    });
-                })
+        if (tag.name === "") {
+            window.alert("Please enter a tag name!")
         } else {
-            addTag({
-                name: tag.name
-            })
-                .then(() => {
-                    history.push("/tags");
-                    getAllTags();
-                    setTag({
-                        name: ""
-                    });
+            if (tagId) {
+                updateTag({
+                    id: parseInt(tagId),
+                    name: tag.name
                 })
+                    .then(() => {
+                        // Navigate the user back to the tags route
+                        history.push("/tags");
+                        getAllTags();
+                        setTag({
+                            name: ""
+                        });
+                    })
+            } else {
+                addTag({
+                    name: tag.name
+                })
+                    .then(() => {
+                        history.push("/tags");
+                        getAllTags();
+                        setTag({
+                            name: ""
+                        });
+                    })
+            }
         }
     }
 
