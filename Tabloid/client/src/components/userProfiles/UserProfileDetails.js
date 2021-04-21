@@ -61,9 +61,10 @@ export const UserProfileDetails = (params) => {
                         {userProfile.isDeactivated ? 'Inactive' : 'Active'}
                     </p>
                     {userTypes.length > 0 && !userProfile.isDeactivated ? (
-                        <div className="form-group">
+                        <div>
                             <label htmlFor="userType">User role: </label>
                             <select
+                                style={{ marginLeft: '10px' }}
                                 value={userProfile.userTypeId}
                                 name="userType"
                                 onChange={handleUserTypeChange}
@@ -76,12 +77,20 @@ export const UserProfileDetails = (params) => {
                             </select>
                         </div>
                     ) : null}
-                    {changed ? (
-                        <Button color="success" onClick={handleSaveChanges}>
-                            Save Changes
-                        </Button>
-                    ) : null}
-                    <Link to="/userprofile">Back To User Profiles List</Link>
+                    <div className="d-flex flex-column">
+                        {changed ? (
+                            <Button
+                                style={{ width: '150px' }}
+                                color="success"
+                                onClick={handleSaveChanges}
+                            >
+                                Save Changes
+                            </Button>
+                        ) : null}
+                        <Link to="/userprofile">
+                            Back To User Profiles List
+                        </Link>
+                    </div>
                 </div>
             </div>
         </div>
