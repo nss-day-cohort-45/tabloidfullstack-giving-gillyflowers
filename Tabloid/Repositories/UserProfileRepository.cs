@@ -36,6 +36,31 @@ namespace Tabloid.Repositories
             }
         }
 
+        public List<UserType> GetTypes()
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT Id, Name
+                                            FROM UserType";
+                    var reader = cmd.ExecuteReader();
+                    var userTypes = new List<UserType>();
+                    while (reader.Read())
+                    {
+                        userTypes.Add(new UserType()
+                        {
+                            Id = DbUtils.GetInt(reader, "Id"),
+                            Name = DbUtils.GetString(reader, "Name")
+                        });
+                    }
+                    reader.Close();
+                    return userTypes;
+                }
+            }
+        }
+
         public List<UserProfile> GetAllDeactivated()
         {
             using (var conn = Connection)
@@ -152,6 +177,25 @@ namespace Tabloid.Repositories
             }
         }
 
+        public void Update(UserProfile userProfile)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        UPDATE UserProfile
+                            SET UserTypeId = @UserTypeId
+                        WHERE Id = @Id";
+                    DbUtils.AddParameter(cmd, @"UserTypeId", userProfile.UserTypeId);
+                    DbUtils.AddParameter(cmd, "@Id", userProfile.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
         public void Deactivate(int userProfileId)
         {
             using (var conn = Connection)
@@ -199,7 +243,7 @@ namespace Tabloid.Repositories
                 CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
                 ImageLocation = DbUtils.GetString(reader, "ImageLocation"),
                 UserTypeId = DbUtils.GetInt(reader, "UserTypeId"),
-                IsDeactivated= reader.GetBoolean(reader.GetOrdinal("IsDeactivated")),
+                IsDeactivated = reader.GetBoolean(reader.GetOrdinal("IsDeactivated")),
                 UserType = new UserType()
                 {
                     Id = DbUtils.GetInt(reader, "UserTypeId"),
