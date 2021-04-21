@@ -2,7 +2,6 @@ import React, { useState, useContext, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { PostContext } from '../../providers/PostProvider';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import { UserProfileContext } from '../../providers/UserProfileProvider';
 import { CategoryContext } from '../../providers/CategoryProvider';
 
 export const PostForm = () => {
@@ -13,8 +12,6 @@ export const PostForm = () => {
 
     const { categories, getAllCategories } = useContext(CategoryContext);
     const { addPost, getPostById, updatePost } = useContext(PostContext);
-    const { currentUserId } = useContext(UserProfileContext);
-    const [userProfileId, setUserProfileId] = useState(0);
     const [imageLocation, setImageLocation] = useState('');
     const [categoryId, setCategoryId] = useState(1); // TODO: update this when we have categories
     const [title, setTitle] = useState('');
@@ -23,12 +20,11 @@ export const PostForm = () => {
         dateFormatter(new Date().toISOString())
     );
     const [currentPost, setCurrentPost] = useState();
-    
 
     const history = useHistory();
 
     const { id } = useParams();
-      
+
     useEffect(() => {
         setTitle('');
         setImageLocation('');
@@ -43,45 +39,31 @@ export const PostForm = () => {
 
     useEffect(() => {
         if (currentPost) {
-            if (id) {
-                if (currentUserId !== currentPost.userProfileId) {
-                    history.push('/');
-                }
-            }
             setPublishDateTime(dateFormatter(currentPost.publishDateTime));
             setCategoryId(currentPost.categoryId);
             setImageLocation(currentPost.imageLocation);
             setTitle(currentPost.title);
             setContent(currentPost.content);
         }
-    }, [currentPost, currentUserId]);
-
-    useEffect(() => {
-        setUserProfileId(currentUserId);
-    }, [currentUserId]);
+    }, [currentPost]);
 
     useEffect(() => {
         getAllCategories();
-           
-    })
-   
-    
+    });
+
     const handleClickSaveButton = (evt) => {
         if (!id) {
-            
             const post = {
                 imageLocation,
                 title,
                 content,
                 categoryId,
-                userProfileId,
                 publishDateTime,
             };
             addPost(post).then((p) => {
                 history.push('/posts');
             });
         } else {
-        
             const newPost = { ...currentPost };
             newPost.title = title;
             newPost.imageLocation = imageLocation;
@@ -144,16 +126,17 @@ export const PostForm = () => {
                     name="categoryId"
                     id="categoryId"
                     onChange={(e) => {
-                        setCategoryId(e.target.value)
+                        setCategoryId(e.target.value);
                     }}
-                    >
-                        <option value="1">Select A Category</option>
-                      {  
-                      categories.map((cat) => {
-                          
-                        return   <option key={cat.id} value={cat.id}>{cat.name}</option>
-                        })}
-                        
+                >
+                    <option value="1">Select A Category</option>
+                    {categories.map((cat) => {
+                        return (
+                            <option key={cat.id} value={cat.id}>
+                                {cat.name}
+                            </option>
+                        );
+                    })}
                 </Input>
             </FormGroup>
             <FormGroup>

@@ -1,23 +1,28 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Tabloid.Models;
 using Tabloid.Repositories;
 
 namespace Tabloid.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class PostsController : ControllerBase
     {
         private readonly IPostRepository _postRepository;
+        private readonly IUserProfileRepository _userProfileRepository;
 
-        public PostsController(IPostRepository postRepository)
+        public PostsController(IPostRepository postRepository, IUserProfileRepository userProfileRepository)
         {
             _postRepository = postRepository;
+            _userProfileRepository = userProfileRepository;
         }
 
 
@@ -53,10 +58,11 @@ namespace Tabloid.Controllers
         [HttpPost]
         public IActionResult AddPost(Post post)
         {
+            var currentUser = GetCurrentUserProfile();
+            post.UserProfileId = currentUser.Id;
             DateTime dateCreated = DateTime.Now;
 
             post.CreateDateTime = dateCreated;
-            //post.PublishDateTime = dateCreated;
             post.IsApproved = true;
 
             _postRepository.AddPost(post);
@@ -81,6 +87,12 @@ namespace Tabloid.Controllers
         {
             _postRepository.DeletePost(id);
             return NoContent();
+        }
+
+        private UserProfile GetCurrentUserProfile()
+        {
+            var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
         }
     }
 }
