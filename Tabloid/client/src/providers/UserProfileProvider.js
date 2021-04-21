@@ -140,7 +140,16 @@ export function UserProfileProvider(props) {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
-            }).then(getAllUserProfiles)
+            })
+                .then((res) => {
+                    if (!res.ok) {
+                        throw Error(
+                            'Cannot delete the sole admin. Please elevate another user and try again.'
+                        );
+                    }
+                })
+                .then(getAllUserProfiles)
+                .catch((error) => window.alert(error))
         );
     };
 
