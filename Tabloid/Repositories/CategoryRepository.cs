@@ -79,7 +79,25 @@ namespace Tabloid.Repositories
             }
         }
 
-        /* <----------------ADD DeleteCategory() HERE-------------->*/
+       public void DeleteCategory(int id)
+        {
+            using(var conn = Connection)
+            {
+                conn.Open();
+                using(var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        UPDATE Post 
+                            SET CategoryId = 1
+                        WHERE CategoryId = @id;
+                        DELETE Category WHERE Id = @id;
+                    ";
+
+                    DbUtils.AddParameter(cmd, "@id", id);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
 
         private Category NewCatFromDb(SqlDataReader reader)
         {
