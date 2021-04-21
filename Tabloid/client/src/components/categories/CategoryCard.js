@@ -30,7 +30,7 @@ const Category = ({category, callEdit}) => {
                     style={{ cursor: 'pointer' }}
                         onClick={handleDelete}
                 ></i>}
-                 
+                {" "}
                      {category.id === 1? <div></div>:
                         <i className="far fa-edit fa"
                     style={{ cursor: 'pointer' }}
