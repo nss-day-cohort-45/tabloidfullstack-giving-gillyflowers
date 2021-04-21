@@ -25,16 +25,17 @@ const Category = ({category, callEdit}) => {
                
                 <strong style={titleMargin}>{category.name}</strong>
                
-                <i
+               {category.id === 1? <div></div>: <i
                     className="fas fa-trash-alt fa text-right"
                     style={{ cursor: 'pointer' }}
                         onClick={handleDelete}
-                ></i>
-                 <i
-                    className="far fa-edit fa"
+                ></i>}
+                 
+                     {category.id === 1? <div></div>:
+                        <i className="far fa-edit fa"
                     style={{ cursor: 'pointer' }}
                         onClick={() =>{callEdit(category.id)}}
-                    ></i>
+                    ></i> }
             </CardBody>
         </Card>
     )
