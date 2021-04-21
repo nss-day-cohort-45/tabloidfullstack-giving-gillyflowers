@@ -44,10 +44,10 @@ export const PostTagProvider = (props) => {
     };
 
     return (
-        <TagContext.Provider
+        <PostTagContext.Provider
             value={{ postTags, getAllPostTagsByPostId, addPostTag, deletePostTag }}
         >
             {props.children}
-        </TagContext.Provider>
+        </PostTagContext.Provider>
     );
 };
