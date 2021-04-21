@@ -21,11 +21,15 @@ const CommentList = () => {
     return (
         <div className="container">
             <div className="row justify-content-center">
-                <div className="cards-column" style={{ display: Hidden ? "block" : "none" }}>
+                <div className="cards-column" >
                     {
-                        comments.map((comment) => {
-                            return <CommentCard key={comment.id} comment={comment} />
-                        })
+                        comments.length > 0 ?
+                            (comments.map((comment) => {
+                                return <CommentCard key={comment.id} comment={comment} />
+                            })
+                            ) : (
+                                <span>No comments on this post.</span>
+                            )
                     }
                 </div>
             </div>
@@ -35,11 +39,3 @@ const CommentList = () => {
 
 export default CommentList;
 
-// {comments !== null ?
-//     (comments.map((comment) => {
-//         return <CommentCard key={comment.id} comment={comment} />
-//     })
-//     ) : (
-//         <span>No comments on this post.</span>
-//     )
-// }
