@@ -12,6 +12,7 @@ export function UserProfileProvider(props) {
     const [isLoggedIn, setIsLoggedIn] = useState(userProfile != null);
     const [currentUserId, setCurrentUserId] = useState(0);
     const [userProfiles, setUserProfiles] = useState([]);
+    const [userTypes, setUserTypes] = useState([]);
     const [viewingDeactivated, setViewingDeactivated] = useState(false);
 
     const [isFirebaseReady, setIsFirebaseReady] = useState(false);
@@ -166,6 +167,42 @@ export function UserProfileProvider(props) {
         );
     };
 
+    const updateUserProfile = (userProfile) => {
+        return getToken()
+            .then((token) =>
+                fetch(`${apiUrl}/change/${userProfile.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(userProfile),
+                })
+            )
+            .then((res) => {
+                if (!res.ok) {
+                    throw Error(
+                        'Cannot change the role of the sole admin. Please elevate another user first.'
+                    );
+                }
+            })
+            .then(getAllUserProfiles)
+            .catch((error) => window.alert(error));
+    };
+
+    const getUserTypes = () => {
+        return getToken().then((token) =>
+            fetch(`${apiUrl}/types`, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+                .then((res) => res.json())
+                .then(setUserTypes)
+        );
+    };
+
     return (
         <UserProfileContext.Provider
             value={{
@@ -178,12 +215,15 @@ export function UserProfileProvider(props) {
                 getAllUserProfiles,
                 getUserProfileById,
                 getDeactivatedUserProfiles,
+                getUserTypes,
                 deactivateUserProfile,
                 reactivateUserProfile,
+                updateUserProfile,
                 userProfiles,
                 setUserProfiles,
                 viewingDeactivated,
                 setViewingDeactivated,
+                userTypes,
             }}
         >
             {isFirebaseReady ? (
