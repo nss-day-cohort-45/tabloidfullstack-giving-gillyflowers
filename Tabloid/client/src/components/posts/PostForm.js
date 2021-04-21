@@ -3,6 +3,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import { PostContext } from '../../providers/PostProvider';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { UserProfileContext } from '../../providers/UserProfileProvider';
+import { CategoryContext } from '../../providers/CategoryProvider';
 
 export const PostForm = () => {
     const dateFormatter = (date) => {
@@ -10,6 +11,7 @@ export const PostForm = () => {
         return yyyymmdd;
     };
 
+    const { categories, getAllCategories } = useContext(CategoryContext);
     const { addPost, getPostById, updatePost } = useContext(PostContext);
     const { currentUserId } = useContext(UserProfileContext);
     const [userProfileId, setUserProfileId] = useState(0);
@@ -21,11 +23,12 @@ export const PostForm = () => {
         dateFormatter(new Date().toISOString())
     );
     const [currentPost, setCurrentPost] = useState();
+    
 
     const history = useHistory();
 
     const { id } = useParams();
-
+      
     useEffect(() => {
         setTitle('');
         setImageLocation('');
@@ -57,8 +60,15 @@ export const PostForm = () => {
         setUserProfileId(currentUserId);
     }, [currentUserId]);
 
+    useEffect(() => {
+        getAllCategories();
+           
+    })
+   
+    
     const handleClickSaveButton = (evt) => {
         if (!id) {
+            
             const post = {
                 imageLocation,
                 title,
@@ -71,6 +81,7 @@ export const PostForm = () => {
                 history.push('/posts');
             });
         } else {
+        
             const newPost = { ...currentPost };
             newPost.title = title;
             newPost.imageLocation = imageLocation;
@@ -125,6 +136,25 @@ export const PostForm = () => {
                     }}
                     value={publishDateTime}
                 />
+            </FormGroup>
+            <FormGroup>
+                <Label for="categoryId">Category</Label>
+                <Input
+                    type="select"
+                    name="categoryId"
+                    id="categoryId"
+                    onChange={(e) => {
+                        setCategoryId(e.target.value)
+                    }}
+                    >
+                        <option value="1">Select A Category</option>
+                      {  
+                      categories.map((cat) => {
+                          
+                        return   <option key={cat.id} value={cat.id}>{cat.name}</option>
+                        })}
+                        
+                </Input>
             </FormGroup>
             <FormGroup>
                 <Label for="content">Content</Label>
