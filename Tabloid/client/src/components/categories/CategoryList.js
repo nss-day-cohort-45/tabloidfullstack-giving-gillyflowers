@@ -2,9 +2,11 @@ import React, {useContext, useEffect, useState} from "react"
 import { CategoryContext } from "../../providers/CategoryProvider"
 import Category from './CategoryCard'
 import CategoryForm from './CategoryForm'
+import NewCategoryForm from "./NewCategoryForm"
+import { Col, Row, Container } from 'reactstrap';
 
 const CategoryList = () => {
-    const { categories, getAllCategories, updateCategory} = useContext(CategoryContext);
+    const { categories, getAllCategories, updateCategory, addCategory} = useContext(CategoryContext);
     const [ catInEdit, setCatInEdit] = useState(0);
     useEffect(() => {
 
@@ -29,7 +31,10 @@ const CategoryList = () => {
     }
 
     return (
-        <div className="container">
+        
+        <Container>
+        <Row>
+        <Col xs="8" className="container">
             <div className="row justify-content-center">
                 <div className="cards-column">
                   
@@ -44,7 +49,13 @@ const CategoryList = () => {
                     })}
                 </div>
             </div>
-        </div>
+        </Col>
+        <Col xs="4" className="container">
+            <NewCategoryForm addNew={addCategory}/>
+        </Col>
+        </Row>
+        </Container>
+        
     )
 
 }
