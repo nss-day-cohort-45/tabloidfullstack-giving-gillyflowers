@@ -37,9 +37,23 @@ export const CategoryProvider = (props) => {
             );
     };
 
+    const addCategory = (category) => {
+        return getToken()
+            .then((token) => 
+                fetch(`api/Category`,{
+                    method: 'POST',
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(category),
+                })
+            );
+    };
+
     return (
         <CategoryContext.Provider
-            value={{ categories, getAllCategories, updateCategory }}>
+            value={{ categories, getAllCategories, updateCategory, addCategory }}>
                 {props.children}
             </CategoryContext.Provider>
     )

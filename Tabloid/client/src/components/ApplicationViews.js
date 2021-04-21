@@ -1,7 +1,9 @@
 import React, { useContext } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { UserProfileContext } from '../providers/UserProfileProvider';
+import { CommentProvider } from '../providers/CommentProvider';
 import PostList from './posts/PostList';
+import CommentList from './comments/CommentList';
 import { PostDetails } from './posts/PostDetails';
 import { PostForm } from './posts/PostForm';
 import { UserProfileList } from './userProfiles/UserProfileList';
