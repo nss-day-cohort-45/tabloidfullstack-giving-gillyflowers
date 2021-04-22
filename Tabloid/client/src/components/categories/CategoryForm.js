@@ -7,7 +7,7 @@ export const CategoryForm = ({category, callSaveCat, resetState}) => {
 
     const [ categoryToUpdate, setCategoryToUpdate] = useState({
         id: category.id,
-        name: ""
+        name: category.name
     });
    
     const handleControlledInputChange = (event) => {
