@@ -145,6 +145,8 @@ export const PostForm = () => {
                     type="textarea"
                     name="content"
                     id="content"
+                    rows="10"
+                    wrap="hard"
                     placeholder="Content"
                     autoComplete="off"
                     onChange={(e) => {
