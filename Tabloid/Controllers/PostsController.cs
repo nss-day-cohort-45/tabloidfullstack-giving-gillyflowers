@@ -72,10 +72,16 @@ namespace Tabloid.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, Post post)
         {
-            if (id != post.Id)
+            var currentUser = GetCurrentUserProfile();
+            if (post.UserProfileId != currentUser.Id)
             {
-                return BadRequest();
+                string error = "Unauthorized";
+                return BadRequest(error);
             }
+            //if (id != post.Id)
+            //{
+            //    return BadRequest();
+            //}
 
             _postRepository.UpdatePost(post);
             return NoContent();
