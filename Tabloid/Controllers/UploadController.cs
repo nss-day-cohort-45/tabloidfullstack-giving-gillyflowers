@@ -29,6 +29,15 @@ namespace Tabloid.Controllers
                 {
                     var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
 
+                    // checking that the file is an image file with one of the valid extensions
+                    var fileParts = fileName.Split('.').ToList();
+                    fileParts.Reverse();
+                    if (fileParts[0].ToLower() != "png" && fileParts[0].ToLower() != "jpg" 
+                        && fileParts[0].ToLower() != "gif" && fileParts[0].ToLower() != "bmp")
+                    {
+                        return BadRequest();
+                    }
+
                     var fullPath = Path.Combine(pathToSave, fileName);
 
                     if (System.IO.File.Exists(fullPath))

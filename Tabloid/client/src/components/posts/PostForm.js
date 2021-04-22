@@ -38,9 +38,21 @@ export const PostForm = () => {
         setPublishDateTime(dateFormatter(new Date().toISOString()));
         setCurrentPost();
         if (id) {
-            getPostById(id).then(setCurrentPost);
+            getPostById(id)
+                .then(setCurrentPost)
+                .then(() => {
+                    if (imageLocation.startsWith('http')) {
+                        setImageMethod('url');
+                    }
+                });
         }
     }, [id]);
+
+    useEffect(() => {
+        if (imageLocation.startsWith('http')) {
+            setImageMethod('url');
+        }
+    }, [imageLocation]);
 
     useEffect(() => {
         if (currentPost) {
@@ -148,7 +160,7 @@ export const PostForm = () => {
                 </select>
             </FormGroup>
             {imageMethod === 'upload' ? (
-                <div style={{ border: '2px solid red', padding: '6px' }}>
+                <div style={{ backgroundColor: '#dddddd', padding: '6px' }}>
                     <FormGroup>
                         <Label for="file">Upload Header Image</Label>
                         <Input
@@ -174,7 +186,9 @@ export const PostForm = () => {
                     </Button>
                 </div>
             ) : (
-                <FormGroup style={{ border: '2px solid blue', padding: '6px' }}>
+                <FormGroup
+                    style={{ backgroundColor: '#dddddd', padding: '6px' }}
+                >
                     <Label for="imageLocation">Image URL</Label>
                     <Input
                         type="text"
@@ -207,6 +221,7 @@ export const PostForm = () => {
                     type="select"
                     name="categoryId"
                     id="categoryId"
+                    value={categoryId}
                     onChange={(e) => {
                         setCategoryId(e.target.value);
                     }}
@@ -237,7 +252,11 @@ export const PostForm = () => {
                     value={content}
                 />
             </FormGroup>
-            <Button onClick={handleClickSaveButton} disabled={!buttonDisabled}>
+            <Button
+                onClick={handleClickSaveButton}
+                disabled={!buttonDisabled}
+                color={!buttonDisabled ? 'danger' : 'success'}
+            >
                 {buttonDisabled ? 'Submit' : 'Upload Image Before Submitting'}
             </Button>
             <Button
