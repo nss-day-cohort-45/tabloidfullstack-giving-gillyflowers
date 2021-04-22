@@ -56,6 +56,16 @@ export const PostForm = () => {
         getAllCategories();
     }, []);
 
+    const clearForm = () => {
+        setTitle('');
+        setImageLocation('');
+        setContent('');
+        setCategoryId(1);
+        setPublishDateTime(dateFormatter(new Date().toISOString()));
+        setCurrentPost();
+        history.push('/posts');
+    };
+
     const handleClickSaveButton = (evt) => {
         if (!id) {
             const post = {
@@ -85,11 +95,25 @@ export const PostForm = () => {
         evt.preventDefault();
         setButtonDisabled(true);
         if (file) {
-            uploadFile(file).then((res) => {
-                window.alert(
-                    res.ok ? 'File Successfully Uploaded' : 'Upload Failed'
-                );
-            });
+            uploadFile(file)
+                .then((res) => {
+                    window.alert(
+                        res.ok ? 'File Successfully Uploaded' : 'Upload Failed'
+                    );
+                    if (res.ok) {
+                        return res.json();
+                    } else {
+                        return null;
+                    }
+                })
+                .then((parsed) => {
+                    if (parsed) {
+                        let [unused, path] = parsed.outputPath.split(
+                            'public\\'
+                        );
+                        setImageLocation('..\\' + path);
+                    }
+                });
         }
     };
 
@@ -110,11 +134,12 @@ export const PostForm = () => {
                     value={title}
                 />
             </FormGroup>
-            <FormGroup>
+            <FormGroup style={{ display: 'flex', flexDirection: 'column' }}>
                 <Label for="imageSelect">
                     Upload header image or add by URL?
                 </Label>
                 <select
+                    style={{ width: '250px' }}
                     value={imageMethod}
                     onChange={(evt) => setImageMethod(evt.target.value)}
                 >
@@ -123,7 +148,7 @@ export const PostForm = () => {
                 </select>
             </FormGroup>
             {imageMethod === 'upload' ? (
-                <Form className="image-upload-form">
+                <div style={{ border: '2px solid red', padding: '6px' }}>
                     <FormGroup>
                         <Label for="file">Upload Header Image</Label>
                         <Input
@@ -147,9 +172,9 @@ export const PostForm = () => {
                     >
                         Upload Image
                     </Button>
-                </Form>
+                </div>
             ) : (
-                <FormGroup>
+                <FormGroup style={{ border: '2px solid blue', padding: '6px' }}>
                     <Label for="imageLocation">Image URL</Label>
                     <Input
                         type="text"
@@ -212,7 +237,16 @@ export const PostForm = () => {
                     value={content}
                 />
             </FormGroup>
-            <Button onClick={handleClickSaveButton}>Submit</Button>
+            <Button onClick={handleClickSaveButton} disabled={!buttonDisabled}>
+                {buttonDisabled ? 'Submit' : 'Upload Image Before Submitting'}
+            </Button>
+            <Button
+                onClick={clearForm}
+                color="danger"
+                style={{ marginLeft: '10px' }}
+            >
+                Cancel
+            </Button>
         </Form>
     );
 };
