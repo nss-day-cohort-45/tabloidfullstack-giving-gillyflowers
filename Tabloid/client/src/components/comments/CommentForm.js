@@ -11,6 +11,15 @@ const CommentForm = () => {
 
 
     //add use effect 
+    useEffect(() => {
+        setSubject('');
+        setContent('');
+        setCurrentPost();
+        if (id) {
+            getPostById(id).then(setCurrentPost);
+        }
+    }, [id]);
+
     //add click handle submit comment 
     return (
         <Form className="container col-md-6">
