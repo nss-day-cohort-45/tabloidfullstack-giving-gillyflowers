@@ -25,9 +25,16 @@ const CategoryList = () => {
 
     //function passes category object form category form in order to update and re-render
     const saveEdit = (categoryUpdate) => {
-       return updateCategory(categoryUpdate)
+      if ( categoryUpdate.name.replace(/ /g,'').length !== 0)
+      {
+        return updateCategory(categoryUpdate)
                 .then(setCatInEdit(0))
                 .then(getAllCategories());
+      }
+      else 
+      {
+          return window.confirm('You cannot save a category without a name!')
+      }
     }
 
     return (
