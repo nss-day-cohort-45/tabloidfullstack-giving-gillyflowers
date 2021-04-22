@@ -43,7 +43,7 @@ namespace Tabloid.Controllers
             return Ok(post);
         }
 
-        [HttpGet("PostCategory/{categoryId}")]
+        [HttpGet("category/{categoryId}")]
         public IActionResult GetByCategoryId(int categoryId)
         {
             var posts = _postRepository.GetPostByCategoryId(categoryId);
