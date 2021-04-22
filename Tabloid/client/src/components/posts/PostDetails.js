@@ -49,8 +49,10 @@ export const PostDetails = () => {
     return post ? (
         <div className="container">
             <div className="row justify-content-center">
-                <div className="col-sm-6 col-lg-12">
-                    <img src={post.imageLocation} />
+                <div className="col-sm-6 col-lg-10">
+                    <div class="text-center">
+                        <img src={post.imageLocation} class="rounded mx-auto d-block img-fluid" />
+                    </div>
                     <h1>{post.title}</h1>
                     <div
                         className="post-byline col-lg-10"
@@ -90,7 +92,7 @@ export const PostDetails = () => {
                     <p style={{ whiteSpace: 'pre-line' }} >{post.content}</p>
                     {/* tags go here */}
                     <div>
-                        <button className="btn btn-primary"
+                        <button className="btn btn-primary m-4"
                             onClick={HandleCommentOnClick} >
                             {isHidden ? "Show Comments" : "Hide Comments"}
                         </button>
