@@ -83,12 +83,22 @@ const TagForm = () => {
                     onChange={handleControlledInputChange}
                     value={tag.name} />
             </FormGroup>
+            { tag.name !== "" ?
             <Button
+                active
                 onClick={
                     event => {
                         event.preventDefault() // Prevent browser from submitting the form and refreshing the page
                         handleSavePost()
                     }}>Save</Button>
+                :
+                <Button
+                disabled
+                onClick={
+                    event => {
+                        event.preventDefault() // Prevent browser from submitting the form and refreshing the page
+                        handleSavePost()
+                    }}>Save</Button> }
             <Button
                 onClick={
                     event => {
