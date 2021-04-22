@@ -27,7 +27,9 @@ namespace Tabloid.Controllers
 
                 if (file.Length > 0)
                 {
-                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    var inputFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+
+                    var fileName = String.Concat(inputFileName.Where(c => !Char.IsWhiteSpace(c)));
 
                     // checking that the file is an image file with one of the valid extensions
                     var fileParts = fileName.Split('.').ToList();
