@@ -11,7 +11,9 @@ export const PostForm = () => {
     };
 
     const { categories, getAllCategories } = useContext(CategoryContext);
-    const { addPost, getPostById, updatePost } = useContext(PostContext);
+    const { addPost, getPostById, updatePost, uploadFile } = useContext(
+        PostContext
+    );
     const [imageLocation, setImageLocation] = useState('');
     const [categoryId, setCategoryId] = useState(1); // TODO: update this when we have categories
     const [title, setTitle] = useState('');
@@ -21,6 +23,7 @@ export const PostForm = () => {
     );
     const [currentPost, setCurrentPost] = useState();
     const [file, setFile] = useState();
+    const [buttonDisabled, setButtonDisabled] = useState(true);
     const [imageMethod, setImageMethod] = useState('upload');
 
     const history = useHistory();
@@ -78,6 +81,18 @@ export const PostForm = () => {
         }
     };
 
+    const handleUpload = (evt) => {
+        evt.preventDefault();
+        setButtonDisabled(true);
+        if (file) {
+            uploadFile(file).then((res) => {
+                window.alert(
+                    res.ok ? 'File Successfully Uploaded' : 'Upload Failed'
+                );
+            });
+        }
+    };
+
     return (
         <Form className="container col-md-6">
             <h2>{id ? 'Edit Post' : 'New Post'}</h2>
@@ -108,17 +123,31 @@ export const PostForm = () => {
                 </select>
             </FormGroup>
             {imageMethod === 'upload' ? (
-                <FormGroup>
-                    <Label for="file">Upload Header Image</Label>
-                    <Input
-                        type="file"
-                        accept=".png, .jpg, .gif, .bmp"
-                        name="file"
-                        id="fileInput"
-                        placeholder="Choose image to upload"
-                        onChange={(evt) => setFile(evt.target.files)}
-                    />
-                </FormGroup>
+                <Form className="image-upload-form">
+                    <FormGroup>
+                        <Label for="file">Upload Header Image</Label>
+                        <Input
+                            type="file"
+                            accept=".png, .jpg, .gif, .bmp"
+                            name="file"
+                            id="fileInput"
+                            placeholder="Choose image to upload"
+                            onChange={(evt) => {
+                                if (evt.target.files.length > 0) {
+                                    setFile(evt.target.files);
+                                    setButtonDisabled(false);
+                                }
+                            }}
+                        />
+                    </FormGroup>
+                    <Button
+                        color="primary"
+                        onClick={handleUpload}
+                        disabled={buttonDisabled}
+                    >
+                        Upload Image
+                    </Button>
+                </Form>
             ) : (
                 <FormGroup>
                     <Label for="imageLocation">Image URL</Label>
