@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Form, FormGroup, Card, CardBody, Label, Input, Button } from "reactstrap";
 import { TagContext } from '../../providers/TagProvider';
 import { useHistory, useParams } from "react-router-dom";
+import Tag from "./TagListCard";
 
 const TagForm = () => {
     const { addTag, updateTag, getAllTags, getTagById } = useContext(TagContext)
@@ -83,7 +84,7 @@ const TagForm = () => {
                     onChange={handleControlledInputChange}
                     value={tag.name} />
             </FormGroup>
-            { tag.name !== "" ?
+            { tag.name === "" || !tag.name.trim()?
             <Button
                 active
                 onClick={
