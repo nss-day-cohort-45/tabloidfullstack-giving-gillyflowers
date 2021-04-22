@@ -1,22 +1,35 @@
 // Need to get a list of all the tags, need to get a list of all the postTags associated with this post,
 // need to check boxes depending on what thos lists reveal. 
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from 'react';
 import { Form, FormGroup, Card, CardBody, Label, Input, Button } from "reactstrap";
 import { PostTagContext } from '../../providers/PostTagProvider';
 import { TagContext } from '../../providers/TagProvider';
 import { useHistory, useParams } from "react-router-dom";
 
 const PostTagForm = () => {
-    // const { getAllPostTagsByPostId, addPostTag, deleteTag } = useContext(PostTagContext)
-    // const { getAllTags } = useContext(TagContext)
+    const { postTags, getAllPostTagsByPostId, addPostTag, deleteTag, setPostTags } = useContext(PostTagContext)
+    const { tags, getAllTags } = useContext(TagContext)
 
-    // // Use this hook to allow us to programatically redirect users
-    // const { tagId } = useParams();
-    // const history = useHistory();
+    // Use this hook to allow us to programatically redirect users
+    const { Id } = useParams();
+    const history = useHistory();
 
-    // const [tags, setTags] = useState([]);
-    // const [postTags, setPostTags] = useState([]);
+    // const newPostTags = [...postTags]
+
+    useEffect(() => {
+        // debugger
+        // getAllPostTagsByPostId(postId)
+        debugger
+        getAllTags()
+            .then((Id) => {
+                getAllPostTagsByPostId(Id)
+            })
+    }, [Id]);
+
+    console.log(Id);
+    console.log(tags);
+    console.log(postTags);
 
     // //when field changes, update state. This causes a re-render and updates the view.
     // //Controlled component
@@ -76,14 +89,33 @@ const PostTagForm = () => {
     // }, [tagId])
 
     return (
-        <Form className="container col-md-6">
-            <h2>Add tags to your post!</h2>
-            <FormGroup check>
-                <Label check>
-                    <Input type="checkbox" /> Check me out
-                </Label>
-            </FormGroup>
-            {/* <Button
+        <h2>Add tags to your post!</h2>
+    )
+}
+{/* //     <Form className="container col-md-6">
+        <h2>Add tags to your post!</h2>
+
+    //         {
+    //             tags.map((tag) => {
+
+    //                 const isChecked = postTags.some(pt => pt.TagId === tag.Id)
+
+    //                 if (isChecked === true) {
+    //                     return <FormGroup key={tag.id} check>
+    //                         <Label check>
+    //                             <Input type="checkbox" checked /> {tag.name}
+    //                         </Label>
+    //                     </FormGroup>
+    //                 } else {
+    //                     return <FormGroup key={tag.id} check>
+    //                         <Label check>
+    //                             <Input type="checkbox" /> {tag.name}
+    //                         </Label>
+    //                     </FormGroup>
+    //                 }
+    //             })
+    //         }
+    {/* <Button
                 onClick={
                     event => {
                         event.preventDefault() // Prevent browser from submitting the form and refreshing the page
@@ -98,8 +130,8 @@ const PostTagForm = () => {
                         })
                         history.push("/tags");
                     }}>Cancel</Button> */}
-        </Form>
-    )
-}
+//         </Form> */}
+// )
+// }
 
 export default PostTagForm;

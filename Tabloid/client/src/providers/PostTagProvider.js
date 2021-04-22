@@ -10,7 +10,7 @@ export const PostTagProvider = (props) => {
     const getAllPostTagsByPostId = (postId) => {
         return getToken()
             .then((token) =>
-                fetch(`/api/posttags/${postId}`, {
+                fetch(`/api/PostTags/${postId}`, {
                     method: 'GET',
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -45,7 +45,7 @@ export const PostTagProvider = (props) => {
 
     return (
         <PostTagContext.Provider
-            value={{ postTags, getAllPostTagsByPostId, addPostTag, deletePostTag }}
+            value={{ postTags, setPostTags, getAllPostTagsByPostId, addPostTag, deletePostTag }}
         >
             {props.children}
         </PostTagContext.Provider>
