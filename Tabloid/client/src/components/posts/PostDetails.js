@@ -94,7 +94,9 @@ export const PostDetails = () => {
                             </>
                         ) : null}
                     </div>
-                    <p>{post.content}</p>
+
+                    <p style={{ whiteSpace: 'pre-line' }} >{post.content}</p>
+
                     {/*TAGS STUFF*/}
                     <div>
                         <h4>Tags</h4>
@@ -107,8 +109,6 @@ export const PostDetails = () => {
                             }}>Manage Tags</button>
                     </div>
 
-                    <p style={{ whiteSpace: 'pre-line' }} >{post.content}</p>
-                    {/* tags go here */}
                     <button className="btn btn-primary"
                         onClick={HandleCommentOnClick} >
                         {isHidden ? "Show Comments" : "Hide Comments"}

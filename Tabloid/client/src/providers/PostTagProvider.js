@@ -10,7 +10,7 @@ export const PostTagProvider = (props) => {
     const getAllPostTagsByPostId = (postId) => {
         return getToken()
             .then((token) =>
-                fetch(`/api/PostTags/${postId}`, {
+                fetch(`/api/posttags/${postId}`, {
                     method: 'GET',
                     headers: {
                         Authorization: `Bearer ${token}`,

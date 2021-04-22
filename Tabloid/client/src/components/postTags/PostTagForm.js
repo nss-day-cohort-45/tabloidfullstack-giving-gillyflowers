@@ -12,22 +12,19 @@ const PostTagForm = () => {
     const { tags, getAllTags } = useContext(TagContext)
 
     // Use this hook to allow us to programatically redirect users
-    const { Id } = useParams();
+    const { postId } = useParams();
     const history = useHistory();
 
     // const newPostTags = [...postTags]
 
     useEffect(() => {
-        // debugger
-        // getAllPostTagsByPostId(postId)
-        debugger
         getAllTags()
-            .then((Id) => {
-                getAllPostTagsByPostId(Id)
+            .then(() => {
+                getAllPostTagsByPostId(postId)
             })
-    }, [Id]);
+    }, [postId]);
 
-    console.log(Id);
+    console.log(postId);
     console.log(tags);
     console.log(postTags);
 
@@ -89,33 +86,30 @@ const PostTagForm = () => {
     // }, [tagId])
 
     return (
-        <h2>Add tags to your post!</h2>
-    )
-}
-{/* //     <Form className="container col-md-6">
-        <h2>Add tags to your post!</h2>
+        <Form className="container col-md-6">
+            <h2>Add tags to your post!</h2>
 
-    //         {
-    //             tags.map((tag) => {
+            {
+                tags.map((tag) => {
+                    debugger
+                    const pt.isChecked = postTags.map(pt => pt.tagId === tag.id)
 
-    //                 const isChecked = postTags.some(pt => pt.TagId === tag.Id)
-
-    //                 if (isChecked === true) {
-    //                     return <FormGroup key={tag.id} check>
-    //                         <Label check>
-    //                             <Input type="checkbox" checked /> {tag.name}
-    //                         </Label>
-    //                     </FormGroup>
-    //                 } else {
-    //                     return <FormGroup key={tag.id} check>
-    //                         <Label check>
-    //                             <Input type="checkbox" /> {tag.name}
-    //                         </Label>
-    //                     </FormGroup>
-    //                 }
-    //             })
-    //         }
-    {/* <Button
+                    if (pt.isChecked === true) {
+                        return <FormGroup key={tag.id} check>
+                <Label check>
+                    <Input type="checkbox" checked /> {tag.name}
+                </Label>
+            </FormGroup>
+                    } else {
+                        return <FormGroup key={tag.id} check>
+                <Label check>
+                    <Input type="checkbox" /> {tag.name}
+                </Label>
+            </FormGroup>
+                    }
+                })
+            }
+            {/* <Button
                 onClick={
                     event => {
                         event.preventDefault() // Prevent browser from submitting the form and refreshing the page
@@ -130,8 +124,8 @@ const PostTagForm = () => {
                         })
                         history.push("/tags");
                     }}>Cancel</Button> */}
-//         </Form> */}
-// )
-// }
+        </Form>
+    )
+}
 
 export default PostTagForm;
