@@ -4,12 +4,12 @@ import { Button, Form, FormGroup, Input, Label, Card, CardBody } from 'reactstra
 import { CommentContext } from "../../providers/CommentProvider";
 import { PostContext } from '../../providers/PostProvider'
 
-export const CommentForm = () => {
+export const CommentForm = ({ stateMethod }) => {
     const [subject, setSubject] = useState('');
     const [content, setContent] = useState('');
     const [currentPost, setCurrentPost] = useState();
     const { getPostById } = useContext(PostContext);
-    const { addComment } = useContext(CommentContext);
+    const { addComment, getAllCommentsByPostId } = useContext(CommentContext);
 
     const history = useHistory();
 
@@ -27,19 +27,23 @@ export const CommentForm = () => {
     // }, [id]);
 
     const handleClickSaveButton = (evt) => {
-        if (!id) {
-            const comment = {
-                subject,
-                content,
-                postId: id,
-            };
-            addComment(comment).then((c) => {
-                history.push('/comments');
-            });
+
+        const comment = {
+            subject,
+            content,
+            postId: id,
         }
-    }
+        addComment(comment).then((c) => {
+            getAllCommentsByPostId(id).then(() => {
+                setSubject('')
+                setContent('')
+                stateMethod(false)
+            })
+        });
+    };
 
     //add click handle submit comment 
+    // debugger;
     return (
         <Form className="container col-md-6">
             <h2>Add New Comment</h2>
@@ -72,7 +76,22 @@ export const CommentForm = () => {
                     value={content}
                 />
             </FormGroup>
-            <Button onClick={handleClickSaveButton}> Submit</Button>
+            {/* <Button onClick={handleClickSaveButton}> Submit</Button> */}
+
+
+
+            {subject.replace(/ /g, '').length === 0 ?
+                <Button disabled
+                    style={{ cursor: 'pointer' }}
+                >
+                    Save
+                    </Button>
+                :
+                <Button active
+                    style={{ cursor: 'pointer' }}
+                    onClick={handleClickSaveButton}>
+                    Save
+                    </Button>}
         </Form>
     );
 };

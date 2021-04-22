@@ -9,7 +9,7 @@ import { UserProfileContext } from '../../providers/UserProfileProvider';
 export const PostDetails = () => {
     const { id } = useParams();
     const [post, setPost] = useState();
-    const [isHidden, setIsHidden] = useState(true);
+    const [isHiddenComment, setIsHiddenComment] = useState(true);
     const [isHiddenAddNewComment, setIsHiddenAddNewComment] = useState(true);
 
     const { getPostById, deletePost } = useContext(PostContext);
@@ -41,10 +41,10 @@ export const PostDetails = () => {
 
     //on click show the comments 
     const HandleCommentOnClick = () => {
-        if (isHidden) {
-            setIsHidden(false);
+        if (isHiddenComment) {
+            setIsHiddenComment(false);
         } else {
-            setIsHidden(true);
+            setIsHiddenComment(true);
         }
     };
 
@@ -63,7 +63,8 @@ export const PostDetails = () => {
             <div className="row justify-content-center">
                 <div className="col-sm-6 col-lg-10">
                     <div className="text-center">
-                        <img src={post.imageLocation} className="rounded mx-auto d-block img-fluid" />
+                        <img src={post.imageLocation} style={{ maxWidth: "800px", maxHeight: "600px" }}
+                            className="rounded mx-auto d-block img-fluid" />
                     </div>
                     <h1>{post.title}</h1>
                     <div
@@ -106,7 +107,7 @@ export const PostDetails = () => {
                     <div>
                         <button className="btn btn-primary m-4"
                             onClick={HandleCommentOnClick} >
-                            {isHidden ? "Show Comments" : "Hide Comments"}
+                            {isHiddenComment ? "Show Comments" : "Hide Comments"}
                         </button>
                         <button className="btn btn-secondary m-5"
                             onClick={HandleAddCommentOnClick} >
@@ -114,10 +115,10 @@ export const PostDetails = () => {
                         </button>
                     </div>
                     <div>
-                        {!isHiddenAddNewComment ? (< CommentForm />) : null}
+                        {!isHiddenAddNewComment ? (< CommentForm stateMethod={setIsHiddenComment} />) : null}
                     </div>
                     <div>
-                        {!isHidden ? (< CommentList />) : null}
+                        {!isHiddenComment ? (< CommentList />) : null}
                     </div>
                 </div>
             </div>
