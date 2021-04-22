@@ -30,6 +30,12 @@ namespace Tabloid.Controllers
             return Ok(_userProfileRepository.GetAllDeactivated());
         }
 
+        [HttpGet("types")]
+        public IActionResult GetUserTypes()
+        {
+            return Ok(_userProfileRepository.GetTypes());
+        }
+
         [HttpGet("getbyid/{id}")]
         public IActionResult GetUserProfileById(int id)
         {
@@ -53,6 +59,24 @@ namespace Tabloid.Controllers
             } else
             {
                 return BadRequest("Cannot delete the sole admin. Please elevate another user and try again.");
+            }
+        }
+
+        [HttpPut("change/{id}")]
+        public IActionResult Update(int id, UserProfile user)
+        {
+            if (id != user.Id)
+            {
+                return BadRequest();
+            }
+            int adminCount = _userProfileRepository.GetAll().Where(up => up.UserTypeId == 1).ToList().Count;
+            if (adminCount < 2 && user.UserTypeId == 2)
+            {
+                return BadRequest("Cannot change role of the sole admin. Please elevate another user and try again.");
+            } else
+            {
+                _userProfileRepository.Update(user);
+                return Ok();
             }
         }
 
