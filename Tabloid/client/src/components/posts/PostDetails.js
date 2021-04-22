@@ -49,11 +49,11 @@ export const PostDetails = () => {
     return post ? (
         <div className="container">
             <div className="row justify-content-center">
-                <div className="col-sm-12 col-lg-6">
+                <div className="col-sm-6 col-lg-12">
                     <img src={post.imageLocation} />
                     <h1>{post.title}</h1>
                     <div
-                        className="post-byline"
+                        className="post-byline col-lg-10"
                         style={{
                             display: 'flex',
                             flexDirection: 'row',
@@ -87,7 +87,7 @@ export const PostDetails = () => {
                             </>
                         ) : null}
                     </div>
-                    <p style={{whiteSpace: 'pre-line'}} >{post.content}</p>
+                    <p style={{ whiteSpace: 'pre-line' }} >{post.content}</p>
                     {/* tags go here */}
                     <div>
                         <button className="btn btn-primary"
@@ -95,7 +95,8 @@ export const PostDetails = () => {
                             {isHidden ? "Show Comments" : "Hide Comments"}
                         </button>
                         <button className="btn btn-secondary m-5"
-                            onClick={ }>Add Comment</button>
+                        // onClick={""}
+                        >Add Comment</button>
                     </div>
                     <div>
                         {!isHidden ? (< CommentList />) : null}
