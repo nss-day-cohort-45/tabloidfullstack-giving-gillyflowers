@@ -62,8 +62,8 @@ export const PostDetails = () => {
         <div className="container">
             <div className="row justify-content-center">
                 <div className="col-sm-6 col-lg-10">
-                    <div class="text-center">
-                        <img src={post.imageLocation} class="rounded mx-auto d-block img-fluid" />
+                    <div className="text-center">
+                        <img src={post.imageLocation} className="rounded mx-auto d-block img-fluid" />
                     </div>
                     <h1>{post.title}</h1>
                     <div
