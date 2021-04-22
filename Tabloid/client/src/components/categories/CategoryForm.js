@@ -29,10 +29,13 @@ export const CategoryForm = ({category, callSaveCat, resetState}) => {
                         onChange = {handleControlledInputChange}
                         />
                </FormGroup>
+               
+                  
                <Button style={{ cursor: 'pointer' }} 
                     onClick={() =>{callSaveCat(categoryToUpdate)}}>
                     Save
                     </Button>
+                    
                <Button style={{ cursor: 'pointer' }} 
                     onClick={() =>{resetState(0)}}>
                     Cancel
