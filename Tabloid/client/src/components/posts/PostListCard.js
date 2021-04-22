@@ -1,20 +1,8 @@
-import React, { useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardImg, CardBody } from 'reactstrap';
-import { PostContext } from '../../providers/PostProvider';
+import { Card, CardBody } from 'reactstrap';
 
 const Post = ({ post }) => {
-    const { deletePost, getAllPosts } = useContext(PostContext);
-    const history = useHistory();
-
-    const handleDelete = () => {
-        if (window.confirm('Are you sure?')) {
-            deletePost(post.id).then(getAllPosts);
-            history.push('/posts');
-        }
-    };
-
     return (
         <Card className="m-4">
             <p className="text-left px-2">
@@ -29,18 +17,6 @@ const Post = ({ post }) => {
                 </p>
 
                 <p>Category: {post.category.name}</p>
-                <i
-                    className="far fa-edit fa-2x"
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => {
-                        history.push(`/posts/edit/${post.id}`);
-                    }}
-                ></i>
-                <i
-                    className="fas fa-trash-alt fa-2x"
-                    onClick={handleDelete}
-                    style={{ cursor: 'pointer' }}
-                ></i>
             </CardBody>
         </Card>
     );
