@@ -80,6 +80,10 @@ export const PostProvider = (props) => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(post),
+            }).then((res) => {
+                if (!res.ok) {
+                    window.alert('You are unable to edit this post.');
+                }
             })
         );
     };
