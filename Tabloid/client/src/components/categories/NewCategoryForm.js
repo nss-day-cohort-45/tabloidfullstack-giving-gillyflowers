@@ -37,7 +37,7 @@ export const NewCategoryForm = ({addNew}) => {
                         onChange = {handleControlledInputChange}
                         />
                </fieldset>
-              {categoryToUpdate.name === ""? 
+              {categoryToUpdate.name.replace(/ /g,'').length === 0? 
                     <Button disabled 
                         style={{ cursor: 'pointer' }} 
                         onClick={() =>{

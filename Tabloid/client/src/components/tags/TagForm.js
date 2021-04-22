@@ -70,6 +70,7 @@ const TagForm = () => {
         }
     }, [tagId])
 
+
     return (
         <Form className="container col-md-6">
             <h2>{tagId ? 'Edit Tag' : 'New Tag'}</h2>
@@ -84,7 +85,8 @@ const TagForm = () => {
                     onChange={handleControlledInputChange}
                     value={tag.name} />
             </FormGroup>
-            { tag.name === "" || !tag.name.trim()?
+            
+                {tag.name.replace(/ /g,'').length !== 0 ?
             <Button
                 active
                 onClick={
@@ -100,6 +102,7 @@ const TagForm = () => {
                         event.preventDefault() // Prevent browser from submitting the form and refreshing the page
                         handleSavePost()
                     }}>Save</Button> }
+                     
             <Button
                 onClick={
                     event => {
