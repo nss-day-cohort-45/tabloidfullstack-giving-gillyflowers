@@ -26,6 +26,7 @@ export const CommentForm = ({ stateMethod }) => {
     //     }
     // }, [id]);
 
+    //add click handle submit comment 
     const handleClickSaveButton = (evt) => {
 
         const comment = {
@@ -42,8 +43,6 @@ export const CommentForm = ({ stateMethod }) => {
         });
     };
 
-    //add click handle submit comment 
-    // debugger;
     return (
         <Form className="container col-md-6">
             <h2>Add New Comment</h2>
@@ -76,10 +75,6 @@ export const CommentForm = ({ stateMethod }) => {
                     value={content}
                 />
             </FormGroup>
-            {/* <Button onClick={handleClickSaveButton}> Submit</Button> */}
-
-
-
             {subject.replace(/ /g, '').length === 0 ?
                 <Button disabled
                     style={{ cursor: 'pointer' }}
@@ -91,7 +86,8 @@ export const CommentForm = ({ stateMethod }) => {
                     style={{ cursor: 'pointer' }}
                     onClick={handleClickSaveButton}>
                     Save
-                    </Button>}
+                </Button>
+            }
         </Form>
     );
 };
