@@ -1,3 +1,4 @@
+import { Button } from 'reactstrap';
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useHistory, Link } from 'react-router-dom';
 import { UserProfileContext } from '../../providers/UserProfileProvider';
@@ -5,18 +6,39 @@ import { UserProfileContext } from '../../providers/UserProfileProvider';
 export const UserProfileDetails = (params) => {
     const { id } = useParams();
     const [userProfile, setUserProfile] = useState();
-    const { getUserProfileById } = useContext(UserProfileContext);
+    const [changed, setChanged] = useState(false);
+    const {
+        getUserProfileById,
+        getUserTypes,
+        userTypes,
+        updateUserProfile,
+    } = useContext(UserProfileContext);
     const history = useHistory();
 
     useEffect(() => {
-        getUserProfileById(id).then((parsed) => {
-            if (parsed.id) {
-                setUserProfile(parsed);
-            } else {
-                history.push('/userprofile');
-            }
-        });
+        getUserTypes().then(
+            getUserProfileById(id).then((parsed) => {
+                if (parsed.id) {
+                    setUserProfile(parsed);
+                } else {
+                    history.push('/userprofile');
+                }
+            })
+        );
     }, []);
+
+    const handleUserTypeChange = (evt) => {
+        const user = { ...userProfile };
+        user.userTypeId = parseInt(evt.target.value);
+        setChanged(true);
+        setUserProfile(user);
+    };
+
+    const handleSaveChanges = () => {
+        updateUserProfile(userProfile).then(() => {
+            history.push('/userprofile');
+        });
+    };
 
     return userProfile ? (
         <div className="container">
@@ -34,8 +56,41 @@ export const UserProfileDetails = (params) => {
                         ).toLocaleDateString('en-US')}
                     </p>
                     <p>Email: {userProfile.email}</p>
-                    <p>User type: {userProfile.userType.name}</p>
-                    <Link to="/userprofile">Back To User Profiles List</Link>
+                    <p>
+                        Status:{' '}
+                        {userProfile.isDeactivated ? 'Inactive' : 'Active'}
+                    </p>
+                    {userTypes.length > 0 && !userProfile.isDeactivated ? (
+                        <div>
+                            <label htmlFor="userType">User role: </label>
+                            <select
+                                style={{ marginLeft: '10px' }}
+                                value={userProfile.userTypeId}
+                                name="userType"
+                                onChange={handleUserTypeChange}
+                            >
+                                {userTypes.map((ut) => (
+                                    <option key={ut.id} value={ut.id}>
+                                        {ut.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    ) : null}
+                    <div className="d-flex flex-column">
+                        {changed ? (
+                            <Button
+                                style={{ width: '150px' }}
+                                color="success"
+                                onClick={handleSaveChanges}
+                            >
+                                Save Changes
+                            </Button>
+                        ) : null}
+                        <Link to="/userprofile">
+                            Back To User Profiles List
+                        </Link>
+                    </div>
                 </div>
             </div>
         </div>

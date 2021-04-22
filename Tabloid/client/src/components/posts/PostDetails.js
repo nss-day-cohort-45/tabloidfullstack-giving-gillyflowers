@@ -5,6 +5,7 @@ import CommentList from '../comments/CommentList'
 import { UserProfileContext } from '../../providers/UserProfileProvider';
 import { PostTagContext } from '../../providers/PostTagProvider';
 
+
 export const PostDetails = () => {
     const { id } = useParams();
     const [post, setPost] = useState();
@@ -106,6 +107,8 @@ export const PostDetails = () => {
                             }}>Manage Tags</button>
                     </div>
 
+                    <p style={{ whiteSpace: 'pre-line' }} >{post.content}</p>
+                    {/* tags go here */}
                     <button className="btn btn-primary"
                         onClick={HandleCommentOnClick} >
                         {isHidden ? "Show Comments" : "Hide Comments"}

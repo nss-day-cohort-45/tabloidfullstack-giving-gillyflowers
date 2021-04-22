@@ -42,7 +42,7 @@ const CategoryList = () => {
 
                             {categories.map((category) => {
 
-                                return catInEdit == category.id ?
+                                return catInEdit === category.id ?
                                     <CategoryForm key={category.id} category={category} callSaveCat={saveEdit} resetState={setStateZero} />
                                     : <Category key={category.id} callEdit={setEditId} category={category} />
 

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Button } from 'reactstrap';
 import { UserProfileContext } from '../../providers/UserProfileProvider';
 import { UserProfileCard } from './UserProfileCard';
