@@ -75,13 +75,12 @@ namespace Tabloid.Controllers
             var currentUser = GetCurrentUserProfile();
             if (post.UserProfileId != currentUser.Id)
             {
-                string error = "Unauthorized";
-                return BadRequest(error);
+                return Unauthorized();
             }
-            //if (id != post.Id)
-            //{
-            //    return BadRequest();
-            //}
+            if (id != post.Id)
+            {
+                return BadRequest();
+            }
 
             _postRepository.UpdatePost(post);
             return NoContent();
