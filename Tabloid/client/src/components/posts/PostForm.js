@@ -20,6 +20,8 @@ export const PostForm = () => {
         dateFormatter(new Date().toISOString())
     );
     const [currentPost, setCurrentPost] = useState();
+    const [file, setFile] = useState();
+    const [imageMethod, setImageMethod] = useState('upload');
 
     const history = useHistory();
 
@@ -94,19 +96,45 @@ export const PostForm = () => {
                 />
             </FormGroup>
             <FormGroup>
-                <Label for="imageLocation">Image URL</Label>
-                <Input
-                    type="text"
-                    name="imageLocation"
-                    id="imageLocation"
-                    placeholder="Header Image URL"
-                    autoComplete="off"
-                    onChange={(e) => {
-                        setImageLocation(e.target.value);
-                    }}
-                    value={imageLocation}
-                />
+                <Label for="imageSelect">
+                    Upload header image or add by URL?
+                </Label>
+                <select
+                    value={imageMethod}
+                    onChange={(evt) => setImageMethod(evt.target.value)}
+                >
+                    <option value="upload">Upload image</option>
+                    <option value="url">Add by URL</option>
+                </select>
             </FormGroup>
+            {imageMethod === 'upload' ? (
+                <FormGroup>
+                    <Label for="file">Upload Header Image</Label>
+                    <Input
+                        type="file"
+                        accept=".png, .jpg, .gif, .bmp"
+                        name="file"
+                        id="fileInput"
+                        placeholder="Choose image to upload"
+                        onChange={(evt) => setFile(evt.target.files)}
+                    />
+                </FormGroup>
+            ) : (
+                <FormGroup>
+                    <Label for="imageLocation">Image URL</Label>
+                    <Input
+                        type="text"
+                        name="imageLocation"
+                        id="imageLocation"
+                        placeholder="Header Image URL"
+                        autoComplete="off"
+                        onChange={(e) => {
+                            setImageLocation(e.target.value);
+                        }}
+                        value={imageLocation}
+                    />
+                </FormGroup>
+            )}
             <FormGroup>
                 <Label for="publishDateTime">Publication Date</Label>
                 <Input
