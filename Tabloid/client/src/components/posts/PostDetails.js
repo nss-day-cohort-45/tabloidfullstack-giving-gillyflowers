@@ -4,6 +4,7 @@ import { PostContext } from '../../providers/PostProvider';
 import CommentList from '../comments/CommentList'
 import { UserProfileContext } from '../../providers/UserProfileProvider';
 
+
 export const PostDetails = () => {
     const { id } = useParams();
     const [post, setPost] = useState();
@@ -86,7 +87,7 @@ export const PostDetails = () => {
                             </>
                         ) : null}
                     </div>
-                    <p>{post.content}</p>
+                    <p style={{whiteSpace: 'pre-line'}} >{post.content}</p>
                     {/* tags go here */}
                     <button className="btn btn-primary"
                         onClick={HandleCommentOnClick} >
