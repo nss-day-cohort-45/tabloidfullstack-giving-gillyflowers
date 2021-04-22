@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { PostContext } from '../../providers/PostProvider';
 import CommentList from '../comments/CommentList'
+import CommentForm from '../comments/CommentForm'
 import { UserProfileContext } from '../../providers/UserProfileProvider';
 
 
@@ -9,6 +10,8 @@ export const PostDetails = () => {
     const { id } = useParams();
     const [post, setPost] = useState();
     const [isHidden, setIsHidden] = useState(true);
+    const [isHiddenAddNewComment, setIsHiddenAddNewComment] = useState(true);
+
     const { getPostById, deletePost } = useContext(PostContext);
     const { currentUserId } = useContext(UserProfileContext);
     const history = useHistory();
@@ -43,8 +46,17 @@ export const PostDetails = () => {
         } else {
             setIsHidden(true);
         }
-
     };
+
+    //on click show the comments add a comment
+    const HandleAddCommentOnClick = () => {
+        if (isHiddenAddNewComment) {
+            setIsHiddenAddNewComment(false);
+        } else {
+            setIsHiddenAddNewComment(true);
+        }
+    };
+
 
     return post ? (
         <div className="container">
@@ -97,8 +109,12 @@ export const PostDetails = () => {
                             {isHidden ? "Show Comments" : "Hide Comments"}
                         </button>
                         <button className="btn btn-secondary m-5"
-                        // onClick={""}
-                        >Add Comment</button>
+                            onClick={HandleAddCommentOnClick} >
+                            {isHiddenAddNewComment ? "Add Comment" : "Hide Comment Form"}
+                        </button>
+                    </div>
+                    <div>
+                        {!isHiddenAddNewComment ? (< CommentForm />) : null}
                     </div>
                     <div>
                         {!isHidden ? (< CommentList />) : null}

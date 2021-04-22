@@ -34,8 +34,8 @@ const CommentList = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default CommentList;
 

@@ -1,10 +1,14 @@
-import React, { useState } from "react";
-import { Button, Form, FormGroup, Input, Card, CardBody } from 'reactstrap';
+import React, { useEffect, useState, useContext } from "react";
+import { useParams, useHistory } from 'react-router-dom';
+import { Button, Form, FormGroup, Input, Label, Card, CardBody } from 'reactstrap';
+import { PostContext } from '../../providers/PostProvider'
 
-const CommentForm = () => {
+export const CommentForm = () => {
     const [subject, setSubject] = useState('');
     const [content, setContent] = useState('');
     const [currentPost, setCurrentPost] = useState();
+    const { getPostById } = useContext(PostContext);
+
     const history = useHistory();
 
     const { id } = useParams();
@@ -19,6 +23,10 @@ const CommentForm = () => {
             getPostById(id).then(setCurrentPost);
         }
     }, [id]);
+
+    const handleClickSaveButton = (evt) => {
+
+    }
 
     //add click handle submit comment 
     return (
@@ -53,7 +61,11 @@ const CommentForm = () => {
                     value={content}
                 />
             </FormGroup>
-            <Button onClick={handleClickSaveButton}>Submit</Button>
+            <Button
+            // onClick={handleClickSaveButton}
+            >Submit</Button>
         </Form>
     );
-}
+};
+
+export default CommentForm;
