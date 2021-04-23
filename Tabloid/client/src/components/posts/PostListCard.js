@@ -8,7 +8,7 @@ const Post = ({ post }) => {
             <CardBody className="px-2">
                 <h2>
                     <Link to={`/posts/${post.id}`}>
-                        <strong>{post.title}</strong>
+                        <strong style={{ textTransform: 'capitalize' }}>{post.title}</strong>
                     </Link>
                 </h2>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
