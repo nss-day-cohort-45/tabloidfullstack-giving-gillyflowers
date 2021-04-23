@@ -66,7 +66,7 @@ export const PostDetails = () => {
                         <img src={post.imageLocation} style={{ maxWidth: "800px", maxHeight: "600px" }}
                             className="rounded mx-auto d-block img-fluid" alt="random picture probably not relating to the post" />
                     </div>
-                    <h1>{post.title}</h1>
+                    <h1 style={{ textTransform: 'capitalize' }}>{post.title}</h1>
                     <div
                         className="post-byline col-lg-10"
                         style={{
@@ -122,7 +122,7 @@ export const PostDetails = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     ) : null;
 };
 

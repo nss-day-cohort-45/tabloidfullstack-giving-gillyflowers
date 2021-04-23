@@ -12,7 +12,7 @@ const Post = ({ post }) => {
             <CardBody>
                 <p>
                     <Link to={`/posts/${post.id}`}>
-                        <strong>{post.title}</strong>
+                        <strong style={{ textTransform: 'capitalize' }}>{post.title}</strong>
                     </Link>
                 </p>
 
