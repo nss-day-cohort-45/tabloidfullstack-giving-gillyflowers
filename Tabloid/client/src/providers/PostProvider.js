@@ -88,6 +88,26 @@ export const PostProvider = (props) => {
         );
     };
 
+    const uploadFile = (files) => {
+        if (files.length === 0) {
+            return;
+        }
+
+        let fileToUpload = files[0];
+        const formData = new FormData();
+        formData.append('file', fileToUpload, fileToUpload.name);
+
+        return getToken().then((token) =>
+            fetch('/api/upload', {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                body: formData,
+            })
+        );
+    };
+
     return (
         <PostContext.Provider
             value={{
@@ -98,6 +118,7 @@ export const PostProvider = (props) => {
                 deletePost,
                 addPost,
                 updatePost,
+                uploadFile,
             }}
         >
             {props.children}

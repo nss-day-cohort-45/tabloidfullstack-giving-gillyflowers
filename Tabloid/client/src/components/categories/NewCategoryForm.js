@@ -37,13 +37,24 @@ export const NewCategoryForm = ({addNew}) => {
                         onChange = {handleControlledInputChange}
                         />
                </fieldset>
-               <Button style={{ cursor: 'pointer' }} 
-                    onClick={() =>{
-                        addNew(categoryToUpdate)
+              {categoryToUpdate.name.replace(/ /g,'').length === 0? 
+                    <Button disabled 
+                        style={{ cursor: 'pointer' }} 
+                        onClick={() =>{
+                            addNew(categoryToUpdate)
                             .then(reset)
-                            }}>
+                        }}>
                     Save
-                    </Button>
+                    </Button> 
+                    : 
+                    <Button active 
+                        style={{ cursor: 'pointer' }} 
+                        onClick={() =>{
+                            addNew(categoryToUpdate)
+                            .then(reset)
+                        }}>
+                    Save
+                    </Button> }
            </div>
         </CardBody>
     </Card>

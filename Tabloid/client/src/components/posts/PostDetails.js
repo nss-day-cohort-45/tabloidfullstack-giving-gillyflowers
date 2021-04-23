@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { PostContext } from '../../providers/PostProvider';
 import CommentList from '../comments/CommentList'
+import CommentForm from '../comments/CommentForm'
 import { UserProfileContext } from '../../providers/UserProfileProvider';
 import { PostTagContext } from '../../providers/PostTagProvider';
 
@@ -9,7 +10,9 @@ import { PostTagContext } from '../../providers/PostTagProvider';
 export const PostDetails = () => {
     const { id } = useParams();
     const [post, setPost] = useState();
-    const [isHidden, setIsHidden] = useState(true);
+    const [isHiddenComment, setIsHiddenComment] = useState(true);
+    const [isHiddenAddNewComment, setIsHiddenAddNewComment] = useState(true);
+
     const { getPostById, deletePost } = useContext(PostContext);
     const { currentUserId } = useContext(UserProfileContext);
     const { postTags, getAllPostTagsByPostId, setPostTags } = useContext(PostTagContext);
@@ -42,22 +45,34 @@ export const PostDetails = () => {
 
     //on click show the comments 
     const HandleCommentOnClick = () => {
-        if (isHidden) {
-            setIsHidden(false);
+        if (isHiddenComment) {
+            setIsHiddenComment(false);
         } else {
-            setIsHidden(true);
+            setIsHiddenComment(true);
         }
-
     };
+
+    //on click show the comments add a comment
+    const HandleAddCommentOnClick = () => {
+        if (isHiddenAddNewComment) {
+            setIsHiddenAddNewComment(false);
+        } else {
+            setIsHiddenAddNewComment(true);
+        }
+    };
+
 
     return post ? (
         <div className="container">
             <div className="row justify-content-center">
-                <div className="col-sm-12 col-lg-6">
-                    <img src={post.imageLocation} />
-                    <h1>{post.title}</h1>
+                <div className="col-sm-6 col-lg-10">
+                    <div className="text-center">
+                        <img src={post.imageLocation} style={{ maxWidth: "800px", maxHeight: "600px" }}
+                            className="rounded mx-auto d-block img-fluid" alt="random picture probably not relating to the post" />
+                    </div>
+                    <h1 style={{ textTransform: 'capitalize' }}>{post.title}</h1>
                     <div
-                        className="post-byline"
+                        className="post-byline col-lg-10"
                         style={{
                             display: 'flex',
                             flexDirection: 'row',
@@ -112,17 +127,24 @@ export const PostDetails = () => {
                     </button>
                     {/* is is hidden is true show list */}
                     <div>
-                        {!isHidden ? (< CommentList />) : null}
+                        <button className="btn btn-primary m-4"
+                            onClick={HandleCommentOnClick} >
+                            {isHiddenComment ? "Show Comments" : "Hide Comments"}
+                        </button>
+                        <button className="btn btn-secondary m-5"
+                            onClick={HandleAddCommentOnClick} >
+                            {isHiddenAddNewComment ? "Add Comment" : "Hide Comment Form"}
+                        </button>
                     </div>
-                    {/* 
-                     XXXX create a btn turnery for the label on button
-                     XXXX with a div that calls comment list  
-                     XXXX set state
-                     XXXX the btn trigger state that it applied to div (ishidden or display)
-                     XXXX sort the list by id used in params */}
+                    <div>
+                        {!isHiddenAddNewComment ? (< CommentForm stateMethod={setIsHiddenComment} />) : null}
+                    </div>
+                    <div>
+                        {!isHiddenComment ? (< CommentList commentState={setIsHiddenComment} />) : null}
+                    </div>
                 </div>
             </div>
-        </div>
+        </div >
     ) : null;
 };
 
