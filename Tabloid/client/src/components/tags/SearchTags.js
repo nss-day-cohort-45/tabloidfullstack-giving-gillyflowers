@@ -26,7 +26,7 @@ const TagSearchBar = () =>
         for(let i = 0; i < searchTerms.length; i++)
         {
              console.log("searched", searchTerms[i]);
-             //searchPostByTag(searchTerms[i])
+             //searchPostByTag(searchTerms)
              //console.log(posts)
         }
     }
