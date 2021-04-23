@@ -12,19 +12,8 @@ export const CommentForm = ({ stateMethod }) => {
     const { addComment, getAllCommentsByPostId } = useContext(CommentContext);
 
     const history = useHistory();
-
     const { id } = useParams();
 
-
-    // //add use effect this is for editing a comment different issue ticket
-    // useEffect(() => {
-    //     setSubject('');
-    //     setContent('');
-    //     setCurrentPost();
-    //     if (id) {
-    //         getPostById(id).then(setCurrentPost);
-    //     }
-    // }, [id]);
 
     //add click handle submit comment 
     const handleClickSaveButton = (evt) => {
