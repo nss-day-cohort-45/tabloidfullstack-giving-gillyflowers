@@ -1,17 +1,14 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { useParams, useHistory } from 'react-router-dom';
-import { Button, Form, FormGroup, Input, Label, Card, CardBody } from 'reactstrap';
+import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
 import { CommentContext } from "../../providers/CommentProvider";
 import { PostContext } from '../../providers/PostProvider'
 
 export const CommentForm = ({ stateMethod }) => {
     const [subject, setSubject] = useState('');
     const [content, setContent] = useState('');
-    const [currentPost, setCurrentPost] = useState();
-    const { getPostById } = useContext(PostContext);
     const { addComment, getAllCommentsByPostId } = useContext(CommentContext);
 
-    const history = useHistory();
     const { id } = useParams();
 
 
