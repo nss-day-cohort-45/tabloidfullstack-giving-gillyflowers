@@ -31,18 +31,47 @@ namespace Tabloid.Controllers
             return Ok(tags);
         }
 
-        [HttpPost]
-        public IActionResult AddPostTag(PostTag postTag)
+        // Needs to accept a list of tag ids, it can use to make the new entries
+        // with the tagId and postId
+        [HttpPost("{postId}")]
+        public IActionResult UpdatePostTags(List<int> tagIds, int postId)
         {
-            _postTagRepository.AddPostTag(postTag);
-            return CreatedAtAction("Get", new { id = postTag.Id }, postTag);
-        }
+                _postTagRepository.DeletePostTag(postId);
 
-        [HttpDelete("{postId}")]
-        public IActionResult Delete(int postId)
-        {
-            _postTagRepository.DeletePostTag(postId);
+            foreach (int tagId in tagIds)
+            {
+                _postTagRepository.AddPostTag(tagId, postId);
+            }
+
             return NoContent();
         }
+
+
+        //[HttpPost]
+        //public IActionResult AddPostTag(int tagId, int postId)
+        //{
+        //    var OldPostTags = _postTagRepository.GetAllPostTagsByPostId(postId);
+
+        //    foreach (var postTag in OldPostTags)
+        //    {
+        //        _postTagRepository.DeletePostTag(postId);
+        //    }
+
+        //    _postTagRepository.AddPostTag(tagId, postId);
+     
+        //    return NoContent();
+        //}
+
+        //[HttpDelete("{postId}")]
+        //public IActionResult DeletePostTag(int postId)
+        //{
+        //    var OldPostTags = _postTagRepository.GetAllPostTagsByPostId(postId);
+
+        //    foreach (var postTag in OldPostTags)
+        //    {
+        //        _postTagRepository.DeletePostTag(postId);
+        //    }
+        //    return NoContent();
+        //}
     }
 }

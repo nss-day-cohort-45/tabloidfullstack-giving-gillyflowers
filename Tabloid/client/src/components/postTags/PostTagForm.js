@@ -8,122 +8,94 @@ import { TagContext } from '../../providers/TagProvider';
 import { useHistory, useParams } from "react-router-dom";
 
 const PostTagForm = () => {
-    const { postTags, getAllPostTagsByPostId, addPostTag, deleteTag, setPostTags } = useContext(PostTagContext)
-    const { tags, getAllTags } = useContext(TagContext)
+    const { postTags, getAllPostTagsByPostId, updatePostTag, setPostTags } = useContext(PostTagContext)
+    const { tags, getAllTags, setTags } = useContext(TagContext)
 
     // Use this hook to allow us to programatically redirect users
     const { postId } = useParams();
     const history = useHistory();
-
-    // const newPostTags = [...postTags]
 
     useEffect(() => {
         getAllTags()
             .then(() => {
                 getAllPostTagsByPostId(postId)
             })
-    }, [postId]);
+    }, []);
 
     console.log(postId);
     console.log(tags);
     console.log(postTags);
 
-    // //when field changes, update state. This causes a re-render and updates the view.
-    // //Controlled component
-    // const handleControlledInputChange = (event) => {
-    //     //When changing a state object or array,
-    //     //always create a copy make changes, and then set state.
-    //     const newTag = { ...tag }
-    //     //animal is an object with properties.
-    //     //set the property to the new value
-    //     newTag[event.target.id] = event.target.value
-    //     //update state
-    //     setTag(newTag)
-    // }
+    // TO DO - Get the tags that are checked -> Make an array of checked tag objects to 
+    // pass into updatePostTag()
 
-    // // Need to delete all the current PostTags for the post and then
-    // // This needs to map of the current array of postTags and save new objects for them
-    // const handleSavePost = () => {
-    //     if (tagId) {
-    //         updateTag({
-    //             id: parseInt(tagId),
-    //             name: tag.name
-    //         })
-    //             .then(() => {
-    //                 // Navigate the user back to the tags route
-    //                 history.push("/tags");
-    //                 getAllTags();
-    //                 setTag({
-    //                     name: ""
-    //                 });
-    //             })
-    //     } else {
-    //         addTag({
-    //             name: tag.name
-    //         })
-    //             .then(() => {
-    //                 history.push("/tags");
-    //                 getAllTags();
-    //                 setTag({
-    //                     name: ""
-    //                 });
-    //             })
-    //     }
-    // }
+    const handleInputChange = (event) => {
+        console.log(event.target.id)
+        console.log(event.target)
+    }
 
-    // useEffect(() => {
-    //     if (tagId) {
-    //         getTagById(tagId)
-    //             .then(tag => {
-    //                 setTag(tag)
-    //             })
-    //             .then(window.scrollTo(0, 0));
-    //     } else {
-    //         setTag({
-    //             name: ""
-    //         })
-    //     }
-    // }, [tagId])
+    const handleSaveTags = () => {
+
+        // https://www.techiedelight.com/retrieve-checked-checkboxes-values-javascript/
+
+        var checkedBoxes = document.querySelectorAll('input[type="checkbox"]:checked');
+        let arrayOfTagIds = Array.from(checkedBoxes).map(c => c.defaultValue);
+
+        let tagIds = arrayOfTagIds.map(t => {
+            return parseInt(t)
+        })
+
+        console.log(tagIds);
+
+        updatePostTag(tagIds, parseInt(postId))
+        setPostTags([])
+        // .then(() => {
+        history.push(`/posts/${postId}`)
+        // ------
+        //  })
+    }
+
 
     return (
         <Form className="container col-md-6">
             <h2>Add tags to your post!</h2>
 
             {
-                tags.map((tag) => {
-                    debugger
-                    const pt.isChecked = postTags.map(pt => pt.tagId === tag.id)
+                tags.map(t => {
 
-                    if (pt.isChecked === true) {
-                        return <FormGroup key={tag.id} check>
-                <Label check>
-                    <Input type="checkbox" checked /> {tag.name}
-                </Label>
-            </FormGroup>
+                    postTags.find(pt => {
+                        if (pt.tagId === t.id) {
+                            return t.checked = true
+                        }
+                    })
+
+                    if (t.checked) {
+                        return <FormGroup key={t.id} check>
+                            <Label check>
+                                <Input type="checkbox" onChange={handleInputChange} id={t.id} value={t.id} defaultChecked /> {t.name}
+                            </Label>
+                        </FormGroup>
                     } else {
-                        return <FormGroup key={tag.id} check>
-                <Label check>
-                    <Input type="checkbox" /> {tag.name}
-                </Label>
-            </FormGroup>
+                        return <FormGroup key={t.id} check>
+                            <Label check>
+                                <Input type="checkbox" onChange={handleInputChange} id={t.id} value={t.id} /> {t.name}
+                            </Label>
+                        </FormGroup>
                     }
                 })
             }
-            {/* <Button
-                onClick={
-                    event => {
-                        event.preventDefault() // Prevent browser from submitting the form and refreshing the page
-                        handleSavePost()
-                    }}>Save</Button>
             <Button
                 onClick={
                     event => {
                         event.preventDefault() // Prevent browser from submitting the form and refreshing the page
-                        setTag({
-                            name: ""
-                        })
-                        history.push("/tags");
-                    }}>Cancel</Button> */}
+                        handleSaveTags()
+                    }}>Save</Button>
+            <Button
+                onClick={
+                    event => {
+                        event.preventDefault()
+                        history.push(`/posts/${postId}`)
+                    }}>Cancel</Button>
         </Form>
     )
 }

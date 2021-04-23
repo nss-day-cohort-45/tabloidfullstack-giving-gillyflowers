@@ -12,18 +12,15 @@ export const PostDetails = () => {
     const [isHidden, setIsHidden] = useState(true);
     const { getPostById, deletePost } = useContext(PostContext);
     const { currentUserId } = useContext(UserProfileContext);
-    const { postTags, getAllPostTagsByPostId } = useContext(PostTagContext);
+    const { postTags, getAllPostTagsByPostId, setPostTags } = useContext(PostTagContext);
     const history = useHistory();
-
-    let tags = postTags.map(pt => pt.tag.name);
-    let currentTags = tags.sort();
-    console.log(currentTags);
 
     useEffect(() => {
         getPostById(id).then((parsed) => {
             if (parsed.id) {
                 setPost(parsed)
-                getAllPostTagsByPostId(parseInt(parsed.id))
+                getAllPostTagsByPostId(parsed.id)
+                console.log(postTags)
             } else {
                 history.push('/posts');
             }
@@ -101,7 +98,7 @@ export const PostDetails = () => {
                     <div>
                         <h4>Tags</h4>
                         {
-                            currentTags.length ? currentTags.map(t => t).join(", ") : "No tags at the moment. Use the button to add a few."
+                            postTags.length > 0 ? postTags.map(t => t.tag.name).join(", ") : "No tags at the moment. Use the button to add a few."
                         }
                         <button className="btn btn-primary"
                             onClick={() => {

@@ -5,7 +5,7 @@ namespace Tabloid.Repositories
 {
     public interface IPostTagRepository
     {
-        void AddPostTag(PostTag postTag);
+        void AddPostTag(int tagId, int postId);
         void DeletePostTag(int postId);
         List<PostTag> GetAllPostTagsByPostId(int postId);
     }

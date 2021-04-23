@@ -24,7 +24,8 @@ namespace Tabloid.Repositories
                             FROM PostTag pt
                         JOIN Post p on pt.PostId = p.Id
                         JOIN Tag t on pt.TagId = t.Id
-                        WHERE p.Id = @postId";
+                        WHERE p.Id = @postId
+                        ORDER By TagName";
 
                     DbUtils.AddParameter(cmd, "@postId", postId);
 
@@ -52,7 +53,7 @@ namespace Tabloid.Repositories
             }
         }
 
-        public void AddPostTag(PostTag postTag)
+        public void AddPostTag(int tagId, int postId)
         {
             using (var conn = Connection)
             {
@@ -61,12 +62,11 @@ namespace Tabloid.Repositories
                 {
                     cmd.CommandText = @"
                         INSERT INTO PostTag ( PostId, TagId )
-                        OUTPUT INSERTED.ID
                         VALUES ( @PostId, @TagId )";
-                    DbUtils.AddParameter(cmd, "@PostId", postTag.PostId);
-                    DbUtils.AddParameter(cmd, "@TagId", postTag.TagId);
+                    DbUtils.AddParameter(cmd, "@PostId", postId);
+                    DbUtils.AddParameter(cmd, "@TagId", tagId);
 
-                    postTag.Id = (int)cmd.ExecuteScalar();
+                    cmd.ExecuteNonQuery();
                 }
             }
         }

@@ -21,31 +21,45 @@ export const PostTagProvider = (props) => {
             .then(setPostTags);
     };
 
-    const addPostTag = (postTag) => {
+    const updatePostTag = (tagIds, postId) => {
+        debugger
         return getToken().then((token) =>
-            fetch(`/api/posttags`, {
+            fetch(`/api/posttags/${postId}`, {
                 method: 'POST',
                 headers: {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(postTag),
+                body: JSON.stringify(tagIds),
             }));
     };
 
-    const deletePostTag = (postId) => {
-        return getToken().then((token) =>
-            fetch(`/api/posttags/${postId}`, {
-                method: 'DELETE',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            }));
-    };
+
+    // const addPostTag = (postTag) => {
+    //     return getToken().then((token) =>
+    //         fetch(`/api/posttags`, {
+    //             method: 'POST',
+    //             headers: {
+    //                 Authorization: `Bearer ${token}`,
+    //                 "Content-Type": "application/json",
+    //             },
+    //             body: JSON.stringify(postTag),
+    //         }));
+    // };
+
+    // const deletePostTag = (postId) => {
+    //     return getToken().then((token) =>
+    //         fetch(`/api/posttags/${postId}`, {
+    //             method: 'DELETE',
+    //             headers: {
+    //                 Authorization: `Bearer ${token}`,
+    //             },
+    //         }));
+    // };
 
     return (
         <PostTagContext.Provider
-            value={{ postTags, setPostTags, getAllPostTagsByPostId, addPostTag, deletePostTag }}
+            value={{ postTags, setPostTags, getAllPostTagsByPostId, updatePostTag }}
         >
             {props.children}
         </PostTagContext.Provider>
