@@ -136,6 +136,7 @@ export const PostForm = () => {
             } else {
                 const newPost = { ...currentPost };
                 newPost.title = title;
+                newPost.imageLocation = imageLocation;
                 newPost.categoryId = categoryId;
                 newPost.content = content;
                 newPost.publishDateTime = publishDateTime;
