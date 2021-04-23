@@ -43,6 +43,12 @@ namespace Tabloid.Controllers
             return Ok(post);
         }
 
+        [HttpGet("search")]
+        public IActionResult search(string criterion)
+        {
+            return Ok(_postRepository.searchByTag(criterion));
+        }
+
         [HttpGet("userProfileId/{userProfileId}")]
         public IActionResult GetPostByUserProfileId(int userProfileId)
         {

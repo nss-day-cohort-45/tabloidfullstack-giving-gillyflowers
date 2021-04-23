@@ -47,6 +47,19 @@ export const PostProvider = (props) => {
         );
     };
 
+    const searchPostByTag = (term) => {
+        return getToken().then((token)=>{
+            fetch(`/api/posts/search?=${term}`,{
+            method: "GET",
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        })
+            .then((res) => res.json())
+            .then(setPosts);
+        })
+    }
+
     const deletePost = (id) => {
         return getToken().then((token) =>
             fetch(`/api/posts/${id}`, {
@@ -119,6 +132,7 @@ export const PostProvider = (props) => {
                 addPost,
                 updatePost,
                 uploadFile,
+                searchPostByTag
             }}
         >
             {props.children}

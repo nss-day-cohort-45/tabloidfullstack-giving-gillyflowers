@@ -104,6 +104,44 @@ namespace Tabloid.Repositories
             }
         }
 
+        public List<Post> searchByTag(string criterion)
+        {
+            using(var conn = Connection)
+            {
+                conn.Open();
+                using(var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT p.Id, p.Title, p.Content, p.ImageLocation, p.CreateDateTime, p.PublishDateTime,
+                           p.IsApproved, p.CategoryId, p.UserProfileId,
+                           c.Name AS CategoryName,
+                           up.DisplayName, up.FirstName, up.LastName, up.Email,                        
+                           t.Name AS TagName
+	                    FROM Post p
+                        LEFT JOIN Category c on c.Id = p.CategoryId
+                        LEFT JOIN UserProfile up on up.Id = p.UserProfileId
+	                    LEFT JOIN PostTag pt on pt.PostId = p.Id
+	                    LEFT JOIN Tag t on t.Id = pt.TagId
+	                    WHERE t.Name LIKE @criterion
+                        AND p.IsApproved = 1 AND p.PublishDateTime < SYSDATETIME()
+                        ORDER BY p.CreateDateTime DESC
+                    ";
+                    DbUtils.AddParameter(cmd, "@criterion", $"%{criterion}%");
+
+                    var reader = cmd.ExecuteReader();
+                    var posts = new List<Post>();
+                    while (reader.Read())
+                    {
+                        posts.Add(NewPostFromDb(reader));
+                    }
+
+                     reader.Close();
+
+                    return posts;
+                }
+            }
+        }
+
         public List<Post> GetPostByUserProfileId(int userProfileId)
         {
             using (var conn = Connection)
