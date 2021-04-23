@@ -22,7 +22,6 @@ export const PostTagProvider = (props) => {
     };
 
     const updatePostTag = (tagIds, postId) => {
-        debugger
         return getToken().then((token) =>
             fetch(`/api/posttags/${postId}`, {
                 method: 'POST',

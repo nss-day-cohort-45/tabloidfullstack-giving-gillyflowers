@@ -120,13 +120,6 @@ export const PostDetails = () => {
                                 history.push(`/posts/tags/${post.id}`);
                             }}>Manage Tags</button>
                     </div>
-
-                    <button className="btn btn-primary"
-                        onClick={HandleCommentOnClick} >
-                        {isHidden ? "Show Comments" : "Hide Comments"}
-                    </button>
-
-                    {/* is is hidden is true show list */}
                     <div>
                         <button className="btn btn-primary m-4"
                             onClick={HandleCommentOnClick} >

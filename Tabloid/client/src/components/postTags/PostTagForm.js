@@ -48,7 +48,12 @@ const PostTagForm = () => {
         console.log(tagIds);
 
         updatePostTag(tagIds, parseInt(postId))
-        setPostTags()
+            .then(() => {
+                tags.map(t => {
+                    return t.checked = false
+                })
+            })
+        // setPostTags()
         // .then(() => {
         history.push(`/posts/${postId}`)
         // ------
