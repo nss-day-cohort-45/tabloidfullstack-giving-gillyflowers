@@ -48,7 +48,7 @@ const PostTagForm = () => {
         console.log(tagIds);
 
         updatePostTag(tagIds, parseInt(postId))
-        setPostTags([])
+        setPostTags()
         // .then(() => {
         history.push(`/posts/${postId}`)
         // ------

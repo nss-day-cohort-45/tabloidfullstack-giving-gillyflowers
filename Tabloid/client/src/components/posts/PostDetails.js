@@ -125,6 +125,7 @@ export const PostDetails = () => {
                         onClick={HandleCommentOnClick} >
                         {isHidden ? "Show Comments" : "Hide Comments"}
                     </button>
+
                     {/* is is hidden is true show list */}
                     <div>
                         <button className="btn btn-primary m-4"
