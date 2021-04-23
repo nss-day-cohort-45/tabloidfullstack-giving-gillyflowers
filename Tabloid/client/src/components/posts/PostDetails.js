@@ -64,7 +64,7 @@ export const PostDetails = () => {
                 <div className="col-sm-6 col-lg-10">
                     <div className="text-center">
                         <img src={post.imageLocation} style={{ maxWidth: "800px", maxHeight: "600px" }}
-                            className="rounded mx-auto d-block img-fluid" />
+                            className="rounded mx-auto d-block img-fluid" alt="random picture probably not relating to the post" />
                     </div>
                     <h1>{post.title}</h1>
                     <div
@@ -118,7 +118,7 @@ export const PostDetails = () => {
                         {!isHiddenAddNewComment ? (< CommentForm stateMethod={setIsHiddenComment} />) : null}
                     </div>
                     <div>
-                        {!isHiddenComment ? (< CommentList />) : null}
+                        {!isHiddenComment ? (< CommentList commentState={setIsHiddenComment} />) : null}
                     </div>
                 </div>
             </div>

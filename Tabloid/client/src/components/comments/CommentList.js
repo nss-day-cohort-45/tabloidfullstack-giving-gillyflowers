@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { CommentContext } from '../../providers/CommentProvider';
 import CommentCard from './CommentCard';
 
-const CommentList = () => {
+const CommentList = ({ commentState }) => {
     const { comments, getAllCommentsByPostId, getCommentById } = useContext(CommentContext);
     const { id } = useParams();
 
@@ -15,16 +15,16 @@ const CommentList = () => {
 
 
     return (
-        <div className="container">
+        <div className="container mt-5">
             <div className="row justify-content-center">
                 <div className="cards-column" >
                     {
                         comments.length > 0 ?
                             (comments.map((comment) => {
-                                return <CommentCard key={comment.id} comment={comment} />
+                                return <CommentCard key={comment.id} comment={comment} commentState={commentState} />
                             })
                             ) : (
-                                <span>No comments on this post.</span>
+                                <span style={{ marginTop: "30px" }}>No comments on this post.</span>
                             )
                     }
                 </div>
