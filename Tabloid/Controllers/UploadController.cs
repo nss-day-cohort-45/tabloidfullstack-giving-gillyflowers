@@ -6,7 +6,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Tabloid.Models;
+using Tabloid.Repositories;
 
 namespace Tabloid.Controllers
 {
@@ -15,12 +18,18 @@ namespace Tabloid.Controllers
     [ApiController]
     public class UploadController : ControllerBase
     {
-        [HttpPost, DisableRequestSizeLimit]
+        private readonly IUserProfileRepository _userProfileRepository;
+        public UploadController(IUserProfileRepository userProfileRepository)
+        {
+            _userProfileRepository = userProfileRepository;
+        }
 
+        [HttpPost, DisableRequestSizeLimit]
         public IActionResult Upload()
         {
             try
             {
+                var currentUser = GetCurrentUserProfile();
                 var file = Request.Form.Files[0];
                 var folderName = Path.Combine("client", "public", "uploads");
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
@@ -32,22 +41,26 @@ namespace Tabloid.Controllers
                     var fileName = String.Concat(inputFileName.Where(c => !Char.IsWhiteSpace(c)));
 
                     // checking that the file is an image file with one of the valid extensions
+                    var extensions = new[] {"png", "jpg", "gif", "bmp"};
                     var fileParts = fileName.Split('.').ToList();
-                    fileParts.Reverse();
-                    if (fileParts[0].ToLower() != "png" && fileParts[0].ToLower() != "jpg" 
-                        && fileParts[0].ToLower() != "gif" && fileParts[0].ToLower() != "bmp")
+                    fileParts.Reverse();                    
+                    if (!extensions.Contains(fileParts[0].ToLower()))
                     {
                         return BadRequest();
                     }
 
-                    var fullPath = Path.Combine(pathToSave, fileName);
+                    Int32 unixTimestamp = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+
+                    string randomFileName = currentUser.Id + "-" + unixTimestamp.ToString() + "." + fileParts[0].ToLower();
+
+                    var fullPath = Path.Combine(pathToSave, randomFileName);
 
                     if (System.IO.File.Exists(fullPath))
                     {
                         throw new Exception("File already exists");
                     }
 
-                    var outputPath = Path.Combine(folderName, fileName);
+                    var outputPath = Path.Combine(folderName, randomFileName);
 
                     using (var stream = new FileStream(fullPath, FileMode.Create))
                     {
@@ -65,6 +78,12 @@ namespace Tabloid.Controllers
             {
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
+        }
+
+        private UserProfile GetCurrentUserProfile()
+        {
+            var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
         }
     }
 }

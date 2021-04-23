@@ -23,7 +23,6 @@ export const PostForm = () => {
     );
     const [currentPost, setCurrentPost] = useState();
     const [file, setFile] = useState();
-    const [buttonDisabled, setButtonDisabled] = useState(true);
     const [imageMethod, setImageMethod] = useState('upload');
 
     const history = useHistory();
@@ -79,43 +78,82 @@ export const PostForm = () => {
     };
 
     const handleClickSaveButton = (evt) => {
-        if (!id) {
-            const post = {
-                imageLocation,
-                title,
-                content,
-                categoryId,
-                publishDateTime,
-            };
-            addPost(post).then((p) => {
-                history.push('/posts');
-            });
+        if (imageMethod === 'upload') {
+            if (!id) {
+                handleUpload()
+                    .then((imagePath) => {
+                        const post = {
+                            title,
+                            content,
+                            categoryId,
+                            publishDateTime,
+                        };
+                        if (imagePath.length > 0) {
+                            post.imageLocation = imagePath;
+                        } else {
+                            post.imageLocation = imageLocation;
+                        }
+                        addPost(post).then((p) => {
+                            history.push('/posts');
+                        });
+                    })
+                    .catch((error) => {
+                        window.alert(error);
+                    });
+            } else {
+                handleUpload()
+                    .then((imagePath) => {
+                        const newPost = { ...currentPost };
+                        newPost.title = title;
+                        newPost.categoryId = categoryId;
+                        newPost.content = content;
+                        newPost.publishDateTime = publishDateTime;
+                        if (imagePath.length > 0) {
+                            newPost.imageLocation = imagePath;
+                        } else {
+                            newPost.imageLocation = imageLocation;
+                        }
+                        updatePost(newPost).then(() => {
+                            history.push(`/posts/${newPost.id}`);
+                        });
+                    })
+                    .catch((error) => {
+                        window.alert(error);
+                    });
+            }
         } else {
-            const newPost = { ...currentPost };
-            newPost.title = title;
-            newPost.imageLocation = imageLocation;
-            newPost.categoryId = categoryId;
-            newPost.content = content;
-            newPost.publishDateTime = publishDateTime;
-            updatePost(newPost).then(() => {
-                history.push(`/posts/${newPost.id}`);
-            });
+            if (!id) {
+                const post = {
+                    title,
+                    content,
+                    categoryId,
+                    publishDateTime,
+                    imageLocation,
+                };
+                addPost(post).then(() => {
+                    history.push('/posts');
+                });
+            } else {
+                const newPost = { ...currentPost };
+                newPost.title = title;
+                newPost.categoryId = categoryId;
+                newPost.content = content;
+                newPost.publishDateTime = publishDateTime;
+                updatePost(newPost).then(() => {
+                    history.push(`/posts/${newPost.id}`);
+                });
+            }
         }
     };
 
-    const handleUpload = (evt) => {
-        evt.preventDefault();
-        setButtonDisabled(true);
+    const handleUpload = () => {
         if (file) {
-            uploadFile(file)
+            return uploadFile(file)
                 .then((res) => {
-                    window.alert(
-                        res.ok ? 'File Successfully Uploaded' : 'Upload Failed'
-                    );
                     if (res.ok) {
                         return res.json();
                     } else {
-                        return null;
+                        throw new Error('Image upload failed');
                     }
                 })
                 .then((parsed) => {
@@ -124,6 +162,7 @@ export const PostForm = () => {
                             'public\\'
                         );
                         setImageLocation('..\\' + path);
+                        return '..\\' + path;
                     }
                 });
         }
@@ -172,18 +211,10 @@ export const PostForm = () => {
                             onChange={(evt) => {
                                 if (evt.target.files.length > 0) {
                                     setFile(evt.target.files);
-                                    setButtonDisabled(false);
                                 }
                             }}
                         />
                     </FormGroup>
-                    <Button
-                        color="primary"
-                        onClick={handleUpload}
-                        disabled={buttonDisabled}
-                    >
-                        Upload Image
-                    </Button>
                 </div>
             ) : (
                 <FormGroup
@@ -252,12 +283,8 @@ export const PostForm = () => {
                     value={content}
                 />
             </FormGroup>
-            <Button
-                onClick={handleClickSaveButton}
-                disabled={!buttonDisabled}
-                color={!buttonDisabled ? 'danger' : 'success'}
-            >
-                {buttonDisabled ? 'Submit' : 'Upload Image Before Submitting'}
+            <Button onClick={handleClickSaveButton} color="success">
+                Submit
             </Button>
             <Button
                 onClick={clearForm}
