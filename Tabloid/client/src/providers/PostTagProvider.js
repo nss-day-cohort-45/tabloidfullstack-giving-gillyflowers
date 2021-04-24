@@ -33,29 +33,6 @@ export const PostTagProvider = (props) => {
             }));
     };
 
-
-    // const addPostTag = (postTag) => {
-    //     return getToken().then((token) =>
-    //         fetch(`/api/posttags`, {
-    //             method: 'POST',
-    //             headers: {
-    //                 Authorization: `Bearer ${token}`,
-    //                 "Content-Type": "application/json",
-    //             },
-    //             body: JSON.stringify(postTag),
-    //         }));
-    // };
-
-    // const deletePostTag = (postId) => {
-    //     return getToken().then((token) =>
-    //         fetch(`/api/posttags/${postId}`, {
-    //             method: 'DELETE',
-    //             headers: {
-    //                 Authorization: `Bearer ${token}`,
-    //             },
-    //         }));
-    // };
-
     return (
         <PostTagContext.Provider
             value={{ postTags, setPostTags, getAllPostTagsByPostId, updatePostTag }}
