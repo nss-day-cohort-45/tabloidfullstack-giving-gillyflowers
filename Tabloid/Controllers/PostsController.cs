@@ -43,6 +43,16 @@ namespace Tabloid.Controllers
             return Ok(post);
         }
 
+        [HttpGet("search")]
+        public IActionResult search(string q)
+        {
+            
+            List<string> terms = q.Split(' ').ToList();
+
+            
+           return Ok(_postRepository.searchByTag(terms));
+        }
+
         [HttpGet("category/{categoryId}")]
         public IActionResult GetByCategoryId(int categoryId)
         {

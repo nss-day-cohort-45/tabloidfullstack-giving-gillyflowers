@@ -1,5 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { NavLink as RRNavLink, Route, useHistory } from 'react-router-dom';
+import SearchTags from './tags/SearchTags';
+
 import {
     Collapse,
     Navbar,
@@ -87,6 +89,15 @@ export default function Header() {
                     <Nav navbar>
                         {isLoggedIn && (
                             <>
+                                <NavItem>
+                                    <i
+                                        aria-current="page"
+                                        className="nav-link"
+                                        style={{ cursor: 'pointer' }}
+                                    >
+                                    <SearchTags/>
+                                    </i>
+                                </NavItem>
                                 <NavItem>
                                     <a
                                         aria-current="page"

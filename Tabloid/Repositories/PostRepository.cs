@@ -139,6 +139,57 @@ namespace Tabloid.Repositories
             }
         }
 
+        public List<Post> searchByTag(List<string> criterion)
+        {
+            using(var conn = Connection)
+            {
+                conn.Open();
+                using(var cmd = conn.CreateCommand())
+                {
+                   var sql = @"
+                        SELECT p.Id, p.Title, p.Content, p.ImageLocation, p.CreateDateTime, p.PublishDateTime,
+                           p.IsApproved, p.CategoryId, p.UserProfileId,
+                           c.Name AS CategoryName,
+                           up.DisplayName, up.FirstName, up.LastName, up.Email,                        
+                           t.Name AS TagName
+	                    FROM Post p
+                        LEFT JOIN Category c on c.Id = p.CategoryId
+                        LEFT JOIN UserProfile up on up.Id = p.UserProfileId
+	                    LEFT JOIN PostTag pt on pt.PostId = p.Id
+	                    LEFT JOIN Tag t on t.Id = pt.TagId
+	                    WHERE p.IsApproved = 1 AND p.PublishDateTime < SYSDATETIME()
+                        AND t.Name LIKE @criteria 
+                        
+                    ";
+                    DbUtils.AddParameter(cmd, "@criteria", $"%{criterion[0]}%");
+
+                    for(int i = 1; i < criterion.Count(); i ++)
+                    {
+                        sql += $" OR t.Name LIKE @criteria{i}";
+                        DbUtils.AddParameter(cmd, $"@criteria{i}",  $"%{criterion[i]}%");
+                    };
+
+
+                    cmd.CommandText = sql;
+
+         
+                    var reader = cmd.ExecuteReader();
+                    var posts = new List<Post>();
+                    while (reader.Read())
+                    {
+                       if(posts.FirstOrDefault(p => p.Id == DbUtils.GetInt(reader, "Id")) == null)
+                       {
+                        posts.Add(NewPostFromDb(reader));
+                       }
+                    }
+
+                     reader.Close();
+
+                    return posts;
+                }
+            }
+        }
+
         public List<Post> GetPostByUserProfileId(int userProfileId)
         {
             using (var conn = Connection)
