@@ -64,6 +64,11 @@ namespace Tabloid.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateComment(int id, Comment comment)
         {
+            var currentUser = GetCurrentUserProfile();
+            comment.UserProfileId = currentUser.Id;
+            DateTime dateCreated = DateTime.Now;
+            comment.CreateDateTime = dateCreated;
+
             if (id != comment.Id)
             {
                 return BadRequest();

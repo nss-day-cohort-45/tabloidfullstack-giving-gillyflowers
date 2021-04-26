@@ -1,15 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { PostContext } from '../../providers/PostProvider';
+import CommentFormAdd from '../comments/CommentFormAdd';
+import CommentFormEdit from '../comments/CommentFormEdit';
 import CommentList from '../comments/CommentList';
-import CommentForm from '../comments/CommentForm';
 import { UserProfileContext } from '../../providers/UserProfileProvider';
 import { PostTagContext } from '../../providers/PostTagProvider';
 
 export const PostDetails = () => {
-    const { id } = useParams();
+    const { id, showComments } = useParams();
     const [post, setPost] = useState();
-    const [isHiddenComment, setIsHiddenComment] = useState(true);
+    const [isHiddenComment, setIsHiddenComment] = useState(!showComments);
     const [isHiddenAddNewComment, setIsHiddenAddNewComment] = useState(true);
 
     const { getPostById, deletePost } = useContext(PostContext);
@@ -132,8 +133,8 @@ export const PostDetails = () => {
                                     <strong className="mr-1">Tags:</strong>
                                     {postTags.length > 0
                                         ? postTags
-                                              .map((t) => t.tag.name)
-                                              .join(', ')
+                                            .map((t) => t.tag.name)
+                                            .join(', ')
                                         : 'None'}
                                 </p>
                                 {currentUserId === post.userProfileId ? (
@@ -150,6 +151,7 @@ export const PostDetails = () => {
                             </div>
                         </div>
                     </div>
+                    {/* Comments form and list live here */}
                     <p style={{ whiteSpace: 'pre-line' }}>{post.content}</p>
 
                     <div>
@@ -171,9 +173,7 @@ export const PostDetails = () => {
                         </button>
                     </div>
                     <div>
-                        {!isHiddenAddNewComment ? (
-                            <CommentForm stateMethod={setIsHiddenComment} />
-                        ) : null}
+                        {!isHiddenAddNewComment ? (< CommentFormAdd stateMethod={setIsHiddenComment} />) : null}
                     </div>
                     <div>
                         {!isHiddenComment ? (
@@ -182,6 +182,6 @@ export const PostDetails = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     ) : null;
 };

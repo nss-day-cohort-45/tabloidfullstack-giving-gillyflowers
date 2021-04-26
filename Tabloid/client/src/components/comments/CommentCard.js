@@ -22,6 +22,12 @@ const CommentCard = ({ comment, commentState }) => {
         }
     };
 
+    //change the route to have the comment id in route
+    //instead of the post id
+    const handleEdit = () => {
+        history.push(`/comment/${comment.id}`)
+    };
+
     return (
         <Card className="m-4">
             <CardBody style={{ width: "35em" }}>
@@ -29,6 +35,11 @@ const CommentCard = ({ comment, commentState }) => {
                     <i
                         className="fas fa-trash-alt float-right"
                         onClick={handleDelete}
+                        style={{ cursor: 'pointer' }}
+                    ></i>
+                    <i
+                        className="fas fa-edit float-right "
+                        onClick={handleEdit}
                         style={{ cursor: 'pointer' }}
                     ></i>
                 </CardTitle>

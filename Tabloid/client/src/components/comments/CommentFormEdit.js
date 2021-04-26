@@ -1,37 +1,58 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useParams, useHistory } from 'react-router-dom';
 import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
 import { CommentContext } from "../../providers/CommentProvider";
-import { PostContext } from '../../providers/PostProvider'
 
-export const CommentForm = ({ stateMethod }) => {
+export const CommentFormEdit = ({ }) => {
     const [subject, setSubject] = useState('');
     const [content, setContent] = useState('');
-    const { addComment, getAllCommentsByPostId } = useContext(CommentContext);
+    const [currentComment, setCurrentComment] = useState({})
+    const { getAllCommentsByPostId, getCommentById, updateComment } = useContext(CommentContext);
 
-    const { id } = useParams();
+    const { id } = useParams(); //use for comment id
+    const history = useHistory();
 
 
-    //add click handle submit comment 
-    const handleClickSaveButton = (evt) => {
+    // for editing comments
+    // send comment id in the edit button
+    useEffect(() => {
+        getCommentById(id)
+            .then((comment) => {
+                setCurrentComment(comment);
+                setContent(comment.content);
+                setSubject(comment.subject);
+            })
+
+    }, [id]);
+
+    //add click handle edit/update comment 
+    const handleClickEditButton = (evt) => {
 
         const comment = {
+            id: currentComment.id,
             subject,
             content,
-            postId: id,
+            postId: currentComment.postId,
         }
-        addComment(comment).then((c) => {
-            getAllCommentsByPostId(id).then(() => {
+        updateComment(comment).then((c) => {
+            getAllCommentsByPostId(parseInt(currentComment.postId)).then(() => {
                 setSubject('')
                 setContent('')
-                stateMethod(false)
+                // stateMethod(false)
             })
-        });
+        }).then(() => {
+            history.push(`/posts/${comment.postId}/true`);
+        })
     };
 
+    const handleCancel = () => {
+        history.push(`/posts/${currentComment.postId}`)
+    };
+
+    console.log("this is the content state", content);
     return (
         <Form className="container col-md-6">
-            <h2>Add New Comment</h2>
+            <h2> Edit Comment </h2>
             <FormGroup>
                 <Label for="subject">Subject</Label>
                 <Input
@@ -65,17 +86,23 @@ export const CommentForm = ({ stateMethod }) => {
                 <Button disabled
                     style={{ cursor: 'pointer' }}
                 >
-                    Save
+                    Edit
                     </Button>
                 :
                 <Button active
                     style={{ cursor: 'pointer' }}
-                    onClick={handleClickSaveButton}>
-                    Save
+                    onClick={handleClickEditButton}>
+                    Edit
                 </Button>
             }
-        </Form>
+            <Button
+                style={{ cursor: 'pointer', marginLeft: '10px' }}
+                onClick={handleCancel}
+            >
+                Cancel
+            </Button>
+        </Form >
     );
 };
 
-export default CommentForm;
+export default CommentFormEdit;
