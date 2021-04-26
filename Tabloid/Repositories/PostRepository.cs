@@ -139,7 +139,7 @@ namespace Tabloid.Repositories
             }
         }
 
-        public List<Post> searchByTag(string criterion)
+        public List<Post> searchByTag(List<string> criterion)
         {
             using(var conn = Connection)
             {
@@ -157,13 +157,17 @@ namespace Tabloid.Repositories
                         LEFT JOIN UserProfile up on up.Id = p.UserProfileId
 	                    LEFT JOIN PostTag pt on pt.PostId = p.Id
 	                    LEFT JOIN Tag t on t.Id = pt.TagId
-	                    WHERE t.Name LIKE @criterion AND LIKE @criterion
-                        AND p.IsApproved = 1 AND p.PublishDateTime < SYSDATETIME()
-                        ORDER BY p.CreateDateTime DESC
+	                    WHERE p.IsApproved = 1 AND p.PublishDateTime < SYSDATETIME()
+                        AND t.Name LIKE @criteria 
+                        
                     ";
-                    DbUtils.AddParameter(cmd, "@criterion", $"%{criterion}%");
+                    DbUtils.AddParameter(cmd, "@criteria", $"%{criterion[0]}%");
 
-
+                    for(int i = 1; i < criterion.Count(); i ++)
+                    {
+                        sql += $"OR t.Name LIKE @criteria{i}";
+                        DbUtils.AddParameter(cmd, $"@criteria{i}",  $"%{criterion[i]}%");
+                    };
 
 
                     cmd.CommandText = sql;

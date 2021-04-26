@@ -11,7 +11,7 @@ namespace Tabloid.Repositories
         void AddPost(Post post);
         void UpdatePost(Post post);
         void DeletePost(int id);
-        List<Post> searchByTag(string criterion);
+        List<Post> searchByTag(List<string> criterion);
         List<Post> GetPostByCategoryId(int categoryId);
     }
 }

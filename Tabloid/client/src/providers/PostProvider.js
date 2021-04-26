@@ -61,17 +61,24 @@ export const PostProvider = (props) => {
     };
 
 
-    const searchPostByTag = (term) => {
-        return getToken().then((token)=>{
-            fetch(`/api/posts/search?=${term}`,{
-            method: "GET",
-            headers:{
-                Authorization: `Bearer ${token}`
-            }
-        })
-            .then((res) => res.json())
-            .then(setPosts);
-        })
+    const searchPostByTag = (terms) => {
+        let url = `/api/posts/search?q=`
+        for(let term in terms)
+        {
+            url += `+${term}`
+        }
+
+        return console.log=(url);
+        // return getToken().then((token)=>{
+        //     fetch(url,{
+        //     method: "GET",
+        //     headers:{
+        //         Authorization: `Bearer ${token}`
+        //     }
+        // })
+        //     .then((res) => res.json())
+        //     .then(setPosts);
+        // })
     }
 
     const deletePost = (id) => {

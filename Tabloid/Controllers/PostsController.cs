@@ -43,6 +43,12 @@ namespace Tabloid.Controllers
             return Ok(post);
         }
 
+        [HttpGet("search")]
+        public IActionResult search(List<string> criterion)
+        {
+            return Ok(_postRepository.searchByTag(criterion));
+        }
+
         [HttpGet("category/{categoryId}")]
         public IActionResult GetByCategoryId(int categoryId)
         {
@@ -54,12 +60,6 @@ namespace Tabloid.Controllers
             return Ok(posts);
         }
 
-
-        [HttpGet("search")]
-        public IActionResult search(string criterion)
-        {
-            return Ok(_postRepository.searchByTag(criterion));
-        }
 
         [HttpGet("userProfileId/{userProfileId}")]
         public IActionResult GetPostByUserProfileId(int userProfileId)
