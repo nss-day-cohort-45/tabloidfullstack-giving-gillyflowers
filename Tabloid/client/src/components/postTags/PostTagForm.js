@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Form, FormGroup, Card, CardBody, Label, Input, Button } from "reactstrap";
+import React, { useContext, useEffect } from 'react';
+import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 import { PostTagContext } from '../../providers/PostTagProvider';
 import { TagContext } from '../../providers/TagProvider';
 import { useHistory, useParams } from "react-router-dom";
@@ -21,6 +21,7 @@ const PostTagForm = () => {
     const handleSaveTags = () => {
 
         // https://www.techiedelight.com/retrieve-checked-checkboxes-values-javascript/
+        // Looking into a React way to do this
         var checkedBoxes = document.querySelectorAll('input[type="checkbox"]:checked');
         let arrayOfTagIds = Array.from(checkedBoxes).map(c => c.defaultValue);
 
@@ -28,7 +29,6 @@ const PostTagForm = () => {
             return parseInt(t)
         })
 
-        console.log(tagIds);
 
         updatePostTag(tagIds, parseInt(postId))
             .then(() => {

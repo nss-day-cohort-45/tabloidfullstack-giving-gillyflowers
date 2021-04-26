@@ -21,6 +21,7 @@ export const PostTagProvider = (props) => {
             .then(setPostTags);
     };
 
+    // This will delete all the old postTag entries and add all the current ones
     const updatePostTag = (tagIds, postId) => {
         return getToken().then((token) =>
             fetch(`/api/posttags/${postId}`, {

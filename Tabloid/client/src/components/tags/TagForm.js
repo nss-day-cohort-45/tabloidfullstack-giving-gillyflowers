@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Form, FormGroup, Card, CardBody, Label, Input, Button } from "reactstrap";
+import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 import { TagContext } from '../../providers/TagProvider';
 import { useHistory, useParams } from "react-router-dom";
-import Tag from "./TagListCard";
 
 const TagForm = () => {
     const { addTag, updateTag, getAllTags, getTagById } = useContext(TagContext)
@@ -15,16 +14,11 @@ const TagForm = () => {
         name: ""
     })
 
-    //when field changes, update state. This causes a re-render and updates the view.
-    //Controlled component
     const handleControlledInputChange = (event) => {
-        //When changing a state object or array,
-        //always create a copy make changes, and then set state.
         const newTag = { ...tag }
-        //animal is an object with properties.
-        //set the property to the new value
+
         newTag[event.target.id] = event.target.value
-        //update state
+
         setTag(newTag)
     }
 
@@ -89,24 +83,24 @@ const TagForm = () => {
                     onChange={handleControlledInputChange}
                     value={tag.name} />
             </FormGroup>
-            
-                {tag.name.replace(/ /g,'').length !== 0 ?
-            <Button
-                active
-                onClick={
-                    event => {
-                        event.preventDefault() // Prevent browser from submitting the form and refreshing the page
-                        handleSavePost()
-                    }}>Save</Button>
+
+            {tag.name.replace(/ /g, '').length !== 0 ?
+                <Button
+                    active
+                    onClick={
+                        event => {
+                            event.preventDefault() // Prevent browser from submitting the form and refreshing the page
+                            handleSavePost()
+                        }}>Save</Button>
                 :
                 <Button
-                disabled
-                onClick={
-                    event => {
-                        event.preventDefault() // Prevent browser from submitting the form and refreshing the page
-                        handleSavePost()
-                    }}>Save</Button> }
-                     
+                    disabled
+                    onClick={
+                        event => {
+                            event.preventDefault() // Prevent browser from submitting the form and refreshing the page
+                            handleSavePost()
+                        }}>Save</Button>}
+
             <Button
                 onClick={
                     event => {

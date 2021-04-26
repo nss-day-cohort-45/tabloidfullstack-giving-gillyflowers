@@ -15,7 +15,7 @@ export const PostDetails = () => {
 
     const { getPostById, deletePost } = useContext(PostContext);
     const { currentUserId } = useContext(UserProfileContext);
-    const { postTags, getAllPostTagsByPostId, setPostTags } = useContext(PostTagContext);
+    const { postTags, getAllPostTagsByPostId } = useContext(PostTagContext);
     const history = useHistory();
 
     useEffect(() => {
@@ -23,7 +23,6 @@ export const PostDetails = () => {
             if (parsed.id) {
                 setPost(parsed)
                 getAllPostTagsByPostId(parsed.id)
-                console.log(postTags)
             } else {
                 history.push('/posts');
             }
