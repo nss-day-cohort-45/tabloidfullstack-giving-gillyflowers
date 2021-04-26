@@ -18,7 +18,9 @@ export const PostTagProvider = (props) => {
                 })
             )
             .then((res) => res.json())
-            .then(setPostTags);
+            .then((parsed) => {
+                setPostTags(parsed)
+                return parsed});
     };
 
     // This will delete all the old postTag entries and add all the current ones
