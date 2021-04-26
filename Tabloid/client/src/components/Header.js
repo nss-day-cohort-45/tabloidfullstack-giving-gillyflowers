@@ -35,23 +35,17 @@ export default function Header() {
                         {/* When isLoggedIn === true, we will render the Home link */}
                         {isLoggedIn && (
                             <>
-                                <NavItem>
-                                    <NavLink tag={RRNavLink} to="/">
-                                        Home
-                                    </NavLink>
-                                </NavItem>
-
-                                <NavItem>
-                                    <NavLink tag={RRNavLink} to="/posts">
-                                        Posts
-                                    </NavLink>
-                                </NavItem>
-                                <NavItem>
+                                <NavItem style={{ margin: '0 2em' }}>
                                     <NavLink tag={RRNavLink} to="/posts/create">
                                         New Post
                                     </NavLink>
                                 </NavItem>
-                                <NavItem>
+                                <NavItem style={{ margin: '0 2em' }}>
+                                    <NavLink tag={RRNavLink} to="/posts">
+                                        Posts
+                                    </NavLink>
+                                </NavItem>
+                                <NavItem style={{ margin: '0 2em' }}>
                                     <NavLink
                                         tag={RRNavLink}
                                         to={`/posts/userposts/${currentUserId}`}
@@ -59,7 +53,7 @@ export default function Header() {
                                         My Posts
                                     </NavLink>
                                 </NavItem>
-                                <UncontrolledDropdown nav inNavbar>
+                                <UncontrolledDropdown nav inNavbar style={{ margin: '0 2em' }}>
                                     <DropdownToggle nav caret>
                                         Admin Menu
                                     </DropdownToggle>

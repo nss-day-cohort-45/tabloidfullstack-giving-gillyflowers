@@ -31,7 +31,7 @@ export const CategoryForm = ({category, callSaveCat, resetState}) => {
                </FormGroup>
                
                   
-               <Button style={{ cursor: 'pointer' }} 
+               <Button style={{ cursor: 'pointer' }} className="mr-3"
                     onClick={() =>{callSaveCat(categoryToUpdate)}}>
                     Save
                     </Button>

@@ -15,7 +15,7 @@ export const PostForm = () => {
         PostContext
     );
     const [imageLocation, setImageLocation] = useState('');
-    const [categoryId, setCategoryId] = useState(1); // TODO: update this when we have categories
+    const [categoryId, setCategoryId] = useState(1);
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [publishDateTime, setPublishDateTime] = useState(

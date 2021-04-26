@@ -26,13 +26,13 @@ const Category = ({category, callEdit}) => {
                 <strong style={titleMargin}>{category.name}</strong>
                
                {category.id === 1? <div></div>: <i
-                    className="fas fa-trash-alt fa text-right"
+                    className="fas fa-trash-alt text-right fa-2x mx-3"
                     style={{ cursor: 'pointer' }}
                         onClick={handleDelete}
                 ></i>}
                 {" "}
                      {category.id === 1? <div></div>:
-                        <i className="far fa-edit fa"
+                        <i className="far fa-edit fa-2x"
                     style={{ cursor: 'pointer' }}
                         onClick={() =>{callEdit(category.id)}}
                     ></i> }
