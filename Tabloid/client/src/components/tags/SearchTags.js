@@ -19,13 +19,11 @@ const TagSearchBar = () =>
     }
 
   
-    //https://stackoverflow.com/questions/46700862/trying-to-prevent-duplicate-values-to-be-added-to-an-array/46700870
-    // stack overflow for dismissing duplicates could be helpful
+
     const activateSearch = () => {
         
         searchPostByTag(searchTerms)
         .then(textInput.value = "");
-       
 
     }
 
