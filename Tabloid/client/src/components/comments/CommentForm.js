@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useParams, useHistory } from 'react-router-dom';
 import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
 import { CommentContext } from "../../providers/CommentProvider";
@@ -7,9 +7,29 @@ import { PostContext } from '../../providers/PostProvider'
 export const CommentForm = ({ stateMethod }) => {
     const [subject, setSubject] = useState('');
     const [content, setContent] = useState('');
-    const { addComment, getAllCommentsByPostId } = useContext(CommentContext);
+    const [currentComment, setCurrentComment] = useState('')
+    const { addComment, getAllCommentsByPostId, getCommentById } = useContext(CommentContext);
 
-    const { id } = useParams();
+    const { postId } = useParams();
+
+    //for editing comments
+    //send comment id in the edit button
+    useEffect(() => {
+        setSubject('');
+        setContent('');
+        if (commentId) {
+            getCommentById(commentId)
+                .then(setCurrentComment)
+        }
+    }, [commentId]);
+
+    //to fill the edit form
+    useEffect(() => {
+        if (currentComment) {
+            setSubject(currentComment.subject);
+            setContent(currentComment.content);
+        }
+    }, [currentComment])
 
 
     //add click handle submit comment 
@@ -18,10 +38,10 @@ export const CommentForm = ({ stateMethod }) => {
         const comment = {
             subject,
             content,
-            postId: id,
+            postId: postId,
         }
         addComment(comment).then((c) => {
-            getAllCommentsByPostId(id).then(() => {
+            getAllCommentsByPostId(postId).then(() => {
                 setSubject('')
                 setContent('')
                 stateMethod(false)
@@ -31,7 +51,7 @@ export const CommentForm = ({ stateMethod }) => {
 
     return (
         <Form className="container col-md-6">
-            <h2>Add New Comment</h2>
+            <h2> {commentId ? 'Edit Comment' : 'Add New Comment'}</h2>
             <FormGroup>
                 <Label for="subject">Subject</Label>
                 <Input

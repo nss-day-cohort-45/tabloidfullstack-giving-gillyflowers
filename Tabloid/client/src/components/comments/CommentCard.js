@@ -22,6 +22,10 @@ const CommentCard = ({ comment, commentState }) => {
         }
     };
 
+    const handleEdit = (comment) => {
+
+    };
+
     return (
         <Card className="m-4">
             <CardBody style={{ width: "35em" }}>
@@ -29,6 +33,11 @@ const CommentCard = ({ comment, commentState }) => {
                     <i
                         className="fas fa-trash-alt float-right"
                         onClick={handleDelete}
+                        style={{ cursor: 'pointer' }}
+                    ></i>
+                    <i
+                        className="fas fa-edit float-right "
+                        // onClick={}
                         style={{ cursor: 'pointer' }}
                     ></i>
                 </CardTitle>
