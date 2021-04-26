@@ -1,3 +1,4 @@
+import { findByLabelText } from '@testing-library/dom';
 import React, { useContext } from 'react';
 import { Card, CardBody } from 'reactstrap';
 import { CategoryContext } from '../../providers/CategoryProvider';

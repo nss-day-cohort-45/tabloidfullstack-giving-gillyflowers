@@ -55,7 +55,11 @@ export default function Header() {
                                         My Posts
                                     </NavLink>
                                 </NavItem>
-                                <UncontrolledDropdown nav inNavbar style={{ margin: '0 2em' }}>
+                                <UncontrolledDropdown
+                                    nav
+                                    inNavbar
+                                    style={{ margin: '0 2em' }}
+                                >
                                     <DropdownToggle nav caret>
                                         Admin Menu
                                     </DropdownToggle>
@@ -83,21 +87,15 @@ export default function Header() {
                                         </DropdownItem>
                                     </DropdownMenu>
                                 </UncontrolledDropdown>
+                                <NavItem style={{ margin: '0 2em' }}>
+                                    <SearchTags />
+                                </NavItem>
                             </>
                         )}
                     </Nav>
                     <Nav navbar>
                         {isLoggedIn && (
                             <>
-                                <NavItem>
-                                    <i
-                                        aria-current="page"
-                                        className="nav-link"
-                                        style={{ cursor: 'pointer' }}
-                                    >
-                                    <SearchTags/>
-                                    </i>
-                                </NavItem>
                                 <NavItem>
                                     <a
                                         aria-current="page"

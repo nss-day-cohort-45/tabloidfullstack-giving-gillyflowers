@@ -31,7 +31,7 @@ const TagSearchBar = () =>
         <InputGroup>
         <InputGroupAddon addonType="prepend"><Button onClick={()=>{activateSearch()}} >Search</Button></InputGroupAddon>
         <Input placeholder="Enter Tag Name"
-            
+                autocomplete="off"
                 name="tagSearch"
                 id="tagSearch"
                 onChange = {handleControlledInputChange}
