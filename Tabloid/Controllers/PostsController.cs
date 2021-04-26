@@ -47,7 +47,7 @@ namespace Tabloid.Controllers
         public IActionResult search(string q)
         {
             
-            List<string> terms = q.Split('+').ToList();
+            List<string> terms = q.Split(' ').ToList();
 
             
            return Ok(_postRepository.searchByTag(terms));

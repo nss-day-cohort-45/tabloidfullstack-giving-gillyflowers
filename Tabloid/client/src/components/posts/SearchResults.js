@@ -13,7 +13,7 @@ const { searchResults } = useContext(PostContext);
 
 return (
     <div className="container">
-        <div className ="justify-content-center">
+        <div className =" row justify-content-center">
             <Col xs="8">
                 <h1>Search Results</h1>
                 {searchResults.length > 0? searchResults.map( p =>  <Post key={p.id} post={p} />): null}

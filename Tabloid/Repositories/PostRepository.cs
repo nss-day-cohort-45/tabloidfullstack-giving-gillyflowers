@@ -165,22 +165,22 @@ namespace Tabloid.Repositories
 
                     for(int i = 1; i < criterion.Count(); i ++)
                     {
-                        sql += $"OR t.Name LIKE @criteria{i}";
+                        sql += $" OR t.Name LIKE @criteria{i}";
                         DbUtils.AddParameter(cmd, $"@criteria{i}",  $"%{criterion[i]}%");
                     };
 
 
                     cmd.CommandText = sql;
 
-
+                    Console.WriteLine(sql);
                     var reader = cmd.ExecuteReader();
                     var posts = new List<Post>();
                     while (reader.Read())
                     {
-                        if(posts.FirstOrDefault(p => p.Id == DbUtils.GetInt(reader, "Id")) == null)
-                        {
-                            posts.Add(NewPostFromDb(reader));
-                        }
+                       if(posts.FirstOrDefault(p => p.Id == DbUtils.GetInt(reader, "Id")) == null)
+                       {
+                        posts.Add(NewPostFromDb(reader));
+                       }
                     }
 
                      reader.Close();
