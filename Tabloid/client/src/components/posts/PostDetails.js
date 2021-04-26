@@ -8,9 +8,9 @@ import { PostTagContext } from '../../providers/PostTagProvider';
 
 
 export const PostDetails = () => {
-    const { id } = useParams();
+    const { id, showComments } = useParams();
     const [post, setPost] = useState();
-    const [isHiddenComment, setIsHiddenComment] = useState(true);
+    const [isHiddenComment, setIsHiddenComment] = useState(!showComments);
     const [isHiddenAddNewComment, setIsHiddenAddNewComment] = useState(true);
 
     const { getPostById, deletePost } = useContext(PostContext);

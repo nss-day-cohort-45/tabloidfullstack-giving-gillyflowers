@@ -3,31 +3,27 @@ import { useParams, useHistory } from 'react-router-dom';
 import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
 import { CommentContext } from "../../providers/CommentProvider";
 
-export const CommentFormEdit = ({ stateMethod }) => {
+export const CommentFormEdit = ({ }) => {
     const [subject, setSubject] = useState('');
     const [content, setContent] = useState('');
     const [currentComment, setCurrentComment] = useState({})
     const { getAllCommentsByPostId, getCommentById, updateComment } = useContext(CommentContext);
 
     const { id } = useParams(); //use for comment id
+    const history = useHistory();
 
 
     // for editing comments
     // send comment id in the edit button
     useEffect(() => {
         getCommentById(id)
-            .then(setCurrentComment)
+            .then((comment) => {
+                setCurrentComment(comment);
+                setContent(comment.content);
+                setSubject(comment.subject);
+            })
 
     }, [id]);
-
-    //to fill the edit form
-    useEffect(() => {
-        if (currentComment) {
-            setSubject(currentComment.subject);
-            setContent(currentComment.content);
-        }
-    }, [currentComment])
-
 
     //add click handle edit/update comment 
     const handleClickEditButton = (evt) => {
@@ -42,11 +38,18 @@ export const CommentFormEdit = ({ stateMethod }) => {
             getAllCommentsByPostId(parseInt(currentComment.postId)).then(() => {
                 setSubject('')
                 setContent('')
-                stateMethod(false)
+                // stateMethod(false)
             })
-        });
+        }).then(() => {
+            history.push(`/posts/${comment.postId}/true`);
+        })
     };
 
+    const handleCancel = () => {
+        history.push(`/posts/${currentComment.postId}`)
+    };
+
+    console.log("this is the content state", content);
     return (
         <Form className="container col-md-6">
             <h2> Edit Comment </h2>
@@ -92,7 +95,13 @@ export const CommentFormEdit = ({ stateMethod }) => {
                     Edit
                 </Button>
             }
-        </Form>
+            <Button
+                style={{ cursor: 'pointer', marginLeft: '10px' }}
+                onClick={handleCancel}
+            >
+                Cancel
+            </Button>
+        </Form >
     );
 };
 

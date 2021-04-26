@@ -15,6 +15,7 @@ import TagList from './tags/TagList';
 import TagForm from './tags/TagForm';
 import CategoryList from './categories/CategoryList';
 import PostTagForm from './postTags/PostTagForm';
+import CommentFormEdit from './comments/CommentFormEdit';
 
 export default function ApplicationViews() {
     const { isLoggedIn } = useContext(UserProfileContext);
@@ -42,12 +43,15 @@ export default function ApplicationViews() {
                     {isLoggedIn ? <PostForm /> : <Redirect to="/login" />}
                 </Route>
 
-                <Route path="/posts/:id" exact>
-                    {isLoggedIn ? <PostDetails /> : <Redirect to="/login" />}
+                <Route path="/comment/:id" exact>
+                    {isLoggedIn ? <CommentFormEdit /> : <Redirect to="/login" />}
                 </Route>
 
                 <Route path="/posts/tags/:postId" exact>
                     {isLoggedIn ? <PostTagForm /> : <Redirect to="/login" />}
+                </Route>
+                <Route path="/posts/:id/:showComments?" >
+                    {isLoggedIn ? <PostDetails /> : <Redirect to="/login" />}
                 </Route>
 
                 <Route path="/tags" exact>

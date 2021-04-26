@@ -84,6 +84,7 @@ namespace Tabloid.Repositories
                                             CreateDateTime = @createDateTime
                                         WHERE Id = @id";
 
+                    DbUtils.AddParameter(cmd, "@id", comment.Id);
                     DbUtils.AddParameter(cmd, "@postId", comment.PostId);
                     DbUtils.AddParameter(cmd, "@userProfileId", comment.UserProfileId);
                     DbUtils.AddParameter(cmd, "@subject", comment.Subject);
@@ -119,8 +120,11 @@ namespace Tabloid.Repositories
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"SELECT Id, PostId, UserProfileId, Subject, Content, CreateDateTime 
-                                        FROM Comment WHERE Id = @id";
+                    cmd.CommandText = @"SELECT c.Id, c.PostId, c.UserProfileId, c.Subject, c.Content, c.CreateDateTime, 
+                                               up.DisplayName, up.FirstName, up.LastName, up.Email
+                                        FROM Comment c
+                                        LEFT JOIN UserProfile up ON up.id = c.UserProfileId
+                                        WHERE c.Id = @id";
 
                     DbUtils.AddParameter(cmd, "@Id", id);
 
