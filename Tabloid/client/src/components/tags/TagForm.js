@@ -1,16 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react';
-import {
-    Form,
-    FormGroup,
-    Card,
-    CardBody,
-    Label,
-    Input,
-    Button,
-} from 'reactstrap';
+import React, { useContext, useEffect, useState } from "react";
+import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 import { TagContext } from '../../providers/TagProvider';
-import { useHistory, useParams } from 'react-router-dom';
-import Tag from './TagListCard';
+import { useHistory, useParams } from "react-router-dom";
 
 const TagForm = () => {
     const { addTag, updateTag, getAllTags, getTagById } = useContext(
@@ -25,42 +16,43 @@ const TagForm = () => {
         name: '',
     });
 
-    //when field changes, update state. This causes a re-render and updates the view.
-    //Controlled component
     const handleControlledInputChange = (event) => {
-        //When changing a state object or array,
-        //always create a copy make changes, and then set state.
-        const newTag = { ...tag };
-        //animal is an object with properties.
-        //set the property to the new value
-        newTag[event.target.id] = event.target.value;
-        //update state
-        setTag(newTag);
-    };
+        const newTag = { ...tag }
+
+        newTag[event.target.id] = event.target.value
+
+        setTag(newTag)
+    }
 
     const handleSavePost = () => {
-        if (tagId) {
-            updateTag({
-                id: parseInt(tagId),
-                name: tag.name,
-            }).then(() => {
-                // Navigate the user back to the tags route
-                history.push('/tags');
-                getAllTags();
-                setTag({
-                    name: '',
-                });
-            });
+        if (tag.name === "") {
+            window.alert("Please enter a tag name!")
         } else {
-            addTag({
-                name: tag.name,
-            }).then(() => {
-                history.push('/tags');
-                getAllTags();
-                setTag({
-                    name: '',
-                });
-            });
+            if (tagId) {
+                updateTag({
+                    id: parseInt(tagId),
+                    name: tag.name
+                })
+                    .then(() => {
+                        // Navigate the user back to the tags route
+                        history.push("/tags");
+                        getAllTags();
+                        setTag({
+                            name: ""
+                        });
+                    })
+            } else {
+                addTag({
+                    name: tag.name
+                })
+                    .then(() => {
+                        history.push("/tags");
+                        getAllTags();
+                        setTag({
+                            name: ""
+                        });
+                    })
+            }
         }
     };
 
@@ -94,27 +86,22 @@ const TagForm = () => {
                 />
             </FormGroup>
 
-            {tag.name.replace(/ /g, '').length !== 0 ? (
+            {tag.name.replace(/ /g, '').length !== 0 ?
                 <Button
                     active
-                    onClick={(event) => {
-                        event.preventDefault(); // Prevent browser from submitting the form and refreshing the page
-                        handleSavePost();
-                    }}
-                >
-                    Save
-                </Button>
-            ) : (
+                    onClick={
+                        event => {
+                            event.preventDefault() // Prevent browser from submitting the form and refreshing the page
+                            handleSavePost()
+                        }}>Save</Button>
+                :
                 <Button
                     disabled
-                    onClick={(event) => {
-                        event.preventDefault(); // Prevent browser from submitting the form and refreshing the page
-                        handleSavePost();
-                    }}
-                >
-                    Save
-                </Button>
-            )}
+                    onClick={
+                        event => {
+                            event.preventDefault() // Prevent browser from submitting the form and refreshing the page
+                            handleSavePost()
+                        }}>Save</Button>}
 
             <Button
                 color="danger"
