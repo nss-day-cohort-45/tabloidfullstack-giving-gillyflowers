@@ -112,12 +112,14 @@ export const PostDetails = () => {
                     <div>
                         <h4>Tags</h4>
                         {
-                            postTags.length > 0 ? postTags.map(t => t.tag.name).join(", ") : "No tags at the moment. Use the button to add a few."
+                            postTags.length > 0 ? postTags.map(t => t.tag.name).join(", ") : "No tags for this post at the moment."
                         }
-                        <button className="btn btn-primary"
-                            onClick={() => {
-                                history.push(`/posts/tags/${post.id}`);
-                            }}>Manage Tags</button>
+                        {currentUserId === post.userProfileId ? (
+                            <button className="btn btn-primary"
+                                onClick={() => {
+                                    history.push(`/posts/tags/${post.id}`);
+                                }}>Manage Tags</button>
+                        ) : null}
                     </div>
                     <div>
                         <button className="btn btn-primary m-4"
