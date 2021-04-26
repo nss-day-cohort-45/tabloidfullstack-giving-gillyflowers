@@ -15,7 +15,7 @@ return (
     <div className="container">
         <div className =" row justify-content-center">
             <Col xs="8">
-                <h1>Search Results</h1>
+                <h1 className="text-center">Search Results</h1>
                 {searchResults.length > 0? searchResults.map( p =>  <Post key={p.id} post={p} />): null}
             </Col>   
         </div>

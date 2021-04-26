@@ -16,17 +16,13 @@ const Post = ({ post }) => {
 
 
     return (
-        <Card className="m-4">
-            <p className="text-left px-2">
-                Posted by: {post.userProfile.displayName}
-            </p>
-
-            <CardBody>
-                <p>
+        <Card className="m-4" style={{ backgroundColor: '#dddddd' }}>
+            <CardBody className="px-2">
+                <h2>
                     <Link to={`/posts/${post.id}`}>
                         <strong style={{ textTransform: 'capitalize' }}>{post.title}</strong>
                     </Link>
-                </p>
+                </h2>
 
                 <p>Category: {post.category.name}</p>
               <p>
