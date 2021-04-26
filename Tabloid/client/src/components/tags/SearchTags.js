@@ -23,7 +23,7 @@ const TagSearchBar = () =>
     const activateSearch = () => {
         
         searchPostByTag(searchTerms)
-        .then(textInput.value = "");
+        textInput.value = "";
 
     }
 
@@ -31,7 +31,7 @@ const TagSearchBar = () =>
         <InputGroup>
         <InputGroupAddon addonType="prepend"><Button onClick={()=>{activateSearch()}} >Search</Button></InputGroupAddon>
         <Input placeholder="Enter Tag Name"
-                value={searchTerms}
+            
                 name="tagSearch"
                 id="tagSearch"
                 onChange = {handleControlledInputChange}
