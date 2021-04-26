@@ -27,7 +27,7 @@ export const NewCategoryForm = ({addNew}) => {
         <CardBody>
             <h3>Add Category</h3>
            <div >
-               <fieldset>
+               <fieldset className="mb-2">
                 <Input type="text"
                         name="name"
                         id="name"

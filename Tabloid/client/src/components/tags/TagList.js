@@ -18,7 +18,7 @@ const TagList = () => {
                 <div className="cards-column">
                     <h1 style={{ textAlign: 'center' }}>Tags</h1>
                     {tags.map((tag) => {
-                        return <Tag key={tag.id} tag={tag} />;
+                        return <Tag key={tag.id} tag={tag} style={{width: '400px'}} />;
                     })}
                 </div>
             </div>

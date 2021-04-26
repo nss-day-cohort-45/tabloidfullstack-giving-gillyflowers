@@ -15,7 +15,7 @@ export const PostForm = () => {
         PostContext
     );
     const [imageLocation, setImageLocation] = useState('');
-    const [categoryId, setCategoryId] = useState(1); // TODO: update this when we have categories
+    const [categoryId, setCategoryId] = useState(1);
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [publishDateTime, setPublishDateTime] = useState(
@@ -200,7 +200,7 @@ export const PostForm = () => {
                 </select>
             </FormGroup>
             {imageMethod === 'upload' ? (
-                <div style={{ backgroundColor: '#dddddd', padding: '6px' }}>
+                <div style={{ backgroundColor: '#dddddd', padding: '6px', borderRadius: '5px' }}>
                     <FormGroup>
                         <Label for="file">Upload Header Image</Label>
                         <Input
@@ -219,7 +219,7 @@ export const PostForm = () => {
                 </div>
             ) : (
                 <FormGroup
-                    style={{ backgroundColor: '#dddddd', padding: '6px' }}
+                    style={{ backgroundColor: '#dddddd', padding: '6px', borderRadius: '5px' }}
                 >
                     <Label for="imageLocation">Image URL</Label>
                     <Input
