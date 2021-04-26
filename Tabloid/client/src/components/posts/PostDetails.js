@@ -4,6 +4,7 @@ import { PostContext } from '../../providers/PostProvider';
 import CommentList from '../comments/CommentList'
 import CommentForm from '../comments/CommentForm'
 import { UserProfileContext } from '../../providers/UserProfileProvider';
+import { PostTagContext } from '../../providers/PostTagProvider';
 
 
 export const PostDetails = () => {
@@ -14,12 +15,14 @@ export const PostDetails = () => {
 
     const { getPostById, deletePost } = useContext(PostContext);
     const { currentUserId } = useContext(UserProfileContext);
+    const { postTags, getAllPostTagsByPostId } = useContext(PostTagContext);
     const history = useHistory();
 
     useEffect(() => {
         getPostById(id).then((parsed) => {
             if (parsed.id) {
-                setPost(parsed);
+                setPost(parsed)
+                getAllPostTagsByPostId(parsed.id)
             } else {
                 history.push('/posts');
             }
@@ -102,8 +105,22 @@ export const PostDetails = () => {
                             </>
                         ) : null}
                     </div>
+
                     <p style={{ whiteSpace: 'pre-line' }} >{post.content}</p>
-                    {/* tags go here */}
+
+                    {/*TAGS STUFF*/}
+                    <div>
+                        <h4>Tags</h4>
+                        {
+                            postTags.length > 0 ? postTags.map(t => t.tag.name).join(", ") : "No tags for this post at the moment."
+                        }
+                        {currentUserId === post.userProfileId ? (
+                            <button className="btn btn-primary"
+                                onClick={() => {
+                                    history.push(`/posts/tags/${post.id}`);
+                                }}>Manage Tags</button>
+                        ) : null}
+                    </div>
                     <div>
                         <button className="btn btn-primary m-4"
                             onClick={HandleCommentOnClick} >
