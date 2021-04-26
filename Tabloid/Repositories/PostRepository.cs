@@ -172,7 +172,7 @@ namespace Tabloid.Repositories
 
                     cmd.CommandText = sql;
 
-                    Console.WriteLine(sql);
+         
                     var reader = cmd.ExecuteReader();
                     var posts = new List<Post>();
                     while (reader.Read())

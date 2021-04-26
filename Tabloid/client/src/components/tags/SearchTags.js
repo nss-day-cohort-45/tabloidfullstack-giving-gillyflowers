@@ -9,7 +9,7 @@ const TagSearchBar = () =>
     const [searchTerms, setSearchTerms] = useState([]);
 
     const { searchPostByTag } = useContext(PostContext);
-
+    const textInput = document.querySelector("#tagSearch");
    
    
     const handleControlledInputChange = (event) => {
@@ -23,13 +23,17 @@ const TagSearchBar = () =>
     // stack overflow for dismissing duplicates could be helpful
     const activateSearch = () => {
         
-        searchPostByTag(searchTerms);
+        searchPostByTag(searchTerms)
+        .then(textInput.value = "");
+       
+
     }
 
     return(
         <InputGroup>
         <InputGroupAddon addonType="prepend"><Button onClick={()=>{activateSearch()}} >Search</Button></InputGroupAddon>
         <Input placeholder="Enter Tag Name"
+                value={searchTerms}
                 name="tagSearch"
                 id="tagSearch"
                 onChange = {handleControlledInputChange}

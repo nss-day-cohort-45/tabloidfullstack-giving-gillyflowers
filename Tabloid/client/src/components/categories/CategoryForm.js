@@ -3,7 +3,7 @@ import { Button, Form, FormGroup, Input, Card, CardBody } from 'reactstrap';
 
 
 export const CategoryForm = ({category, callSaveCat, resetState}) => {
-
+    
 
     const [ categoryToUpdate, setCategoryToUpdate] = useState({
         id: category.id,
@@ -13,7 +13,7 @@ export const CategoryForm = ({category, callSaveCat, resetState}) => {
     const handleControlledInputChange = (event) => {
         const newCategory = { ...categoryToUpdate };
         newCategory[event.target.id] = event.target.value;
-        setCategoryToUpdate(newCategory);
+        setCategoryToUpdate();
       };
 
     return (
