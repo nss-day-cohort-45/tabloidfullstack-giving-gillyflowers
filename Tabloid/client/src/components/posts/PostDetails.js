@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { PostContext } from '../../providers/PostProvider';
 import CommentList from '../comments/CommentList'
-import CommentForm from '../comments/CommentForm'
+import CommentFormAdd from '../comments/CommentFormAdd'
 import { UserProfileContext } from '../../providers/UserProfileProvider';
 import { PostTagContext } from '../../providers/PostTagProvider';
 
@@ -121,6 +121,7 @@ export const PostDetails = () => {
                                 }}>Manage Tags</button>
                         ) : null}
                     </div>
+                    {/* Comments form and list live here */}
                     <div>
                         <button className="btn btn-primary m-4"
                             onClick={HandleCommentOnClick} >
@@ -132,7 +133,7 @@ export const PostDetails = () => {
                         </button>
                     </div>
                     <div>
-                        {!isHiddenAddNewComment ? (< CommentForm stateMethod={setIsHiddenComment} />) : null}
+                        {!isHiddenAddNewComment ? (< CommentFormAdd stateMethod={setIsHiddenComment} />) : null}
                     </div>
                     <div>
                         {!isHiddenComment ? (< CommentList commentState={setIsHiddenComment} />) : null}

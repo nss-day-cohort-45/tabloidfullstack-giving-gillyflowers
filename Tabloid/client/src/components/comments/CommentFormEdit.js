@@ -2,26 +2,23 @@ import React, { useState, useContext, useEffect } from "react";
 import { useParams, useHistory } from 'react-router-dom';
 import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
 import { CommentContext } from "../../providers/CommentProvider";
-import { PostContext } from '../../providers/PostProvider'
 
-export const CommentForm = ({ stateMethod }) => {
+export const CommentFormEdit = ({ stateMethod }) => {
     const [subject, setSubject] = useState('');
     const [content, setContent] = useState('');
-    const [currentComment, setCurrentComment] = useState('')
-    const { addComment, getAllCommentsByPostId, getCommentById } = useContext(CommentContext);
+    const [currentComment, setCurrentComment] = useState({})
+    const { getAllCommentsByPostId, getCommentById, updateComment } = useContext(CommentContext);
 
-    const { postId } = useParams();
+    const { id } = useParams(); //use for comment id
 
-    //for editing comments
-    //send comment id in the edit button
+
+    // for editing comments
+    // send comment id in the edit button
     useEffect(() => {
-        setSubject('');
-        setContent('');
-        if (commentId) {
-            getCommentById(commentId)
-                .then(setCurrentComment)
-        }
-    }, [commentId]);
+        getCommentById(id)
+            .then(setCurrentComment)
+
+    }, [id]);
 
     //to fill the edit form
     useEffect(() => {
@@ -32,16 +29,17 @@ export const CommentForm = ({ stateMethod }) => {
     }, [currentComment])
 
 
-    //add click handle submit comment 
-    const handleClickSaveButton = (evt) => {
+    //add click handle edit/update comment 
+    const handleClickEditButton = (evt) => {
 
         const comment = {
+            id: currentComment.id,
             subject,
             content,
-            postId: postId,
+            postId: currentComment.postId,
         }
-        addComment(comment).then((c) => {
-            getAllCommentsByPostId(postId).then(() => {
+        updateComment(comment).then((c) => {
+            getAllCommentsByPostId(parseInt(currentComment.postId)).then(() => {
                 setSubject('')
                 setContent('')
                 stateMethod(false)
@@ -51,7 +49,7 @@ export const CommentForm = ({ stateMethod }) => {
 
     return (
         <Form className="container col-md-6">
-            <h2> {commentId ? 'Edit Comment' : 'Add New Comment'}</h2>
+            <h2> Edit Comment </h2>
             <FormGroup>
                 <Label for="subject">Subject</Label>
                 <Input
@@ -85,17 +83,17 @@ export const CommentForm = ({ stateMethod }) => {
                 <Button disabled
                     style={{ cursor: 'pointer' }}
                 >
-                    Save
+                    Edit
                     </Button>
                 :
                 <Button active
                     style={{ cursor: 'pointer' }}
-                    onClick={handleClickSaveButton}>
-                    Save
+                    onClick={handleClickEditButton}>
+                    Edit
                 </Button>
             }
         </Form>
     );
 };
 
-export default CommentForm;
+export default CommentFormEdit;
