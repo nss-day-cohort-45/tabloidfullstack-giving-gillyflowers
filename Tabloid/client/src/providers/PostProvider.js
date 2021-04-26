@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import { useHistory } from 'react-router';
 import { UserProfileContext } from './UserProfileProvider';
 
 export const PostContext = React.createContext();
@@ -6,7 +7,10 @@ export const PostContext = React.createContext();
 export const PostProvider = (props) => {
     const { getToken } = useContext(UserProfileContext); //every provider needs the token
     const [posts, setPosts] = useState([]);
+    const [searchResults, setSearchResults] = useState([])
+    let url = ""
 
+    const history = useHistory();
     const getAllPosts = () => {
         return getToken()
             .then((token) =>
@@ -62,23 +66,31 @@ export const PostProvider = (props) => {
 
 
     const searchPostByTag = (terms) => {
-        let url = `/api/posts/search?q=`
-        for(let term in terms)
-        {
-            url += `+${term}`
-        }
-
-        return console.log=(url);
-        // return getToken().then((token)=>{
-        //     fetch(url,{
-        //     method: "GET",
-        //     headers:{
-        //         Authorization: `Bearer ${token}`
-        //     }
-        // })
-        //     .then((res) => res.json())
-        //     .then(setPosts);
-        // })
+        url = `/api/posts/search?q=`
+        terms.forEach( (term, index) => {
+            if(index > 0)
+            {
+                url += `+${term}`
+            }
+            else
+            {
+                url+=`${term}`
+            } 
+        }); 
+        
+        return getToken().then((token)=>{
+            fetch(url,{
+            method: "GET",
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        })
+            .then((res) => res.json())
+            .then(setSearchResults)
+            .then(() => {
+                history.push('/searchResults')
+            });
+        })
     }
 
     const deletePost = (id) => {
@@ -155,7 +167,9 @@ export const PostProvider = (props) => {
                 updatePost,
                 getPostByCategory,
                 uploadFile,
-                searchPostByTag
+                searchPostByTag,
+                setSearchResults,
+                searchResults
             }}
         >
             {props.children}

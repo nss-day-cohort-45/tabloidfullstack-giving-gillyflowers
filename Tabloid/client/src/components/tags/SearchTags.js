@@ -8,7 +8,7 @@ const TagSearchBar = () =>
 
     const [searchTerms, setSearchTerms] = useState([]);
 
-    const { searchPostByTag, posts } = useContext(PostContext);
+    const { searchPostByTag } = useContext(PostContext);
 
    
    
@@ -22,12 +22,13 @@ const TagSearchBar = () =>
     //https://stackoverflow.com/questions/46700862/trying-to-prevent-duplicate-values-to-be-added-to-an-array/46700870
     // stack overflow for dismissing duplicates could be helpful
     const activateSearch = () => {
+        
         searchPostByTag(searchTerms);
     }
 
     return(
         <InputGroup>
-        <InputGroupAddon addonType="prepend"><Button onClick={activateSearch} >Search</Button></InputGroupAddon>
+        <InputGroupAddon addonType="prepend"><Button onClick={()=>{activateSearch()}} >Search</Button></InputGroupAddon>
         <Input placeholder="Enter Tag Name"
                 name="tagSearch"
                 id="tagSearch"

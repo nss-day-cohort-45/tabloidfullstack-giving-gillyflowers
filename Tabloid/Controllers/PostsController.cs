@@ -44,9 +44,13 @@ namespace Tabloid.Controllers
         }
 
         [HttpGet("search")]
-        public IActionResult search(List<string> criterion)
+        public IActionResult search(string q)
         {
-            return Ok(_postRepository.searchByTag(criterion));
+            
+            List<string> terms = q.Split('+').ToList();
+
+            
+           return Ok(_postRepository.searchByTag(terms));
         }
 
         [HttpGet("category/{categoryId}")]

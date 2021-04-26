@@ -177,7 +177,10 @@ namespace Tabloid.Repositories
                     var posts = new List<Post>();
                     while (reader.Read())
                     {
-                        posts.Add(NewPostFromDb(reader));
+                        if(posts.FirstOrDefault(p => p.Id == DbUtils.GetInt(reader, "Id")) == null)
+                        {
+                            posts.Add(NewPostFromDb(reader));
+                        }
                     }
 
                      reader.Close();
